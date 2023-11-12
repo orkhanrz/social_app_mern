@@ -1,0 +1,45 @@
+.profileEvents {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+.profileEventItem {
+  border-radius: 8px;
+  border: 1px solid var(--dark-gray-clr);
+  overflow: hidden;
+}
+.profileEventItemTop {
+  position: relative;
+  margin-bottom: 28px;
+}
+.profileEventImg {
+  width: 100%;
+  max-height: 148.3px;
+  object-fit: cover;
+}
+.profileEventIcon {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  translate: -50%;
+  border-radius: 50%;
+  background-color: var(--blue-clr);
+  color: var(--white-clr);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+}
+.profileEventItemBottom {
+  text-align: center;
+  height: 140px;
+}
+.profileEventTitle {
+  font-size: var(--fs-200);
+  font-weight: 600;
+  margin: 0;
+}
+.profileEventDate {
+  font-size: var(--fs-100);
+  margin: 0;
+}

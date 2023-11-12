@@ -1,0 +1,138 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background-color: var(--white-clr);
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.topbarLeft {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+.topbarLogo {
+  height: 42px;
+  width: 42px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.topbarLogo > img {
+  width: 100%;
+  height: auto;
+}
+.topbarInputWrapper {
+  overflow: hidden;
+  padding: 0 8px;
+  height: 40px;
+  width: 240px;
+  display: flex;
+  align-items: center;
+  border-radius: 22px;
+  background-color: var(--gray-clr);
+}
+.topbarInputWrapper .searchIcon {
+  background-color: var(--gray-clr);
+  border-radius: 50%;
+}
+.topbarInputWrapper > label {
+  margin-right: 4px;
+  font-size: 0px;
+}
+.topbarInputWrapper > input {
+  border: none;
+  width: 100%;
+  background-color: inherit;
+  font-size: var(--fs-200);
+}
+.topbarCenter {
+  display: flex;
+  gap: 8px;
+  height: 100%;
+}
+.topbarCenterItem {
+  cursor: pointer;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 50px;
+  position: relative;
+}
+.topbarCenterItem > * {
+  font-size: var(--fs-600) !important;
+}
+.topbarCenterItem.active {
+  color: var(--blue-clr);
+}
+.topbarCenterItem.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--blue-clr);
+}
+.topbarCenterItem:hover:not(.active) {
+  background-color: var(--gray-clr);
+}
+.topbarRight {
+  padding: 8px 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.topbarRightItem {
+  background-color: var(--gray-clr);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.topbarRightItem > * {
+  font-size: var(--fs-600) !important;
+}
+.topbarRightItem:hover {
+  background-color: var(--dark-gray-clr);
+}
+
+@media screen and (max-width: 1100px) {
+  .topbarInputWrapper > input {
+    display: none;
+  }
+
+  .topbarInputWrapper > label {
+    margin-right: 0;
+  }
+
+  .topbarInputWrapper {
+    width: min-content;
+  }
+
+  .topbarCenterItem {
+    width: 90px;
+  }
+
+  .topbarRightItem {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .topbarCenterItem {
+    width: 50px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .topbarCenter {
+    display: none;
+  }
+}

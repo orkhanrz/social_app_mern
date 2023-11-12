@@ -1,0 +1,18 @@
+.profileIntroTop > p {
+  text-align: center;
+  font-size: var(--fs-200);
+}
+.profileIntroBottomItem {
+  display: flex;
+  align-items: center;
+}
+.profileIntroBottomItemIcon {
+  color: var(--gray-txt-clr);
+  margin-right: 8px;
+}
+.profileIntroBottomItemText {
+  font-size: var(--fs-200);
+}
+.profileIntroBottomItemTextBold {
+  font-weight: 600;
+}

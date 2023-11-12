@@ -1,0 +1,63 @@
+.signUp {
+  background-color: var(--white-clr);
+  z-index: 100;
+  max-width: 420px;
+}
+.signUpTop {
+  display: flex;
+  justify-content: space-between;
+}
+.signUpTitle {
+  margin: 0;
+  font-size: var(--fs-700);
+}
+.signUpDesc {
+  margin: 8px 0;
+  font-size: var(--fs-200);
+  color: var(--gray-txt-clr);
+}
+.signUpTopRightIcon {
+  color: var(--gray-txt-clr);
+  cursor: pointer;
+}
+.signUp hr {
+  border: none;
+  border-top: 1px var(--dark-gray-clr) solid;
+  height: 1px;
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-bottom: 22px;
+}
+.signUpForm input {
+  background-color: var(--gray-clr);
+}
+.signUpForm input,
+.signUpForm select {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--dark-gray-clr);
+  padding-left: 8px;
+  border-radius: 4px;
+}
+.signUpForm .signUpConsent {
+  font-size: 11px;
+  color: var(--gray-txt-clr);
+}
+.signUpForm .signUpConsentBtn {
+  color: var(--blue-clr);
+}
+.signUpForm .signUpFormBtn {
+  background-color: var(--green-clr);
+  color: var(--white-clr);
+  border: none;
+  font-size: var(--fs-300);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 8px 56px;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.signUpForm .signUpFormBtn:hover {
+  background-color: var(--dark-green-clr);
+}

@@ -1,0 +1,34 @@
+.profileCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profileCardTitle {
+    margin: 0;
+    font-size: var(--fs-400);
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+}
+
+.profileCardTitle:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    height: 2px;
+    background-color: var(--black-clr);
+}
+
+.profileCardBtn {
+  color: var(--blue-clr);
+  font-size: var(--fs-300);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.profileCardBtn:hover {
+  background-color: var(--gray-clr);
+}

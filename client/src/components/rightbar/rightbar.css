@@ -1,0 +1,45 @@
+.rightbar {
+  flex: 2;
+}
+
+.rightbarTitle {
+  font-size: var(--fs-300);
+  font-weight: 600;
+  color: var(--gray-txt-clr);
+  margin: 8px 0;
+}
+
+.createGroup {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.createGroup:hover {
+  background-color: #eaeaea;
+}
+
+.createGroupBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--dark-gray-clr);
+  display: grid;
+  place-items: center;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.createGroupText {
+  font-size: var(--fs-200);
+  font-weight: 500;
+  margin: 0;
+}
+
+@media screen and (max-width: 900px) {
+  .rightbar {
+    display: none;
+  }
+}
