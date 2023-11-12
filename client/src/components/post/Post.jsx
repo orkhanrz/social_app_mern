@@ -9,7 +9,9 @@ import {
   CloseOutlined
 } from "@mui/icons-material";
 
-export default function Post() {
+import {format} from 'timeago.js';
+
+export default function Post({post, user}) {
   return (
     <div className="post card">
       <div className="postContainer pd-8">
@@ -19,9 +21,9 @@ export default function Post() {
               <img src="/assets/icons/profile.png" alt="profile" />
             </Link>
             <div className="postTopDetails">
-              <Link to='/orkhanrz' className="postTopUsername">Orkhan Rzali</Link>
+              <Link to='/orkhanrz' className="postTopUsername">{user.firstName + ' ' + user.lastName}</Link>
               <div className="postTopDate">
-                <p className="postTopDateText">20 hours ago</p>
+                <p className="postTopDateText">{format(post.date)}</p>
                 <span className="postTopDateIcon">
                   <Public />
                 </span>
@@ -34,10 +36,11 @@ export default function Post() {
           </div>
         </div>
         <div className="postCenter">
-          <p className="postCenterText">Happy night sky!! Fairbanks, Alaska</p>
-          <div className="postCenterMedia">
-            <img src="/assets/images/image1.jpg" alt="" />
-          </div>
+          <p className="postCenterText">{post.text}</p>
+          {post.media && <div className="postCenterMedia">
+            <img src={process.env.REACT_APP_BACKEND_URL + post.media} alt="" />
+          </div>}
+          
           <div className="postCenterDetails">
             <div className="postCenterLikes">
               <div className="postCenterLikesIcons">
@@ -48,11 +51,11 @@ export default function Post() {
                   <img src="/assets/icons/heart.png" alt="heart" />
                 </div>
               </div>
-              <p className="postCenterLikesText">507</p>
+              <p className="postCenterLikesText">{post.likes.length}</p>
             </div>
             <div className="postCenterComments">
-              <p className="postCenterCommentsComments">16 comments</p>
-              <p className="postCenterCommentsShares">36 shares</p>
+              <p className="postCenterCommentsComments">{post.comments.length} comments</p>
+              <p className="postCenterCommentsShares">{post.shares.length} shares</p>
             </div>
           </div>
         </div>

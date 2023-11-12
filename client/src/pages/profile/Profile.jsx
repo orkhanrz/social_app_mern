@@ -18,13 +18,13 @@ import ProfileEvents from "../../components/profileEvents/ProfileEvents";
 export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
   const { user: me } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`/users/${username}`);
-        console.log(res.data);
         setUser(res.data);
       } catch (err) {
         console.log(err);
@@ -33,6 +33,19 @@ export default function Profile() {
 
     fetchUser();
   }, [username]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get(`/users/${user?._id}/posts`);
+        setPosts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchPosts();
+  }, [user]);
 
   return (
     <>
@@ -85,7 +98,9 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="profileFeedRightPosts">
-                  <Post />
+                  {posts.length ? posts.map(post => {
+                    return <Post user={user} post={post} key={post._id}/>
+                  }) : ""}                  
                 </div>
               </div>
             </div>

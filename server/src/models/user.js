@@ -54,7 +54,7 @@ const UserSchema = Schema({
     following: [],
     friends: [],
     photos: [],
-    posts: [],
+    posts: [{type: mongoose.Types.ObjectId, ref: "Post"}],
     events: []
 })
 

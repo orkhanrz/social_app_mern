@@ -168,7 +168,15 @@
     border-radius: 8px;
     font-size: var(--fs-200);
     font-weight: 500;
+    cursor: pointer;
+}
+.addPostCardBtn:hover {
+    background-color: darkblue;
 }
 .addPostCardInput {
     display: none;
+}
+.addPostCardContainer input.formError {
+    border: none !important;
+    border-bottom: 1px solid red !important;
 }

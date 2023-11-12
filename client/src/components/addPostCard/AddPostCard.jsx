@@ -13,19 +13,33 @@ import {
 import "./addPostCard.css";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
+import axios from 'axios';
 
 export default function AddPostCard({ togglePostCard }) {
   const { user } = useContext(AuthContext);
   const [media, setMedia] = useState(null);
+  const [error, setError] = useState(null);
   const text = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('text', text.current.value);
+    formData.append('userId', user._id);
+
+    if (media){
+      formData.append('media', media);
+    }
 
     try {
-      // const res = await axios.post('/posts');
+      const res = await axios.post('/posts', formData);
+      if (res.status === 201){
+        window.location.reload();
+      };
     } catch (err) {
-      console.log(err);
+      if (err.response.status === 403){
+        setError(err.response.data.text);
+      }
     }
   };
 
@@ -65,6 +79,8 @@ export default function AddPostCard({ togglePostCard }) {
             name="text"
             placeholder={`What's on your mind, ${user.firstName}?`}
             ref={text}
+            className={error ? 'formError' : ''}
+            onInput={() => setError(null)}
           />
           <input
               type="file"
@@ -93,11 +109,11 @@ export default function AddPostCard({ togglePostCard }) {
           ""
         )}
 
-        <form className="addPostCardBottom">
+        <div className="addPostCardBottom">
           <p className="addPostCardBottomText">Add to your post</p>
           <div className="addPostCardBottomIcons">
             <span className="addPostCardBottomIcon green">
-              <label for="file">
+              <label htmlFor="file">
                 <Collections />
               </label>
             </span>
@@ -117,8 +133,8 @@ export default function AddPostCard({ togglePostCard }) {
               <MoreHoriz />
             </span>
           </div>
-        </form>
-        <button className="addPostCardBtn">Post</button>
+        </div>
+        <button className="addPostCardBtn" onClick={handleSubmit}>Post</button>
       </div>
     </div>
   );

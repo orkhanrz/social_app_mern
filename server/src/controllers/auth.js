@@ -20,7 +20,9 @@ module.exports = {
 
       const userDetails = {
         _id: user._id,
-        username: user.firstName + " " + user.lastName,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         profilePicture: user.profilePicture,
       }
 

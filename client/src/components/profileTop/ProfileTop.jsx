@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import "./profileTop.css";
 
 import {
@@ -6,16 +7,38 @@ import {
   MoreHorizOutlined,
   SubscriptionsOutlined,
 } from "@mui/icons-material";
+import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
-export default function ProfileTop({user}) {
+export default function ProfileTop({ user }) {
+  const { user: me } = useContext(AuthContext);
+
+  const handleFollow = async () => {
+   try {
+    const res = await axios.post(`/users/${user._id}/follow`, {userId: me._id});
+
+    if (res.status === 200){
+      window.location.reload();
+    }
+   } catch (err){
+    console.log(err);
+   };
+  };
+
   return (
     <>
       <div className="profileImages">
         <div className="profileCoverImage">
-          <img src={process.env.REACT_APP_BACKEND_URL + user.coverPicture} alt="cover" />
+          <img
+            src={process.env.REACT_APP_BACKEND_URL + user.coverPicture}
+            alt="cover"
+          />
         </div>
         <div className="profileUserImage">
-          <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="user" />
+          <img
+            src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+            alt="user"
+          />
         </div>
       </div>
       <div className="profileInfo">
@@ -24,28 +47,34 @@ export default function ProfileTop({user}) {
             <div className="profileInfoTopLeft">
               <div className="profileInfoTopLeftImagePlaceholder"></div>
               <div className="profileInfoTopLeftUsername">
-                <h1>{user.firstName + ' ' + user.lastName}</h1>
+                <h1>{user.firstName + " " + user.lastName}</h1>
               </div>
             </div>
-            <div className="profileInfoTopRight">
-              <div className="profileInfoTopRightBtn blue">
-                <span className="profileInfoTopRightBtnIcon">
-                  <SubscriptionsOutlined />
-                </span>
-                <span className="profileInfoTopRightBtnText">Follow</span>
+            {me.username !== user.username ? (
+              <div className="profileInfoTopRight">
+                <div className="profileInfoTopRightBtn blue" onClick={handleFollow}>
+                  <span className="profileInfoTopRightBtnIcon">
+                    <SubscriptionsOutlined />
+                  </span>
+                  <span className="profileInfoTopRightBtnText">
+                    {user.followers.includes(me._id) ? 'Unfollow' : 'Follow'}
+                  </span>
+                </div>
+                <div className="profileInfoTopRightBtn">
+                  <span className="profileInfoTopRightBtnIcon">
+                    <MessageOutlined />
+                  </span>
+                  <span className="profileInfoTopRightBtnText">Message</span>
+                </div>
+                <div className="profileInfoTopRightBtn">
+                  <span className="profileInfoTopRightBtnIcon">
+                    <ExpandMoreOutlined />
+                  </span>
+                </div>
               </div>
-              <div className="profileInfoTopRightBtn">
-                <span className="profileInfoTopRightBtnIcon">
-                  <MessageOutlined />
-                </span>
-                <span className="profileInfoTopRightBtnText">Message</span>
-              </div>
-              <div className="profileInfoTopRightBtn">
-                <span className="profileInfoTopRightBtnIcon">
-                  <ExpandMoreOutlined />
-                </span>
-              </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
           <hr />
           <div className="profileInfoBottom">
