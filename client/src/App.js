@@ -17,7 +17,7 @@ function App() {
           <Route exact path="/" element={!user ? <Login /> : <Home />}></Route>
           <Route path="/login" element={!user ? <Login /> : <Home />}></Route>
           <Route
-            path="/:profile"
+            path="/:username"
             element={!user ? <Login /> : <Profile />}
           ></Route>
         </Routes>

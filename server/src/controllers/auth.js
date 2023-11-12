@@ -34,6 +34,8 @@ module.exports = {
     const { month, day, year } = req.body.dob;
     //Update date to JS date
     const dob = new Date(`${month}/${Number(day) + 1}/${year}`);
+    //Create username
+    const username = email.split('@')[0];
 
     try {
       const existingUser = await User.findOne({ email });
@@ -47,6 +49,7 @@ module.exports = {
         firstName,
         lastName,
         email,
+        username,
         dob,
         gender,
         password: hashedPassword,
@@ -56,7 +59,9 @@ module.exports = {
       const newUserDoc = newUser._doc;
       const userDetails = {
         _id: newUserDoc._id,
-        username: newUserDoc.firstName + " " + newUserDoc.lastName,
+        firstName: newUserDoc.firstName,
+        lastName: newUserDoc.lastName,
+        username: newUserDoc.username,
         profilePicture: newUserDoc.profilePicture,
       };
 

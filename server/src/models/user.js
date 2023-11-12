@@ -16,7 +16,12 @@ const UserSchema = Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
+    },
+    username: {
+        type: String,
+        unique: true
     },
     dob: {
         type: Date,
@@ -43,7 +48,9 @@ const UserSchema = Schema({
     university: String,
     school: String,
     from: String,
-    followed: [],
+    lives: String,
+    quote: String,
+    followers: [],
     following: [],
     friends: [],
     photos: [],

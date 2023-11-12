@@ -31,6 +31,21 @@ a {
   --white-clr: #ffffff;
   --black-clr: #000000;
 }
+.green {
+  color: var(--green-clr);
+}
+.blue {
+  color: var(--blue-clr);
+}
+.yellow {
+  color: var(--yellow-clr);
+}
+.red {
+  color: var(--red-clr);
+}
+.gray {
+  color: var(--dark-gray-clr);
+}
 button:disabled {
   background-color: var(--dark-gray-clr) !important;
   cursor: not-allowed;

@@ -7,15 +7,15 @@ import {
   SubscriptionsOutlined,
 } from "@mui/icons-material";
 
-export default function ProfileTop() {
+export default function ProfileTop({user}) {
   return (
     <>
       <div className="profileImages">
         <div className="profileCoverImage">
-          <img src="/assets/images/image1.jpg" alt="cover" />
+          <img src={process.env.REACT_APP_BACKEND_URL + user.coverPicture} alt="cover" />
         </div>
         <div className="profileUserImage">
-          <img src="/assets/images/image1.jpg" alt="user" />
+          <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="user" />
         </div>
       </div>
       <div className="profileInfo">
@@ -24,7 +24,7 @@ export default function ProfileTop() {
             <div className="profileInfoTopLeft">
               <div className="profileInfoTopLeftImagePlaceholder"></div>
               <div className="profileInfoTopLeftUsername">
-                <h1>Mark Zuckerberg</h1>
+                <h1>{user.firstName + ' ' + user.lastName}</h1>
               </div>
             </div>
             <div className="profileInfoTopRight">

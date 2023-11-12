@@ -24,6 +24,7 @@
   padding-left: 12px;
   font-size: var(--fs-200);
   width: calc(100% - 40px);
+  cursor: pointer;
 }
 .addPostLine {
   border: 1px solid var(--gray-clr);

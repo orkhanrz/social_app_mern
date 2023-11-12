@@ -12,7 +12,7 @@ export default function Leftbar() {
         <span className="leftbarItemIcon uncoloured">
           <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="profile" />
         </span>
-        <Link to={`/${user._id}`} className="leftbarItemTitle">{user.username}</Link>
+        <Link to={`/${user.username}`} className="leftbarItemTitle">{user.firstName} {user.lastName}</Link>
       </div>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">

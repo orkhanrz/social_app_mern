@@ -4,6 +4,7 @@ const app = express();
 const path = require("path");
 const db = require("./db/db");
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 const errorMiddleware = require("./middlewares/error");
 
 const PORT = process.env.PORT || 8000;
@@ -14,6 +15,7 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 //Routes
 app.use("/api/auth", authRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(errorMiddleware);
 
