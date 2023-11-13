@@ -19,7 +19,7 @@
 }
 
 .postTopImg:hover {
-    filter: grayscale(100%);
+    filter: grayscale(25%);
 }
 
 .postTopImg > img {
@@ -152,7 +152,23 @@
 .postBottomItemIcon {
   margin-right: 4px;
 }
+.postBottomItemIcon.active {
+  color: var(--blue-clr);
+  animation: animateLike .5s ease-in-out;
+}
 .postBottomItemText {
   margin: 0;
   font-size: var(--fs-200);
+}
+
+@keyframes animateLike {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(-15deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
 }

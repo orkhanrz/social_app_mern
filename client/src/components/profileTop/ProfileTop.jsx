@@ -12,6 +12,7 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import {config} from '../../config';
 
 export default function ProfileTop({ user, toggleEditProfile }) {
   const { user: me } = useContext(AuthContext);
@@ -40,19 +41,19 @@ export default function ProfileTop({ user, toggleEditProfile }) {
       <div className="profileImages">
         <div className="profileCoverImage">
           <img
-            src={process.env.REACT_APP_BACKEND_URL + user.coverPicture}
+            src={config.backend_url + user.coverPicture}
             alt="cover"
           />
         </div>
         <div className="profileUserImage">
           <img
-            src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+            src={config.backend_url + user.profilePicture}
             alt="user"
           />
         </div>
       </div>
       <div className="profileInfo">
-        <div className="profileContainer">
+        <div className="profileInfoContainer">
           <div className="profileInfoTop">
             <div className="profileInfoTopLeft">
               <div className="profileInfoTopLeftImagePlaceholder"></div>

@@ -5,4 +5,6 @@ const upload = require("../utils/multer");
 
 router.post("/", upload.single("media"), postController.createPost);
 
+router.put('/:postId/like', postController.likePost);
+
 module.exports = router;

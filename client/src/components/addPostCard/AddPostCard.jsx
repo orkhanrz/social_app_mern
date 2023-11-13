@@ -14,6 +14,7 @@ import "./addPostCard.css";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 import axios from 'axios';
+import {config} from '../../config';
 
 export default function AddPostCard({ togglePostCard }) {
   const { user } = useContext(AuthContext);
@@ -56,7 +57,7 @@ export default function AddPostCard({ togglePostCard }) {
         <div className="addPostCardUser">
           <div className="addPostCardUserImage">
             <img
-              src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+              src={config.backend_url + user.profilePicture}
               alt="profile"
             />
           </div>

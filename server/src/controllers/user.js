@@ -52,7 +52,7 @@ module.exports = {
       ]);
 
       const userFollowingsPosts = await Promise.all(
-        user.following.map((userId) => {
+        user.following?.map((userId) => {
           return Post.find({ userId: userId }).populate("userId", [
             "firstName",
             "lastName",
@@ -130,6 +130,26 @@ module.exports = {
       } = updatedUser._doc;
 
       return res.status(200).json(otherDetails);
+    } catch (err) {
+      next(err);
+    }
+  },
+  search: async (req, res, next) => {
+    const query = req.body.query;
+    const queryRegx = new RegExp(query, "i");
+
+    try {
+      const users = await User.find({
+        $or: [
+          { firstName: { $regex: queryRegx } },
+          { lastName: { $regex: queryRegx } },
+          { username: { $regex: queryRegx } },
+        ],
+      })
+        .select("firstName lastName username profilePicture _id")
+        .limit(8);
+
+      res.status(200).json(users);
     } catch (err) {
       next(err);
     }

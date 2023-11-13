@@ -19,34 +19,74 @@ import {
   Feedback,
   Logout,
   ArrowForwardIos,
+  KeyboardBackspace,
 } from "@mui/icons-material";
+import axios from "axios";
+import { CircularProgress } from "@mui/material";
+import { config } from "../../config";
+
+console.log(config.backend_url);
 
 export default function Topbar() {
   const { user: me } = useContext(AuthContext);
   const [accountMenu, setAccountMenu] = useState(false);
+  const [inputActive, setInputActive] = useState(false);
+  const [inputLoading, setInputLoading] = useState(false);
+  const [inputData, setInputData] = useState([]);
   const accountMenuRef = useRef();
+  const inputRef = useRef();
+
+  const searchHandler = async (query) => {
+    setInputLoading(true);
+
+    try {
+      const res = await axios.post(`/users/search`, { query });
+      setInputData(res.data);
+      setInputLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const logoutHandler = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     window.location.reload();
   };
 
   useEffect(() => {
-    document.addEventListener('click', (e) => {
-      if(e.target !== accountMenuRef.current){
+    document.addEventListener("click", (e) => {
+      if (e.target !== accountMenuRef.current) {
         setAccountMenu(false);
-      };
-    })
+      }
+
+      if (e.target !== inputRef.current) {
+        setInputActive(false);
+      }
+    });
   });
 
   return (
     <div className="topbar bs">
       <div className="topbarContainer">
         <div className="topbarLeft">
-          <Link to="/" className="topbarLogo">
-            <img src="/assets/icons/logo.svg" alt="logo" />
-          </Link>
-          <div className="topbarInputWrapper">
+          {!inputActive ? (
+            <Link to="/" className="topbarLogo">
+              <img src="/assets/icons/logo.svg" alt="logo" />
+            </Link>
+          ) : (
+            <span
+              className={`topbarInputWrapperBack ${
+                inputActive ? "active" : ""
+              }`}
+            >
+              <KeyboardBackspace />
+            </span>
+          )}
+
+          <div
+            className={`topbarInputWrapper ${inputActive ? "active" : ""}`}
+            onClick={() => setInputActive(true)}
+          >
             <label htmlFor="search">
               <Search className="searchIcon" />
             </label>
@@ -55,8 +95,38 @@ export default function Topbar() {
               name="search"
               id="search"
               placeholder="Search Social"
+              ref={inputRef}
+              onChange={(e) => searchHandler(e.target.value)}
             />
           </div>
+
+          {inputActive && inputData.length ? (
+            <div className="topbarSearchBox">
+              {inputLoading ? (
+                <div className="topbarSearchBoxLoading">
+                  <CircularProgress color="inherit" size="26px" />
+                </div>
+              ) : (
+                inputData.map((u) => {
+                  return (
+                    <Link to={`/${u.username}`} className="topbarSearchBoxItem">
+                      <div className="topbarSearchBoxUserImage">
+                        <img
+                          src={config.backend_url + u.profilePicture}
+                          alt="profile"
+                        />
+                      </div>
+                      <p className="topbarSearchBoxUserName">
+                        {u.firstName} {u.lastName}
+                      </p>
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <div className="topbarCenter">
           <span className="topbarCenterItem active">
@@ -97,10 +167,7 @@ export default function Topbar() {
           <div className="topbarAccountProfile card">
             <Link to={`/${me.username}`} className="topbarAccountProfileUser">
               <div className="topbarAccountProfileUserImage">
-                <img
-                  src={process.env.REACT_APP_BACKEND_URL + me.profilePicture}
-                  alt="user"
-                />
+                <img src={config.backend_url + me.profilePicture} alt="user" />
               </div>
               <h3 className="topbarAccountProfileUsername">
                 {me.firstName + " " + me.lastName}
@@ -156,12 +223,12 @@ export default function Topbar() {
                 <p className="topbarAccountMenuItemLeftText">Give feedback</p>
               </div>
             </div>
-            <div className="topbarAccountMenuItem">
+            <div className="topbarAccountMenuItem" onClick={logoutHandler}>
               <div className="topbarAccountMenuItemLeft">
                 <span className="topbarAccountMenuItemLeftIcon">
                   <Logout />
                 </span>
-                <p className="topbarAccountMenuItemLeftText" onClick={logoutHandler}>Log Out</p>
+                <p className="topbarAccountMenuItemLeftText">Log Out</p>
               </div>
             </div>
           </div>

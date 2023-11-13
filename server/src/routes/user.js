@@ -3,6 +3,8 @@ const router = express.Router();
 const userController = require("../controllers/user");
 const upload = require("../utils/multer");
 
+router.post('/search', userController.search);
+
 router.get("/:username", userController.getUser);
 
 router.get("/:userId/posts", userController.getUserPosts);

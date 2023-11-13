@@ -3,28 +3,32 @@ const User = require("../models/user");
 
 module.exports = {
   login: async (req, res, next) => {
-    const { email, password } = req.body;
+    const { email: emailInput, password: passwordInput } = req.body;
 
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email: emailInput });
 
       if (!user) {
         return res.status(403).json({ email: "User not found!" });
       }
 
-      const verify = await bcrypt.compare(password, user.password);
+      const verify = await bcrypt.compare(passwordInput, user.password);
 
       if (!verify) {
         return res.status(403).json({ password: "Password is not valid!" });
       }
 
-      const userDetails = {
-        _id: user._id,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        profilePicture: user.profilePicture,
-      }
+      const {
+        password,
+        events,
+        followers,
+        following,
+        friends,
+        photos,
+        posts,
+        private,
+        ...userDetails
+      } = user._doc;
 
       return res.status(200).json({user: userDetails});
     } catch (err) {

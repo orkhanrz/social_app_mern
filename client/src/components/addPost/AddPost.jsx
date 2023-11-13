@@ -1,10 +1,12 @@
 import "./addPost.css";
 import {useContext, useState} from 'react';
+import {config} from '../../config';
 
 import {VideoCameraFront, PermMedia, SentimentVerySatisfied} from '@mui/icons-material';
 import Modal from '../modal/Modal';
 import AddPostCard from '../addPostCard/AddPostCard';
 import { AuthContext } from "../../context/AuthContext";
+import { Link } from "@mui/material";
 
 export default function AddPost() {
   const {user: me} = useContext(AuthContext)
@@ -18,9 +20,9 @@ export default function AddPost() {
     <div className="addPost card">
       <div className="addPostContainer">
         <div className="addPostTop pd-8">
-          <div className="addPostTopIcon">
-            <img src="/assets/icons/profile.png" alt="profile" />
-          </div>
+          <Link to={`/${me.username}`} className="addPostTopIcon">
+            <img src={config.backend_url + me.profilePicture} alt="profile" />
+          </Link>
           <input type="text" placeholder={`What's on your mind, ${me.username.charAt(0).toUpperCase() + me.username.slice(1)}?`}  onClick={togglePostCard}/>
         </div>
         <hr className="addPostLine"/>

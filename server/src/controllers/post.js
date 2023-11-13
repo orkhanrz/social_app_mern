@@ -1,5 +1,5 @@
 const Post = require("../models/post");
-const User = require('../models/user');
+const User = require("../models/user");
 
 module.exports = {
   createPost: async (req, res, next) => {
@@ -24,6 +24,26 @@ module.exports = {
       await user.save();
 
       return res.status(201).json(newPost._doc);
+    } catch (err) {
+      next(err);
+    }
+  },
+  likePost: async (req, res, next) => {
+    const postId = req.params.postId;
+    const userId = req.body.userId;
+
+    try {
+      const post = await Post.findById(postId);
+
+      if (post.likes.includes(userId)) {
+        post.likes.pull(userId);
+      } else {
+        post.likes.push(userId);
+      }
+
+      await post.save();
+
+      return res.status(200).json({ message: "Post liked!" });
     } catch (err) {
       next(err);
     }

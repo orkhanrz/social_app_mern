@@ -11,6 +11,12 @@
   width: 40px;
   height: 40px;
   margin-right: 8px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+.addPostTopIcon:hover {
+  filter: grayscale(25%);
 }
 .addPostTopIcon > img {
   width: 100%;
