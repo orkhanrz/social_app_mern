@@ -57,6 +57,7 @@ export default function AddPostCard({ togglePostCard }) {
           <div className="addPostCardUserImage">
             <img
               src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+              alt="profile"
             />
           </div>
           <div className="addPostCardUserDetails">
@@ -87,7 +88,6 @@ export default function AddPostCard({ togglePostCard }) {
               className="addPostCardInput"
               id="file"
               onChange={(e) => setMedia(e.target.files[0])}
-              ref={media}
             />
           <div className="addPostCardEmotionIcon">
             <SentimentVerySatisfied />

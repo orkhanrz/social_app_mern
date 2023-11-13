@@ -14,8 +14,8 @@ const PostSchema = Schema({
         default: Date.now()
     },
     userId: {
-        type: String,
-        required: true
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
     },
     likes: [],
     comments: [],

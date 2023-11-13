@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "./profileTop.css";
 
 import {
@@ -9,20 +9,28 @@ import {
 } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 export default function ProfileTop({ user }) {
   const { user: me } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFollowed, setIsFollowed] = useState(user.followers.includes(me._id));
 
   const handleFollow = async () => {
-   try {
-    const res = await axios.post(`/users/${user._id}/follow`, {userId: me._id});
+    setIsLoading(true);
+    try {
+      const res = await axios.post(`/users/${user._id}/follow`, {
+        userId: me._id,
+      });
+      setIsLoading(false);
 
-    if (res.status === 200){
-      window.location.reload();
+      if (res.status === 200) {
+        setIsFollowed(prevState => !prevState);
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
     }
-   } catch (err){
-    console.log(err);
-   };
   };
 
   return (
@@ -52,20 +60,26 @@ export default function ProfileTop({ user }) {
             </div>
             {me.username !== user.username ? (
               <div className="profileInfoTopRight">
-                <div className="profileInfoTopRightBtn blue" onClick={handleFollow}>
-                  <span className="profileInfoTopRightBtnIcon">
-                    <SubscriptionsOutlined />
-                  </span>
-                  <span className="profileInfoTopRightBtnText">
-                    {user.followers.includes(me._id) ? 'Unfollow' : 'Follow'}
-                  </span>
-                </div>
-                <div className="profileInfoTopRightBtn">
+                <button
+                  disabled={isLoading}
+                  className="profileInfoTopRightBtn blue"
+                  onClick={handleFollow}
+                >
+                  {isLoading ? <CircularProgress size={16}/> : 
+                    <>
+                      <span className="profileInfoTopRightBtnIcon"><SubscriptionsOutlined /></span>
+                      <span className="profileInfoTopRightBtnText">
+                        {isFollowed ? "Unfollow" : "Follow"}
+                      </span>
+                    </>
+                  }
+                </button>
+                <button className="profileInfoTopRightBtn">
                   <span className="profileInfoTopRightBtnIcon">
                     <MessageOutlined />
                   </span>
                   <span className="profileInfoTopRightBtnText">Message</span>
-                </div>
+                </button>
                 <div className="profileInfoTopRightBtn">
                   <span className="profileInfoTopRightBtnIcon">
                     <ExpandMoreOutlined />

@@ -17,11 +17,11 @@ export default function Post({post, user}) {
       <div className="postContainer pd-8">
         <div className="postTop">
           <div className="postTopLeft">
-            <Link to='/orkhanrz' className="postTopImg">
-              <img src="/assets/icons/profile.png" alt="profile" />
+            <Link to={`/${user.username}`} className="postTopImg">
+              <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="profile" />
             </Link>
             <div className="postTopDetails">
-              <Link to='/orkhanrz' className="postTopUsername">{user.firstName + ' ' + user.lastName}</Link>
+              <Link to={`/${user.username}`} className="postTopUsername">{user.firstName + ' ' + user.lastName}</Link>
               <div className="postTopDate">
                 <p className="postTopDateText">{format(post.date)}</p>
                 <span className="postTopDateIcon">

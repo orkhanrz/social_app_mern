@@ -8,6 +8,6 @@ router.get('/:userId/posts', userController.getUserPosts);
 
 router.post('/:userId/follow', userController.followUser);
 
-// router.get('/:userId/timeline', userController.getUserPosts);
+router.get('/:userId/feed', userController.getFeed);
 
 module.exports = router;

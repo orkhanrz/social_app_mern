@@ -15,6 +15,7 @@
   margin-right: 8px;
   cursor: pointer;
   border-radius: 50%;
+  overflow: hidden;
 }
 
 .postTopImg:hover {

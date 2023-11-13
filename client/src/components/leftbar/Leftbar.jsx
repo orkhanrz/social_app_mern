@@ -4,16 +4,21 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Leftbar() {
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="leftbar">
-      <div className="leftbarItem">
+      <Link to={`/${user.username}`} className="leftbarItem">
         <span className="leftbarItemIcon uncoloured">
-          <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="profile" />
+          <img
+            src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+            alt="profile"
+          />
         </span>
-        <Link to={`/${user.username}`} className="leftbarItemTitle">{user.firstName} {user.lastName}</Link>
-      </div>
+        <p className="leftbarItemTitle">
+          {user.firstName} {user.lastName}
+        </p>
+      </Link>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">
           <img src="/assets/icons/friends.png" alt="friends" />
