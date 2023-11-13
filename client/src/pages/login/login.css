@@ -12,6 +12,7 @@
   max-width: 940px;
   width: 100%;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
 .loginLeft,
@@ -30,6 +31,10 @@
   font-family: sans-serif;
   font-size: var(--fs-600);
   font-weight: 500;
+}
+
+.loginFormContainer{
+  max-width: 380px;
 }
 
 .loginForm input {
@@ -82,4 +87,14 @@
 }
 .loginForm .createAccountBtn:hover {
   background-color: var(--dark-green-clr);
+}
+
+@media screen and (max-width: 768px) {
+  .loginLeft {
+    display: none;
+  }
+
+  .loginFormContainer {
+   margin: 0 auto;
+  }
 }

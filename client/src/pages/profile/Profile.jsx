@@ -14,12 +14,19 @@ import ProfileIntro from "../../components/profileIntro/ProfileIntro";
 import ProfilePhotos from "../../components/profilePhotos/ProfilePhotos";
 import ProfileCard from "../../components/profileCard/ProfileCard";
 import ProfileEvents from "../../components/profileEvents/ProfileEvents";
+import EditProfile from '../../components/editProfile/EditProfile';
+import Modal from "../../components/modal/Modal";
 
 export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [editProfile, setEditProfile] = useState(false);
   const { user: me } = useContext(AuthContext);
+
+  const toggleEditProfile = () => {
+    setEditProfile(!editProfile);
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -44,7 +51,7 @@ export default function Profile() {
       }
     };
 
-    fetchPosts();
+    user && fetchPosts();
   }, [user]);
 
   return (
@@ -52,7 +59,7 @@ export default function Profile() {
       <Topbar />
       {user ? (
         <div className="profile">
-          <ProfileTop user={user} />
+          <ProfileTop user={user} toggleEditProfile={toggleEditProfile}/>
           <div className="profileFeed">
             <div className="profileFeedContainer">
               <div className="profileFeedLeft">
@@ -98,13 +105,22 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="profileFeedRightPosts">
-                  {posts.length ? posts.map(post => {
-                    return <Post user={user} post={post} key={post._id}/>
-                  }) : ""}                  
+                  {posts.length
+                    ? posts.map((post) => {
+                        return <Post user={user} post={post} key={post._id} />;
+                      })
+                    : ""}
                 </div>
               </div>
             </div>
           </div>
+          {editProfile ? (
+            <Modal>
+              <EditProfile toggleEditProfile={toggleEditProfile}/>
+            </Modal>
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         ""

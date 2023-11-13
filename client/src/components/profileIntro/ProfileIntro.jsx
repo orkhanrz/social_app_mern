@@ -15,7 +15,7 @@ export default function ProfileIntro({ user }) {
       <div className="profileIntroContainer pd-8">
         <div className="profileIntroTop">
           <h3>Intro</h3>
-          {user.quote ? user.quote : ""}
+          {user.bio ? <p>{user.bio}</p> : ""}
         </div>
         <hr />
         <div className="profileIntroBottom">
@@ -25,21 +25,9 @@ export default function ProfileIntro({ user }) {
                 <BusinessCenter />
               </span>
               <p className="profileIntroBottomItemText">
-                Founder and CEO at{" "}
-                <span className="profileIntroBottomItemTextBold">Meta</span>
-              </p>
-            </div>
-          )}
-
-          {user.work && (
-            <div className="profileIntroBottomItem">
-              <span className="profileIntroBottomItemIcon">
-                <BusinessCenter />
-              </span>
-              <p className="profileIntroBottomItemText">
-                Works at{" "}
+                {user.position} at{" "}
                 <span className="profileIntroBottomItemTextBold">
-                  Chan Zuckerberg Initiative
+                  {user.work}
                 </span>
               </p>
             </div>
@@ -53,7 +41,21 @@ export default function ProfileIntro({ user }) {
               <p className="profileIntroBottomItemText">
                 Studied Computer Science and Psychology at{" "}
                 <span className="profileIntroBottomItemTextBold">
-                  Harvard University
+                  {user.university}
+                </span>
+              </p>
+            </div>
+          )}
+
+          {user.school && (
+            <div className="profileIntroBottomItem">
+              <span className="profileIntroBottomItemIcon">
+                <School />
+              </span>
+              <p className="profileIntroBottomItemText">
+                Went to{" "}
+                <span className="profileIntroBottomItemTextBold">
+                  {user.school}
                 </span>
               </p>
             </div>
@@ -67,7 +69,7 @@ export default function ProfileIntro({ user }) {
               <p className="profileIntroBottomItemText">
                 Lives in{" "}
                 <span className="profileIntroBottomItemTextBold">
-                  Palo Alto, California
+                  {user.lives}
                 </span>
               </p>
             </div>
@@ -81,7 +83,7 @@ export default function ProfileIntro({ user }) {
               <p className="profileIntroBottomItemText">
                 From{" "}
                 <span className="profileIntroBottomItemTextBold">
-                  Dobbs Ferry, New York
+                  {user.from}
                 </span>
               </p>
             </div>
@@ -93,10 +95,10 @@ export default function ProfileIntro({ user }) {
                 <Favorite />
               </span>
               <p className="profileIntroBottomItemText">
-                Married to{" "}
-                <span className="profileIntroBottomItemTextBold">
+                {user.relationship}
+                {/* <span className="profileIntroBottomItemTextBold">
                   Priscilla Chan
-                </span>
+                </span> */}
               </p>
             </div>
           )}

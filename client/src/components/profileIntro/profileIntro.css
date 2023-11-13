@@ -5,6 +5,7 @@
 .profileIntroBottomItem {
   display: flex;
   align-items: center;
+  margin-bottom: 12px;
 }
 .profileIntroBottomItemIcon {
   color: var(--gray-txt-clr);
@@ -12,6 +13,7 @@
 }
 .profileIntroBottomItemText {
   font-size: var(--fs-200);
+  margin: 0;
 }
 .profileIntroBottomItemTextBold {
   font-weight: 600;

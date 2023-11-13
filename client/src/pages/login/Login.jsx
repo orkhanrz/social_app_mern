@@ -16,8 +16,6 @@ export default function Login() {
   const [modal, setModal] = useState(false);
   const { dispatch, isLoading } = useContext(AuthContext);
 
-  console.log(formErrors);
-
   const handleChange = (e) => {
     setFormErrors(prevState => ({...prevState, [e.target.name]: ''}));
     setForm((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));

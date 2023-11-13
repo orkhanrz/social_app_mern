@@ -23,7 +23,7 @@ module.exports = {
   getUserPosts: async (req, res, next) => {
     const userId = req.params.userId;
 
-    if (!userId || userId === 'undefined') {
+    if (!userId || userId === "undefined") {
       return res.status(404).json({ message: "User not found!" });
     }
 
@@ -94,6 +94,42 @@ module.exports = {
         await followingUser.updateOne({ $push: { followers: currentUserId } });
         return res.status(200).json({ message: "User has been followed!" });
       }
+    } catch (err) {
+      next(err);
+    }
+  },
+  editUser: async (req, res, next) => {
+    const userId = req.params.userId;
+    // const {bio, from, lives, position, work, relationship, school, university} = req.body;
+    const { coverPicture, profilePicture, ...reqBody } = req.body;
+
+    if (req.files.coverPicture) {
+      reqBody.coverPicture =
+        "/public/uploads/" + req.files.coverPicture[0].filename;
+    }
+
+    if (req.files.profilePicture) {
+      reqBody.profilePicture =
+        "/public/uploads/" + req.files.profilePicture[0].filename;
+    }
+
+    try {
+      const updatedUser = await User.findByIdAndUpdate(userId, reqBody, {
+        new: true,
+      });
+      const {
+        password,
+        events,
+        followers,
+        following,
+        friends,
+        photos,
+        posts,
+        private,
+        ...otherDetails
+      } = updatedUser._doc;
+
+      return res.status(200).json(otherDetails);
     } catch (err) {
       next(err);
     }

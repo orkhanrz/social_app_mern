@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import "./profileTop.css";
 
 import {
+  Add,
+  Edit,
   ExpandMoreOutlined,
   MessageOutlined,
   MoreHorizOutlined,
@@ -11,7 +13,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 
-export default function ProfileTop({ user }) {
+export default function ProfileTop({ user, toggleEditProfile }) {
   const { user: me } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isFollowed, setIsFollowed] = useState(user.followers.includes(me._id));
@@ -25,7 +27,7 @@ export default function ProfileTop({ user }) {
       setIsLoading(false);
 
       if (res.status === 200) {
-        setIsFollowed(prevState => !prevState);
+        setIsFollowed((prevState) => !prevState);
       }
     } catch (err) {
       setIsLoading(false);
@@ -65,14 +67,18 @@ export default function ProfileTop({ user }) {
                   className="profileInfoTopRightBtn blue"
                   onClick={handleFollow}
                 >
-                  {isLoading ? <CircularProgress size={16}/> : 
+                  {isLoading ? (
+                    <CircularProgress size={16} />
+                  ) : (
                     <>
-                      <span className="profileInfoTopRightBtnIcon"><SubscriptionsOutlined /></span>
+                      <span className="profileInfoTopRightBtnIcon">
+                        <SubscriptionsOutlined />
+                      </span>
                       <span className="profileInfoTopRightBtnText">
                         {isFollowed ? "Unfollow" : "Follow"}
                       </span>
                     </>
-                  }
+                  )}
                 </button>
                 <button className="profileInfoTopRightBtn">
                   <span className="profileInfoTopRightBtnIcon">
@@ -87,7 +93,27 @@ export default function ProfileTop({ user }) {
                 </div>
               </div>
             ) : (
-              ""
+              <div className="profileInfoTopRight">
+                <button className="profileInfoTopRightBtn blue">
+                  <span className="profileInfoTopRightBtnIcon">
+                    <Add />
+                  </span>
+                  <span className="profileInfoTopRightBtnText">
+                    Add to story
+                  </span>
+                </button>
+                <button className="profileInfoTopRightBtn" onClick={toggleEditProfile}>
+                  <span className="profileInfoTopRightBtnIcon">
+                    <Edit />
+                  </span>
+                  <span className="profileInfoTopRightBtnText">Edit profile</span>
+                </button>
+                <div className="profileInfoTopRightBtn">
+                  <span className="profileInfoTopRightBtnIcon">
+                    <ExpandMoreOutlined />
+                  </span>
+                </div>
+              </div>
             )}
           </div>
           <hr />

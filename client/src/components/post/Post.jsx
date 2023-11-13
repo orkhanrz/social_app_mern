@@ -9,7 +9,7 @@ import {
   CloseOutlined
 } from "@mui/icons-material";
 
-import {format} from 'timeago.js';
+import TimeAgo from 'react-timeago';
 
 export default function Post({post, user}) {
   return (
@@ -23,7 +23,7 @@ export default function Post({post, user}) {
             <div className="postTopDetails">
               <Link to={`/${user.username}`} className="postTopUsername">{user.firstName + ' ' + user.lastName}</Link>
               <div className="postTopDate">
-                <p className="postTopDateText">{format(post.date)}</p>
+                <p className="postTopDateText"><TimeAgo date={post.date}/></p>
                 <span className="postTopDateIcon">
                   <Public />
                 </span>

@@ -1,13 +1,16 @@
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
   background-color: var(--white-clr);
   position: sticky;
   top: 0;
   left: 0;
   z-index: 999999;
+}
+.topbarContainer {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 .topbarLeft {
   display: flex;
@@ -97,9 +100,90 @@
 }
 .topbarRightItem > * {
   font-size: var(--fs-600) !important;
+  pointer-events: none;
 }
 .topbarRightItem:hover {
   background-color: var(--dark-gray-clr);
+}
+
+.topbarAccount {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  width: 360px;
+  display: none;
+}
+.topbarAccount.active {
+  display: block;
+}
+.topbarAccount hr {
+  border: none;
+  border-top: 1px solid var(--dark-gray-clr);
+}
+.topbarAccountProfileUser {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+.topbarAccountProfileUserImage {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 8px;
+}
+.topbarAccountProfileUserImage > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.topbarAccountProfileUsername {
+  font-size: var(--fs-300);
+  font-weight: 500;
+}
+.topbarAccountProfileUserText {
+  color: var(--blue-clr);
+  font-size: var(--fs-200);
+  font-weight: 500;
+  margin: 4px;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+}
+.topbarAccountMenuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+.topbarAccountMenuItem:hover,
+.topbarAccountProfileUser:hover,
+.topbarAccountProfileUserText:hover {
+  background-color: var(--gray-clr);
+}
+.topbarAccountMenuItemLeft {
+  display: flex;
+  align-items: center;
+}
+.topbarAccountMenuItemLeftIcon {
+  background-color: var(--dark-gray-clr);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  margin-right: 12px;
+}
+.topbarAccountMenuItemLeftText {
+  font-size: var(--fs-200);
+  font-weight: 500;
+}
+.topbarAccountMenuItemRightIcon {
+  color: var(--gray-txt-clr);
 }
 
 @media screen and (max-width: 1100px) {
