@@ -23,7 +23,7 @@ export default function AddPost() {
           <Link to={`/${me.username}`} className="addPostTopIcon">
             <img src={config.backend_url + me.profilePicture} alt="profile" />
           </Link>
-          <input type="text" placeholder={`What's on your mind, ${me.username.charAt(0).toUpperCase() + me.username.slice(1)}?`}  onClick={togglePostCard}/>
+          <input type="text" placeholder={`What's on your mind, ${me.username.charAt(0).toUpperCase() + me.username.slice(1)}?`}  onClick={togglePostCard} disabled={postCard}/>
         </div>
         <hr className="addPostLine"/>
         <div className="addPostBottom">

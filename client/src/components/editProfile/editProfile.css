@@ -63,6 +63,10 @@
   color: var(--blue-clr);
   border: none;
   font-size: var(--fs-200);
+  cursor: pointer;
+}
+.editProfileSectionBtn:hover {
+  color: var(--dark-blue-clr);
 }
 .editProfileBioTextarea {
   display: block;
@@ -72,8 +76,11 @@
   height: 22px;
   margin: 0 auto;
   background-color: none;
-  outline-color: var(--blue-clr);
+  outline: none;
   text-align: center;
+}
+.editProfileBioTextarea:focus {
+  border: 2px solid var(--blue-clr);
 }
 .editProfileIntroItem {
   display: flex;
@@ -90,6 +97,7 @@
   border: none;
   padding: 2px;
   width: 200px;
+  font-size: var(--fs-100);
 }
 .editProfileBtn {
   background-color: var(--light-blue-clr);

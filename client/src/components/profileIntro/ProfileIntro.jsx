@@ -39,10 +39,8 @@ export default function ProfileIntro({ user }) {
                 <School />
               </span>
               <p className="profileIntroBottomItemText">
-                Studied Computer Science and Psychology at{" "}
-                <span className="profileIntroBottomItemTextBold">
-                  {user.university}
-                </span>
+                Studied {user.universityField ? `${user.universityField}` : ""}{" "}
+                at <span className="profileIntroBottomItemTextBold">{user.university}</span>
               </p>
             </div>
           )}

@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import {
   Close,
   Collections,
@@ -11,12 +12,9 @@ import {
   SentimentVerySatisfied,
 } from "@mui/icons-material";
 import "./addPostCard.css";
-import { AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
-import axios from 'axios';
-import {config} from '../../config';
+import axios from "axios";
 
-export default function AddPostCard({ togglePostCard }) {
+export default function AddPostCard({ togglePostCard, inputRef }) {
   const { user } = useContext(AuthContext);
   const [media, setMedia] = useState(null);
   const [error, setError] = useState(null);
@@ -25,24 +23,28 @@ export default function AddPostCard({ togglePostCard }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('text', text.current.value);
-    formData.append('userId', user._id);
+    formData.append("text", text.current.value);
+    formData.append("userId", user._id);
 
-    if (media){
-      formData.append('media', media);
+    if (media) {
+      formData.append("media", media);
     }
 
     try {
-      const res = await axios.post('/posts', formData);
-      if (res.status === 201){
+      const res = await axios.post("/posts", formData);
+      if (res.status === 201) {
         window.location.reload();
-      };
+      }
     } catch (err) {
-      if (err.response.status === 403){
+      if (err.response.status === 403) {
         setError(err.response.data.text);
       }
     }
   };
+
+  useEffect(() => {
+    text.current.focus();
+  }, []);
 
   return (
     <div className="addPostCardContainer pd-8">
@@ -56,10 +58,7 @@ export default function AddPostCard({ togglePostCard }) {
       <div className="addPostCardCenter">
         <div className="addPostCardUser">
           <div className="addPostCardUserImage">
-            <img
-              src={config.backend_url + user.profilePicture}
-              alt="profile"
-            />
+            <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="profile" />
           </div>
           <div className="addPostCardUserDetails">
             <p className="addPostCardUsername">
@@ -81,15 +80,15 @@ export default function AddPostCard({ togglePostCard }) {
             name="text"
             placeholder={`What's on your mind, ${user.firstName}?`}
             ref={text}
-            className={error ? 'formError' : ''}
+            className={error ? "formError" : ""}
             onInput={() => setError(null)}
           />
           <input
-              type="file"
-              className="addPostCardInput"
-              id="file"
-              onChange={(e) => setMedia(e.target.files[0])}
-            />
+            type="file"
+            className="addPostCardInput"
+            id="file"
+            onChange={(e) => setMedia(e.target.files[0])}
+          />
           <div className="addPostCardEmotionIcon">
             <SentimentVerySatisfied />
           </div>
@@ -97,12 +96,12 @@ export default function AddPostCard({ togglePostCard }) {
         {media ? (
           <div className="addPostCardImageWrapper">
             <div className="addPostCardImage">
-              <img
-                src={URL.createObjectURL(media)}
-                alt="post"
-              />
+              <img src={URL.createObjectURL(media)} alt="post" />
             </div>
-            <div className="addPostCardImageClose" onClick={() => setMedia(null)}>
+            <div
+              className="addPostCardImageClose"
+              onClick={() => setMedia(null)}
+            >
               <Close />
             </div>
           </div>
@@ -135,7 +134,9 @@ export default function AddPostCard({ togglePostCard }) {
             </span>
           </div>
         </div>
-        <button className="addPostCardBtn" onClick={handleSubmit}>Post</button>
+        <button className="addPostCardBtn" onClick={handleSubmit}>
+          Post
+        </button>
       </div>
     </div>
   );

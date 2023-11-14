@@ -9,22 +9,48 @@ import {
   MoreHorizOutlined,
   CloseOutlined,
   ThumbUp,
+  Mood,
+  SentimentSatisfied,
+  CameraAltOutlined,
+  GifOutlined,
+  CopyAll,
+  Send,
 } from "@mui/icons-material";
 import axios from "axios";
-import {config} from '../../config';
+import { config } from "../../config";
 
 import TimeAgo from "react-timeago";
 
 export default function Post({ post, user }) {
   const { user: me } = useContext(AuthContext);
-  const [likes, setLikes] = useState(post.likes.length);
-  const [isLiked, setIsLiked] = useState(post.likes.includes(me._id));
+  const [likes, setLikes] = useState({
+    length: post.likes.length,
+    isLiked: post.likes.includes(me._id),
+  });
+  const [comments, setComments] = useState({
+    length: post.comments.length,
+    isActive: false,
+    text: ''
+  });
+
+  const postComment = async () => {
+    try {
+      await axios.post(`/posts/${post._id}/comment`, {userId: me._id, text: comments.text});
+      setComments(prevState => ({length: prevState.length + 1, isActive: false, text: ''}));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const likePost = async () => {
     try {
-      await axios.put(`/posts/${post._id}/like`, { userId: me._id });
-      setLikes(isLiked ? likes - 1 : likes + 1);
-      setIsLiked(!isLiked);
+      await axios.post(`/posts/${post._id}/like`, { userId: me._id });
+      setLikes((prevState) => ({
+        isLiked: !prevState.isLiked,
+        length: prevState.isLiked
+          ? prevState.isLiked - 1
+          : prevState.isLiked + 1,
+      }));
     } catch (err) {
       console.log(err);
     }
@@ -32,7 +58,7 @@ export default function Post({ post, user }) {
 
   return (
     <div className="post card">
-      <div className="postContainer pd-8">
+      <div className="postContainer">
         <div className="postTop">
           <div className="postTopLeft">
             <Link to={`/${user.username}`} className="postTopImg">
@@ -68,10 +94,7 @@ export default function Post({ post, user }) {
           <p className="postCenterText">{post.text}</p>
           {post.media && (
             <div className="postCenterMedia">
-              <img
-                src={config.backend_url + post.media}
-                alt=""
-              />
+              <img src={config.backend_url + post.media} alt="" />
             </div>
           )}
 
@@ -85,11 +108,11 @@ export default function Post({ post, user }) {
                   <img src="/assets/icons/heart.png" alt="heart" />
                 </div>
               </div>
-              <p className="postCenterLikesText">{likes}</p>
+              <p className="postCenterLikesText">{likes.length}</p>
             </div>
             <div className="postCenterComments">
               <p className="postCenterCommentsComments">
-                {post.comments.length} comments
+                {comments.length} comments
               </p>
               <p className="postCenterCommentsShares">
                 {post.shares.length} shares
@@ -97,10 +120,9 @@ export default function Post({ post, user }) {
             </div>
           </div>
         </div>
-        <hr className="postLine" />
         <div className="postBottom">
           <div className="postBottomItem" onClick={likePost}>
-            <span className={`postBottomItemIcon ${isLiked ? "active" : ""}`}>
+            <span className={`postBottomItemIcon ${likes.isLiked ? "active" : ""}`}>
               <ThumbUp />
             </span>
             <p className="postBottomItemText">Like</p>
@@ -118,6 +140,59 @@ export default function Post({ post, user }) {
             <p className="postBottomItemText">Share</p>
           </div>
         </div>
+        {!comments.length ? (
+          <div className="postComment" onClick={() => setComments(prevState => ({...prevState, isActive: true}))}>
+            <div className="postCommentUserImg">
+              <img
+                src={process.env.REACT_APP_BACKEND_URL + me.profilePicture}
+                alt="profile"
+              />
+            </div>
+            <div
+              className={`postCommentInputWrapper ${
+                comments.isActive ? "active" : ""
+              }`}
+            >
+              <input
+                type="text"
+                name="comment"
+                id="comment"
+                placeholder="Write a comment..."
+                value={comments.text}
+                onChange={(e) => setComments(prevState => ({...prevState, text: e.target.value}))}
+                className="postCommentInput"
+              />
+              <div className="postCommentInputIcons">
+                <div className="postCommentInputIconsLeft">
+                  <span className="postCommentInputIconsLeftIcon">
+                    <Mood />
+                  </span>
+                  <span className="postCommentInputIconsLeftIcon">
+                    <SentimentSatisfied />
+                  </span>
+                  <span className="postCommentInputIconsLeftIcon">
+                    <CameraAltOutlined />
+                  </span>
+                  <span className="postCommentInputIconsLeftIcon">
+                    <GifOutlined />
+                  </span>
+                  <span className="postCommentInputIconsLeftIcon">
+                    <CopyAll />
+                  </span>
+                </div>
+                <button
+                  disabled={!comments.text.length}
+                  className="postCommentInputCommentIcon"
+                  onClick={postComment}
+                >
+                  <Send />
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

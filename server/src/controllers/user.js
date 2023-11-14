@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const Post = require("../models/post");
-const mongoose = require("mongoose");
 
 module.exports = {
   getUser: async (req, res, next) => {
@@ -102,6 +101,8 @@ module.exports = {
     const userId = req.params.userId;
     // const {bio, from, lives, position, work, relationship, school, university} = req.body;
     const { coverPicture, profilePicture, ...reqBody } = req.body;
+
+    console.log(reqBody);
 
     if (req.files.coverPicture) {
       reqBody.coverPicture =

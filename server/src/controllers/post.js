@@ -48,4 +48,20 @@ module.exports = {
       next(err);
     }
   },
+  commentPost: async (req, res, next) => {
+    const {userId, text} = req.body;
+    const {postId} = req.params;
+
+    try {
+      const post = await Post.findById(postId);
+
+      post.comments.push({text, userId});
+
+      await post.save();
+
+      return res.status(200).json({message: 'Comment added!'});
+    } catch (err){
+      next(err);
+    };
+  }
 };
