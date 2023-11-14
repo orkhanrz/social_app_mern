@@ -15,7 +15,7 @@ export default function TopbarAccount({accountMenu}) {
   const { user: me } = useContext(AuthContext);
 
   const logoutHandler = () => {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     window.location.reload();
   };
 

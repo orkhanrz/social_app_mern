@@ -6,7 +6,7 @@ const db = require("./db/db");
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
-const postRoutes = require('./routes/post');
+const postRoutes = require("./routes/post");
 
 const errorMiddleware = require("./middlewares/error");
 
@@ -18,8 +18,10 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 //Routes
 app.use("/api/auth", authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/posts', postRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+
+app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));
 
 app.use(errorMiddleware);
 

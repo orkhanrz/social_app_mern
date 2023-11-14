@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import "./post.css";
@@ -9,34 +9,96 @@ import {
   MoreHorizOutlined,
   CloseOutlined,
   ThumbUp,
-  Mood,
-  SentimentSatisfied,
-  CameraAltOutlined,
-  GifOutlined,
-  CopyAll,
-  Send,
 } from "@mui/icons-material";
 import axios from "axios";
 import { config } from "../../config";
 
 import TimeAgo from "react-timeago";
+import Modal from "../modal/Modal";
+import PostComment from "../postComment/PostComment";
+import { CircularProgress } from "@mui/material";
+import PostCommentInput from "../postCommentInput/PostCommentInput";
 
-export default function Post({ post, user }) {
+const PostModal = ({
+  post,
+  user,
+  closeModal,
+  comments,
+  setComments,
+  postComment,
+}) => {
+  useEffect(() => {
+    const getCommentItems = async () => {
+      try {
+        const res = await axios.get(`/posts/${post._id}/comments`);
+        setComments((prevState) => ({ ...prevState, data: res.data }));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getCommentItems();
+  }, [setComments, post]);
+
+  return (
+    <Modal>
+      <div className="postModalContainer">
+        <Post
+          post={post}
+          user={user}
+          closeModal={closeModal}
+          hideInput={true}
+        />
+        <div className="postComments">
+          {comments.data.length ? (
+            comments.data.map((comment) => {
+              return (
+                <PostComment
+                  key={comment._id}
+                  comment={comment}
+                  postId={post._id}
+                />
+              );
+            })
+          ) : ""}
+        </div>
+        <PostCommentInput
+          setComments={setComments}
+          postComment={postComment}
+          comments={comments}
+        />
+      </div>
+    </Modal>
+  );
+};
+
+function Post({ post, user, closeModal, hideInput }) {
   const { user: me } = useContext(AuthContext);
+  const [openPostComments, setOpenPostComments] = useState(false);
   const [likes, setLikes] = useState({
     length: post.likes.length,
     isLiked: post.likes.includes(me._id),
   });
   const [comments, setComments] = useState({
+    data: [],
     length: post.comments.length,
     isActive: false,
-    text: ''
+    text: "",
   });
 
   const postComment = async () => {
     try {
-      await axios.post(`/posts/${post._id}/comment`, {userId: me._id, text: comments.text});
-      setComments(prevState => ({length: prevState.length + 1, isActive: false, text: ''}));
+      const res = await axios.post(`/posts/${post._id}/comments`, {
+        userId: me._id,
+        text: comments.text,
+      });
+
+      setComments((prevState) => ({
+        data: [...prevState.data, { ...res.data, userId: me }],
+        length: prevState.length + 1,
+        isActive: false,
+        text: "",
+      }));
     } catch (err) {
       console.log(err);
     }
@@ -85,7 +147,10 @@ export default function Post({ post, user }) {
             <span className="postTopRightIcon">
               <MoreHorizOutlined />
             </span>
-            <span className="postTopRightIcon">
+            <span
+              className="postTopRightIcon"
+              onClick={closeModal && closeModal}
+            >
               <CloseOutlined />
             </span>
           </div>
@@ -111,7 +176,10 @@ export default function Post({ post, user }) {
               <p className="postCenterLikesText">{likes.length}</p>
             </div>
             <div className="postCenterComments">
-              <p className="postCenterCommentsComments">
+              <p
+                className="postCenterCommentsComments"
+                onClick={() => setOpenPostComments(true)}
+              >
                 {comments.length} comments
               </p>
               <p className="postCenterCommentsShares">
@@ -122,12 +190,17 @@ export default function Post({ post, user }) {
         </div>
         <div className="postBottom">
           <div className="postBottomItem" onClick={likePost}>
-            <span className={`postBottomItemIcon ${likes.isLiked ? "active" : ""}`}>
+            <span
+              className={`postBottomItemIcon ${likes.isLiked ? "active" : ""}`}
+            >
               <ThumbUp />
             </span>
             <p className="postBottomItemText">Like</p>
           </div>
-          <div className="postBottomItem">
+          <div
+            className="postBottomItem"
+            onClick={() => setOpenPostComments(true)}
+          >
             <span className="postBottomItemIcon">
               <CommentOutlined />
             </span>
@@ -140,60 +213,30 @@ export default function Post({ post, user }) {
             <p className="postBottomItemText">Share</p>
           </div>
         </div>
-        {!comments.length ? (
-          <div className="postComment" onClick={() => setComments(prevState => ({...prevState, isActive: true}))}>
-            <div className="postCommentUserImg">
-              <img
-                src={process.env.REACT_APP_BACKEND_URL + me.profilePicture}
-                alt="profile"
-              />
-            </div>
-            <div
-              className={`postCommentInputWrapper ${
-                comments.isActive ? "active" : ""
-              }`}
-            >
-              <input
-                type="text"
-                name="comment"
-                id="comment"
-                placeholder="Write a comment..."
-                value={comments.text}
-                onChange={(e) => setComments(prevState => ({...prevState, text: e.target.value}))}
-                className="postCommentInput"
-              />
-              <div className="postCommentInputIcons">
-                <div className="postCommentInputIconsLeft">
-                  <span className="postCommentInputIconsLeftIcon">
-                    <Mood />
-                  </span>
-                  <span className="postCommentInputIconsLeftIcon">
-                    <SentimentSatisfied />
-                  </span>
-                  <span className="postCommentInputIconsLeftIcon">
-                    <CameraAltOutlined />
-                  </span>
-                  <span className="postCommentInputIconsLeftIcon">
-                    <GifOutlined />
-                  </span>
-                  <span className="postCommentInputIconsLeftIcon">
-                    <CopyAll />
-                  </span>
-                </div>
-                <button
-                  disabled={!comments.text.length}
-                  className="postCommentInputCommentIcon"
-                  onClick={postComment}
-                >
-                  <Send />
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
+        {(hideInput || comments.length) ? (
           ""
+        ) : (
+          <PostCommentInput
+            setComments={setComments}
+            postComment={postComment}
+            comments={comments}
+          />
         )}
       </div>
+      {openPostComments ? (
+        <PostModal
+          post={post}
+          user={post.userId}
+          closeModal={() => setOpenPostComments(false)}
+          setComments={setComments}
+          postComment={postComment}
+          comments={comments}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
+
+export default Post;

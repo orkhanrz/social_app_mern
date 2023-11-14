@@ -22,37 +22,37 @@ export default function Leftbar() {
       </Link>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">
-          <img src="/assets/icons/friends.png" alt="friends" />
+          <img src="./assets/icons/friends.png" alt="friends" />
         </span>
         <p className="leftbarItemTitle">Find Friends</p>
       </div>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">
-          <img src="/assets/icons/memories.png" alt="memories" />
+          <img src="./assets/icons/memories.png" alt="memories" />
         </span>
         <p className="leftbarItemTitle">Memories</p>
       </div>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">
-          <img src="/assets/icons/groups.png" alt="groups" />
+          <img src="./assets/icons/groups.png" alt="groups" />
         </span>
         <p className="leftbarItemTitle">Groups</p>
       </div>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">
-          <img src="/assets/icons/video.png" alt="video" />
+          <img src="./assets/icons/video.png" alt="video" />
         </span>
         <p className="leftbarItemTitle">Video</p>
       </div>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">
-          <img src="/assets/icons/marketplace.png" alt="marketplace" />
+          <img src="./assets/icons/marketplace.png" alt="marketplace" />
         </span>
         <p className="leftbarItemTitle">Marketplace</p>
       </div>
       <div className="leftbarItem">
         <span className="leftbarItemIcon">
-          <img src="/assets/icons/games.png" alt="games" />
+          <img src="./assets/icons/games.png" alt="games" />
         </span>
         <p className="leftbarItemTitle">Play Games</p>
       </div>

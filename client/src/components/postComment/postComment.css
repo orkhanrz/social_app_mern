@@ -1,0 +1,84 @@
+.postCommentsItem {
+  display: flex;
+  margin-bottom: 8px;
+}
+.postCommentsItemLeft {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 8px;
+}
+.postCommentsItemLeft > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.postCommentsItemRight {
+  position: relative;
+}
+.postCommentsItemRightTop {
+  background-color: var(--gray-clr);
+  border-radius: 16px;
+  padding: 8px 12px;
+}
+.postCommentsItemUsername {
+  font-size: var(--fs-100);
+  font-weight: 600;
+  margin: 0;
+}
+.postCommentsItemText {
+  font-size: var(--fs-200);
+  margin: 0;
+}
+.postCommentsItemRightBottom {
+  display: flex;
+  padding: 0 12px;
+}
+.postCommentsItemRightBottom span {
+  font-size: var(--fs-100);
+  margin-right: 8px;
+}
+.postCommentsItemAction {
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+.postCommentsItemAction:hover::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: var(--black-clr);
+}
+.postCommentsItemLikesCount {
+  position: absolute;
+  bottom: 16px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  background-color: var(--white-clr);
+  box-shadow: 2px 2px 2px lightgrey;
+  height: min-content;
+  border-radius: 12px;
+  padding: 2px 4px; 
+}
+.postCommentsItemLikesCountIcon {
+  background-color: var(--blue-clr);
+  color: var(--white-clr);
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  display: grid;
+  place-items: center;
+  margin-right: 4px;
+}
+.postCommentsItemLikesCountText {
+  margin: 0;
+  font-size: var(--fs-100);
+}
+.postCommentsItemLikesCountIcon > *{
+  font-size: var(--fs-100) !important;
+}

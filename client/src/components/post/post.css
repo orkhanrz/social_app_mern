@@ -23,12 +23,13 @@
 }
 
 .postTopImg:hover {
-    filter: grayscale(25%);
+  filter: grayscale(25%);
 }
 
 .postTopImg > img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
 .postTopUsername {
@@ -39,13 +40,13 @@
   position: relative;
 }
 .postTopUsername:hover::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: var(--black-clr);
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--black-clr);
 }
 .postTopDate {
   display: flex;
@@ -65,19 +66,19 @@
   color: var(--gray-txt-clr);
 }
 .postTopRight {
-    display: flex;
+  display: flex;
 }
 .postTopRightIcon {
-    color: var(--gray-txt-clr);
-    cursor: pointer;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    padding: 4px;
+  color: var(--gray-txt-clr);
+  cursor: pointer;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 4px;
 }
 .postTopRightIcon:hover {
-    background-color: var(--gray-clr);
+  background-color: var(--gray-clr);
 }
 .postCenterText {
   font-size: var(--fs-200);
@@ -86,8 +87,8 @@
   margin: 0 -16px 8px -16px;
 }
 .postCenterMedia img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 .postCenterDetails {
   display: flex;
@@ -125,11 +126,22 @@
 }
 .postCenterComments {
   display: flex;
+}
+.postCenterComments p {
+  position: relative;
+  cursor: pointer;
+  margin: 0;
   font-size: var(--fs-200);
   color: var(--gray-txt-clr);
 }
-.postCenterComments p {
-  margin: 0;
+.postCenterComments p:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--gray-txt-clr);
 }
 .postCenterComments p:first-child {
   margin-right: 8px;
@@ -161,97 +173,18 @@
 }
 .postBottomItemIcon.active {
   color: var(--blue-clr);
-  animation: animateLike .5s ease-in-out;
+  animation: animateLike 0.5s ease-in-out;
 }
 .postBottomItemText {
   margin: 0;
   font-size: var(--fs-200);
 }
 
-
-.postComment {
-  display: flex;
-  align-items: center;
-  border-top: 1px solid var(--dark-gray-clr);
-  padding-top: 8px;
-}
-.postCommentUserImg {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 6px;
-}
-.postCommentUserImg > img {
+.postModalContainer {
+  max-width: 700px;
   width: 100%;
-  height: 100%;
-} 
-.postCommentInputWrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  border: 1px solid var(--gray-clr);
-  border-radius: 16px;
-  background-color: var(--gray-clr);
-  overflow: hidden;
-  padding: 0 8px;
-}
-.postCommentInputWrapper.active {
-  flex-direction: column;
-}
-.postCommentInputWrapper.active  .postCommentInputCommentIcon {
-  display: grid;
-}
-.postCommentInputWrapper.active .postCommentInputIcons {
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-.postCommentInput {
-  width: 100%;
-  height: 100%;
-  border: none;
-  background-color: inherit;
-  font-size: var(--fs-200);
-  margin: 8px 0;
-  padding: 0 8px;
-}
-.postCommentInputIcons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-}
-.postCommentInputIconsLeft {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.postCommentInputIconsLeftIcon, .postCommentInputCommentIcon {
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-}
-.postCommentInputIconsLeftIcon:hover, .postCommentInputCommentIcon:hover {
-  background-color: var(--dark-gray-clr);
-}
-.postCommentInputIconsLeftIcon {
-  color: var(--gray-txt-clr);
-}
-.postCommentInputIconsLeftIcon > *, .postCommentInputCommentIcon > * {
-  font-size: var(--fs-400) !important;
-  pointer-events: none;
-}
-.postCommentInputCommentIcon {
-  color: var(--blue-clr);
-  border: none;
-  display: none;
-}
-.postCommentInputCommentIcon:disabled {
-  background: none !important;
-  color: var(--gray-txt-clr)
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 @keyframes animateLike {
