@@ -63,7 +63,7 @@
   box-shadow: 2px 2px 2px lightgrey;
   height: min-content;
   border-radius: 12px;
-  padding: 2px 4px; 
+  padding: 2px 4px;
 }
 .postCommentsItemLikesCountIcon {
   background-color: var(--blue-clr);
@@ -79,6 +79,50 @@
   margin: 0;
   font-size: var(--fs-100);
 }
-.postCommentsItemLikesCountIcon > *{
+.postCommentsItemLikesCountIcon > * {
   font-size: var(--fs-100) !important;
+}
+.postCommentsItemOptions {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  margin: 0 8px 0 8px;
+  align-self: center;
+  cursor: pointer;
+}
+.postCommentsItemOptions:hover {
+  background-color: var(--gray-clr);
+}
+.postCommentsItemOptions * {
+  font-size: var(--fs-300) !important;
+  pointer-events: none;
+}
+.commentOptions {
+  background-color: var(--white-clr);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 5px 30px -7px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px 5px 30px -7px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 5px 30px -7px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: -72px;
+  left: 0;
+}
+.commentOptions button {
+  background-color: var(--white-clr);
+  border: none;
+  text-align: left;
+  padding: 10px 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.commentOptions button:hover {
+  background-color: var(--gray-clr);
 }

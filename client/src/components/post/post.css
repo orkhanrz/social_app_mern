@@ -162,6 +162,8 @@
   justify-content: center;
   color: var(--gray-txt-clr);
   width: 100%;
+  border: none;
+  background-color: var(--white-clr);
   border-radius: 4px;
   cursor: pointer;
 }

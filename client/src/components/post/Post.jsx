@@ -16,17 +16,9 @@ import { config } from "../../config";
 import TimeAgo from "react-timeago";
 import Modal from "../modal/Modal";
 import PostComment from "../postComment/PostComment";
-import { CircularProgress } from "@mui/material";
 import PostCommentInput from "../postCommentInput/PostCommentInput";
 
-const PostModal = ({
-  post,
-  user,
-  closeModal,
-  comments,
-  setComments,
-  postComment,
-}) => {
+function PostModal({ post, user, comments, setComments, addComment, closeModal }){
   useEffect(() => {
     const getCommentItems = async () => {
       try {
@@ -43,12 +35,7 @@ const PostModal = ({
   return (
     <Modal>
       <div className="postModalContainer">
-        <Post
-          post={post}
-          user={user}
-          closeModal={closeModal}
-          hideInput={true}
-        />
+        <Post post={post} user={user} hideInput={true} closeModal={closeModal}/>
         <div className="postComments">
           {comments.data.length ? (
             comments.data.map((comment) => {
@@ -62,19 +49,15 @@ const PostModal = ({
             })
           ) : ""}
         </div>
-        <PostCommentInput
-          setComments={setComments}
-          postComment={postComment}
-          comments={comments}
-        />
+        <PostCommentInput setComments={setComments} addComment={addComment} comments={comments} />
       </div>
     </Modal>
   );
 };
 
-function Post({ post, user, closeModal, hideInput }) {
+function Post({ post, user, hideInput, closeModal }) {
   const { user: me } = useContext(AuthContext);
-  const [openPostComments, setOpenPostComments] = useState(false);
+  const [openPostModal, setOpenPostModal] = useState(false);
   const [likes, setLikes] = useState({
     length: post.likes.length,
     isLiked: post.likes.includes(me._id),
@@ -86,7 +69,7 @@ function Post({ post, user, closeModal, hideInput }) {
     text: "",
   });
 
-  const postComment = async () => {
+  const addComment = async () => {
     try {
       const res = await axios.post(`/posts/${post._id}/comments`, {
         userId: me._id,
@@ -125,7 +108,7 @@ function Post({ post, user, closeModal, hideInput }) {
           <div className="postTopLeft">
             <Link to={`/${user.username}`} className="postTopImg">
               <img
-                src={config.backend_url + user.profilePicture}
+                src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
                 alt="profile"
               />
             </Link>
@@ -147,10 +130,7 @@ function Post({ post, user, closeModal, hideInput }) {
             <span className="postTopRightIcon">
               <MoreHorizOutlined />
             </span>
-            <span
-              className="postTopRightIcon"
-              onClick={closeModal && closeModal}
-            >
+            <span className="postTopRightIcon" onClick={closeModal}>
               <CloseOutlined />
             </span>
           </div>
@@ -176,10 +156,7 @@ function Post({ post, user, closeModal, hideInput }) {
               <p className="postCenterLikesText">{likes.length}</p>
             </div>
             <div className="postCenterComments">
-              <p
-                className="postCenterCommentsComments"
-                onClick={() => setOpenPostComments(true)}
-              >
+              <p className="postCenterCommentsComments" onClick={() => setOpenPostModal(true)} >
                 {comments.length} comments
               </p>
               <p className="postCenterCommentsShares">
@@ -189,47 +166,42 @@ function Post({ post, user, closeModal, hideInput }) {
           </div>
         </div>
         <div className="postBottom">
-          <div className="postBottomItem" onClick={likePost}>
-            <span
-              className={`postBottomItemIcon ${likes.isLiked ? "active" : ""}`}
-            >
+          <button className="postBottomItem" onClick={likePost}>
+            <span className={`postBottomItemIcon ${likes.isLiked ? "active" : ""}`} >
               <ThumbUp />
             </span>
             <p className="postBottomItemText">Like</p>
-          </div>
-          <div
-            className="postBottomItem"
-            onClick={() => setOpenPostComments(true)}
-          >
+          </button>
+          <button className="postBottomItem" onClick={() => !openPostModal ? setOpenPostModal(true) : closeModal()} >
             <span className="postBottomItemIcon">
               <CommentOutlined />
             </span>
             <p className="postBottomItemText">Comment</p>
-          </div>
-          <div className="postBottomItem">
+          </button>
+          <button className="postBottomItem">
             <span className="postBottomItemIcon">
               <IosShareOutlined />
             </span>
             <p className="postBottomItemText">Share</p>
-          </div>
+          </button>
         </div>
         {(hideInput || comments.length) ? (
           ""
         ) : (
           <PostCommentInput
             setComments={setComments}
-            postComment={postComment}
+            addComment={addComment}
             comments={comments}
           />
         )}
       </div>
-      {openPostComments ? (
+      {openPostModal ? (
         <PostModal
           post={post}
-          user={post.userId}
-          closeModal={() => setOpenPostComments(false)}
+          user={user}
           setComments={setComments}
-          postComment={postComment}
+          addComment={addComment}
+          closeModal={() => setOpenPostModal(false)}
           comments={comments}
         />
       ) : (
