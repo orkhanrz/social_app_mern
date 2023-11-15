@@ -4,9 +4,10 @@ import "./comment.css";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { Close, MoreHoriz, ThumbUp } from "@mui/icons-material";
-
+import ReactTimeago from "react-timeago";
 import CommentInput from "../commentInput/CommentInput";
 import Modal from "../modal/Modal";
+
 
 export default function Comment({ comment, postId, setComments }) {
   const { user: me } = useContext(AuthContext);
@@ -25,7 +26,6 @@ export default function Comment({ comment, postId, setComments }) {
 
       if (
         className !== "commentEditOption" &&
-        className !== "commentDeleteOption" &&
         className !== "postCommentsItemOptions" &&
         className !== "postCommentInput"
       ) {
@@ -98,7 +98,7 @@ export default function Comment({ comment, postId, setComments }) {
           )}
         </div>
         <div className="postCommentsItemRightBottom">
-          <span className="postCommentsItemDate">5d</span>
+          <span className="postCommentsItemDate"><ReactTimeago date={commentData.date} /></span>
           <span
             className={`postCommentsItemAction ${likes.isLiked ? "blue" : ""}`}
             onClick={likeComment}
@@ -144,24 +144,6 @@ export default function Comment({ comment, postId, setComments }) {
         ) : (
           ""
         )}
-        {commentOptions ? (
-          <div className="commentOptions">
-            <button
-              className="commentEditOption"
-              onClick={() => setEditMode(true)}
-            >
-              Edit
-            </button>
-            <button
-              className="commentDeleteOption"
-              onClick={() => setDeleteModal(true)}
-            >
-              Delete
-            </button>
-          </div>
-        ) : (
-          ""
-        )}
       </div>
       {commentData.userId._id === me._id ? (
         <span
@@ -170,6 +152,24 @@ export default function Comment({ comment, postId, setComments }) {
         >
           <MoreHoriz />
         </span>
+      ) : (
+        ""
+      )}
+      {commentOptions ? (
+        <div className="commentOptions">
+          <button
+            className="commentEditOption"
+            onClick={() => setEditMode(true)}
+          >
+            Edit
+          </button>
+          <button
+            className="commentDeleteOption"
+            onClick={() => setDeleteModal(true)}
+          >
+            Delete
+          </button>
+        </div>
       ) : (
         ""
       )}

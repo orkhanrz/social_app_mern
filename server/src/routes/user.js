@@ -7,6 +7,8 @@ router.post('/search', userController.search);
 
 router.get("/:username", userController.getUser);
 
+router.get("/:userId/photos", userController.getPhotos);
+
 router.get("/:userId/posts", userController.getUserPosts);
 
 router.get("/:userId/feed", userController.getFeed);

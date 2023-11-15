@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Post = require("../models/post");
+const Photo = require('../models/photo');
 
 module.exports = {
   getUser: async (req, res, next) => {
@@ -155,4 +156,22 @@ module.exports = {
       next(err);
     }
   },
+  getPhotos: async (req, res, next) => {
+    try {
+      const photos = await Photo.find({userId: req.params.userId});
+
+      return res.status(200).json(photos);
+    } catch (err){
+      next(err);
+    };
+  },
+  addPhoto: async (req, res, next) => {
+    try {
+      const newPhoto = new Photo({...req.body, userId: req.params.userId});
+
+      await newPhoto.save();
+    } catch (err){
+      next(err);
+    };
+  }
 };

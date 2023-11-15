@@ -16,17 +16,17 @@ import {
 export default function EditProfile({ toggleEditProfile }) {
   const { user: me } = useContext(AuthContext);
   const [form, setForm] = useState({
-    lives: me.lives,
-    work: me.work,
-    position: me.position,
-    school: me.school,
-    university: me.university,
-    universityField: me.universityField,
-    from: me.from,
-    relationship: me.relationship,
+    lives: me.lives || "",
+    work: me.work || "",
+    position: me.position || "",
+    school: me.school || "",
+    university: me.university || "",
+    universityField: me.universityField || "",
+    from: me.from || "",
+    relationship: me.relationship || "",
     profilePicture: "",
     coverPicture: "",
-    bio: me.bio,
+    bio: me.bio || "",
   });
 
   const handleChange = (e) => {
@@ -45,7 +45,7 @@ export default function EditProfile({ toggleEditProfile }) {
       const res = await axios.put(`/users/${me._id}/edit`, formData);
 
       if (res.status === 200) {
-        localStorage.setItem("user", JSON.stringify(res.data));
+        sessionStorage.setItem("user", JSON.stringify(res.data));
         window.location.reload();
       }
     } catch (err) {

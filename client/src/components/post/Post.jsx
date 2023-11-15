@@ -42,7 +42,7 @@ function PostModal({ post, user, closeModal, comments, setComments }) {
               })
             : ""}
         </div>
-        <CommentInput postId={post._id} setComments={setComments} />
+        <CommentInput postId={post._id} setComments={setComments}/>
       </div>
     </Modal>
   );

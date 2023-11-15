@@ -22,7 +22,7 @@ a {
   --fs-900: 42px;
   --blue-clr: #0866ff;
   --dark-blue-clr: #025ae7;
-  --light-blue-clr: #ECF3FF;
+  --light-blue-clr: #ecf3ff;
   --green-clr: #42b72a;
   --dark-green-clr: #3aa324;
   --red-clr: #f35369;
@@ -63,6 +63,11 @@ button:disabled {
 }
 .hidden {
   display: none;
+}
+.profileContainer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 16px;
 }
 .formError {
   border: 1px solid red !important;
