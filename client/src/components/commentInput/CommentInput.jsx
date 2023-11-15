@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import "./postCommentInput.css";
+import "./commentInput.css";
+import axios from "axios";
 
 import {
   Mood,
@@ -11,35 +12,49 @@ import {
   Send,
 } from "@mui/icons-material";
 
-export default function PostCommentInput({setComments, comments, postComment}) {
+export default function CommentInput({postId, comment, editMode, setComments, setCommentData}) {
   const { user: me } = useContext(AuthContext);
+  const [input, setInput] = useState({ isActive: editMode, text: '' });
+
+  const editComment = async () => {
+    try {
+      const res = await axios.put(`/posts/${postId}/comments/${comment._id}`, {text: input.text, userId: me._id});
+      setInput({isActive: false, text: ''});
+      setCommentData(prevState => ({...prevState, text: res.data.text, date: res.data.date}));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addComment = async () => {
+    try {
+      const res = await axios.post(`/posts/${postId}/comments/`, {text: input.text, userId: me._id});
+      console.log(res.data);
+      setInput({isActive: false, text: ''});
+      setComments(prevState => ([...prevState, {...res.data, userId: me}]));
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
-    <div
-      className="postComment"
-      onClick={() =>
-        setComments((prevState) => ({ ...prevState, isActive: true }))
-      }
-    >
+    <>
+    <div className="postComment" onClick={() => setInput((prevState) => ({ ...prevState, isActive: true })) } >
       <div className="postCommentUserImg">
         <img
           src={process.env.REACT_APP_BACKEND_URL + me.profilePicture}
           alt="profile"
         />
       </div>
-      <div
-        className={`postCommentInputWrapper ${
-          comments.isActive ? "active" : ""
-        }`}
-      >
+      <div className={`postCommentInputWrapper ${ input.isActive ? "active" : "" }`} >
         <input
           type="text"
           name="comment"
           id="comment"
           placeholder="Write a comment..."
-          value={comments.text}
+          value={input.text}
           onChange={(e) =>
-            setComments((prevState) => ({
+            setInput((prevState) => ({
               ...prevState,
               text: e.target.value,
             }))
@@ -65,14 +80,16 @@ export default function PostCommentInput({setComments, comments, postComment}) {
             </span>
           </div>
           <button
-            disabled={!comments.text.length}
+            disabled={!input.text.length}
             className="postCommentInputCommentIcon"
-            onClick={postComment}
+            onClick={editMode ? editComment : addComment}
           >
             <Send />
           </button>
         </div>
       </div>
     </div>
+    {editMode ? <p className="commentCancel">Press esc to <span>cancel.</span></p> : ''}
+    </>
   );
 }

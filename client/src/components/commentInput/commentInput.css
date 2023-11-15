@@ -85,3 +85,11 @@
   background: none !important;
   color: var(--gray-txt-clr);
 }
+.commentCancel {
+  font-size: var(--fs-100);
+  color: var(--gray-txt-clr);
+}
+.commentCancel > span {
+  color: var(--blue-clr);
+  cursor: pointer;
+}

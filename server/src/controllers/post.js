@@ -112,4 +112,51 @@ module.exports = {
       next(err);
     }
   },
+  editComment: async (req, res, next) => {
+    const { postId, commentId } = req.params;
+    const { text, userId } = req.body;
+    const date = Date.now();
+
+    try {
+      const post = await Post.findById(postId);
+      const comment = post.comments.find((c) => c._id == commentId);
+
+      if (comment.userId != userId) {
+        return res
+          .status(403)
+          .json({ message: "You cannot edit this comment!" });
+      }
+
+      comment.text = text;
+      comment.date = date;
+
+      await post.save();
+      return res.status(200).json(comment);
+    } catch (err) {
+      next(err);
+    }
+  },
+  deleteComment: async (req, res, next) => {
+    const { postId, commentId } = req.params;
+    const { userId } = req.query;
+
+    try {
+      const post = await Post.findById(postId);
+      const comment = post.comments.find((c) => c._id == commentId);
+
+      if (comment.userId != userId) {
+        return res
+          .status(403)
+          .json({ message: "You cannot delete this comment!" });
+      }
+
+      const updatedComments = post.comments.filter((c) => c._id != commentId);
+      post.comments = updatedComments;
+      await post.save();
+
+      return res.status(200).json(updatedComments);
+    } catch (err) {
+      next(err);
+    }
+  },
 };

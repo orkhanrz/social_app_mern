@@ -1,6 +1,6 @@
 .postCommentsItem {
   display: flex;
-  margin-bottom: 8px;
+  margin: 8px 0;
 }
 .postCommentsItemLeft {
   width: 30px;
@@ -21,6 +21,7 @@
   background-color: var(--gray-clr);
   border-radius: 16px;
   padding: 8px 12px;
+  position: relative;
 }
 .postCommentsItemUsername {
   font-size: var(--fs-100);
@@ -55,8 +56,8 @@
 }
 .postCommentsItemLikesCount {
   position: absolute;
-  bottom: 16px;
-  right: 8px;
+  bottom: 0;
+  right: 0;
   display: flex;
   align-items: center;
   background-color: var(--white-clr);
@@ -100,19 +101,18 @@
   pointer-events: none;
 }
 .commentOptions {
+  position: absolute;
+  left: 0;
   background-color: var(--white-clr);
   width: 300px;
   display: flex;
   flex-direction: column;
-  z-index: 1000;
   padding: 8px;
   border-radius: 8px;
   box-shadow: 0px 5px 30px -7px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0px 5px 30px -7px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 5px 30px -7px rgba(0, 0, 0, 0.5);
-  position: absolute;
-  bottom: -72px;
-  left: 0;
+  z-index: 1000;
 }
 .commentOptions button {
   background-color: var(--white-clr);
@@ -125,4 +125,64 @@
 }
 .commentOptions button:hover {
   background-color: var(--gray-clr);
+}
+
+
+.deleteContainer {
+  width: 600px;
+}
+.deleteHeader {
+  margin-left: -8px;
+  margin-right: -8px;
+  position: relative;
+  border-bottom: 1px solid var(--dark-gray-clr);
+}
+.deleteHeaderText {
+  text-align: center;
+  font-weight: 600;
+  margin: 0;
+  padding: 8px 0 16px 0;
+}
+.deleteClose {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background-color: var(--gray-clr);
+}
+.deleteMain {
+  margin-bottom: 32px;
+}
+.deleteMainText {
+  font-size: var(--fs-200);
+}
+.deleteActions {
+  display: flex;
+  justify-content: flex-end;
+}
+.deleteActions button {
+  border-radius: 4px;
+  height: var(--fs-800);
+  cursor: pointer;
+}
+.deleteActionsSecondary {
+  margin-right: 8px;
+  border: none;
+  color: var(--blue-clr);
+  background-color: transparent;
+  padding-inline: var(--fs-300);
+}
+.deleteActionsSecondary:hover {
+  background-color: var(--gray-clr);
+}
+.deleteActionsPrimary {
+  background-color: var(--blue-clr);
+  color: var(--white-clr);
+  border: none;
+  padding-inline: var(--fs-800);
 }
