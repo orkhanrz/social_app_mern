@@ -1,3 +1,16 @@
+.profileInfoContainer {
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.profileInfo {
+  margin: 0 16px;
+}
+
+.profileInfoContainer hr {
+  margin: 0;
+}
 .profileImages {
   max-width: 1250px;
   width: 100%;
@@ -42,6 +55,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 16px 0 8px 0;
 }
 
 .profileInfoTopLeft {
@@ -50,14 +64,14 @@
 }
 
 .profileInfoTopLeftImagePlaceholder {
-  width: 170px;
-  height: 85px;
-  margin-right: 22px;
+  width: 165px;
+  height: 65px;
 }
 
 .profileInfoTopLeftUsername > h1 {
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--fs-700);
+  margin: 0 0 0 22px;
 }
 
 .profileInfoTopRight {
@@ -76,11 +90,13 @@
   padding: 0 8px;
   cursor: pointer;
 }
+.profileInfoTopRightBtn:first-child {
+  background-color: var(--blue-clr);
+}
 .profileInfoTopRightBtn:hover:not(:first-child), .profileInfoBottomRightBtn:hover {
   background-color: #dadada;
 }
 .profileInfoTopRightBtn.blue {
-  background-color: var(--blue-clr);
   color: var(--white-clr);
 }
 .profileInfoTopRightBtn.blue:hover {
@@ -102,39 +118,14 @@
   align-items: center;
   justify-content: space-between;
 }
-.profileInfoBottomLeftItem {
-  color: var(--gray-txt-clr);
-  font-weight: 600;
-  font-size: var(--fs-200);
-  padding: 16px;
-  cursor: pointer;
-  border-radius: 8px;
-  position: relative;
-}
-.profileInfoBottomLeftItem.active {
-  color: var(--blue-clr);
-}
-.profileInfoBottomLeftItem.active::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background-color: var(--blue-clr);
-}
-.profileInfoBottomLeftItem:hover {
-  background-color: var(--gray-clr);
-}
 .profileInfoBottomRightBtn {
   background-color: var(--dark-gray-clr);
   height: 36px;
   border: none;
   border-radius: 8px;
   margin-left: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   padding: 0 8px;
   cursor: pointer;
 }

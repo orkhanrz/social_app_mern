@@ -1,3 +1,29 @@
 .photosPage {
-    background-color: var(--gray-clr);
+  background-color: var(--gray-clr);
+}
+.photosItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: minmax(220px, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.photosItem {
+  border-radius: 8px;
+  /* overflow: hidden;
+  position: relative; */
+}
+
+.photosItem::before {
+  
+}
+
+.photosItemImg {
+  /* position: absolute;
+  top: 0;
+  left: 0; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
