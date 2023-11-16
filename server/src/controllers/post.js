@@ -16,7 +16,7 @@ module.exports = {
 
     // Add photo/video url to post only if its provided.
     if (media){
-      postBody.media = "/public/uploads/" + media.filename;
+      postBody.media = process.env.BACKEND_UPLOADS + media.filename;
     }
 
     
@@ -31,7 +31,7 @@ module.exports = {
 
       //If media exists also save it in user document.
       if (media){
-        user.photos.push({url: "/public/uploads/" + media.filename});
+        user.photos.push({url: process.env.BACKEND_UPLOADS + media.filename});
       }
       
       await user.save();

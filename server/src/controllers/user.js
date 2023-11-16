@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Post = require("../models/post");
+const Album = require('../models/album');
 
 module.exports = {
   getUser: async (req, res, next) => {
@@ -108,12 +109,12 @@ module.exports = {
 
     if (req.files.coverPicture) {
       reqBody.coverPicture =
-        "/public/uploads/" + req.files.coverPicture[0].filename;
+        process.env.BACKEND_UPLOADS + req.files.coverPicture[0].filename;
     }
 
     if (req.files.profilePicture) {
       reqBody.profilePicture =
-        "/public/uploads/" + req.files.profilePicture[0].filename;
+        process.env.BACKEND_UPLOADS + req.files.profilePicture[0].filename;
     }
 
     try {
@@ -162,6 +163,15 @@ module.exports = {
       const user = await User.findById(req.params.userId);
 
       return res.status(200).json(user.photos);
+    } catch (err) {
+      next(err);
+    }
+  },
+  getAlbums: async (req, res, next) => {
+    try {
+      const albums = await Album.find({userId: req.params.userId});
+
+      return res.status(200).json(albums);
     } catch (err) {
       next(err);
     }
