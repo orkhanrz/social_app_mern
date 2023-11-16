@@ -12,9 +12,11 @@ import {
   Work,
   BusinessCenter,
 } from "@mui/icons-material";
+import { CircularProgress } from "@mui/material";
 
 export default function EditProfile({ toggleEditProfile }) {
   const { user: me } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     lives: me.lives || "",
     work: me.work || "",
@@ -35,6 +37,7 @@ export default function EditProfile({ toggleEditProfile }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
 
     Object.keys(form).forEach((key) => {
@@ -43,12 +46,14 @@ export default function EditProfile({ toggleEditProfile }) {
 
     try {
       const res = await axios.put(`/users/${me._id}/edit`, formData);
-
+      setLoading(false);
+      
       if (res.status === 200) {
         sessionStorage.setItem("user", JSON.stringify(res.data));
         window.location.reload();
       }
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
   };
@@ -81,6 +86,7 @@ export default function EditProfile({ toggleEditProfile }) {
             type="file"
             name="profilePicture"
             id="profilePicture"
+            accept=".jpg, .jpeg, .png"
             className="hidden"
             onChange={(e) =>
               setForm((prevState) => ({
@@ -109,6 +115,7 @@ export default function EditProfile({ toggleEditProfile }) {
             type="file"
             name="coverPicture"
             id="coverPicture"
+            accept=".jpg, .jpeg, .png"
             className="hidden"
             onChange={(e) =>
               setForm((prevState) => ({
@@ -273,8 +280,8 @@ export default function EditProfile({ toggleEditProfile }) {
             <button className="editProfileSectionBtn">Add</button>
           </div>
         </div>
-        <button className="editProfileBtn" type="submit">
-          Edit your About info
+        <button className="editProfileBtn" type="submit" disabled={loading}>
+          {!loading ? 'Edit your About info' : <CircularProgress size="22px"/>}
         </button>
       </div>
     </form>

@@ -52,6 +52,10 @@ const UserSchema = Schema({
     lives: String,
     bio: String,
     relationship: String,
+    photos: [{
+        url: String,
+        albumId: String
+    }],
     followers: [],
     following: [],
     friends: [],

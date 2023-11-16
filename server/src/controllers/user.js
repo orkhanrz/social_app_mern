@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const Post = require("../models/post");
-const Photo = require('../models/photo');
 
 module.exports = {
   getUser: async (req, res, next) => {
@@ -28,7 +27,7 @@ module.exports = {
     }
 
     try {
-      const posts = await Post.find({ userId });
+      const posts = await Post.find({ userId }).sort({ date: -1 });
 
       return res.status(200).json(posts);
     } catch (err) {
@@ -44,12 +43,14 @@ module.exports = {
       const user = await User.findById(userId);
       const userPosts = await Post.find({
         userId: userId,
-      }).populate("userId", [
-        "firstName",
-        "lastName",
-        "profilePicture",
-        "username",
-      ]);
+      })
+        .sort({ date: -1 })
+        .populate("userId", [
+          "firstName",
+          "lastName",
+          "profilePicture",
+          "username",
+        ]);
 
       const userFollowingsPosts = await Promise.all(
         user.following?.map((userId) => {
@@ -158,20 +159,11 @@ module.exports = {
   },
   getPhotos: async (req, res, next) => {
     try {
-      const photos = await Photo.find({userId: req.params.userId});
+      const user = await User.findById(req.params.userId);
 
-      return res.status(200).json(photos);
-    } catch (err){
+      return res.status(200).json(user.photos);
+    } catch (err) {
       next(err);
-    };
+    }
   },
-  addPhoto: async (req, res, next) => {
-    try {
-      const newPhoto = new Photo({...req.body, userId: req.params.userId});
-
-      await newPhoto.save();
-    } catch (err){
-      next(err);
-    };
-  }
 };

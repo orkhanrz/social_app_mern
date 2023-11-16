@@ -4,14 +4,13 @@ const Schema = mongoose.Schema;
 const PostSchema = Schema({
   text: {
     type: String,
-    required: true,
   },
   media: {
     type: String,
   },
   date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   userId: {
     type: mongoose.Types.ObjectId,

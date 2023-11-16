@@ -5,23 +5,35 @@ const User = require("../models/user");
 module.exports = {
   createPost: async (req, res, next) => {
     const { text, userId } = req.body;
-    const media = req.file ? "/public/uploads/" + req.file.filename : null;
+    const media = req.file;
 
-    if (!text) {
-      return res.status(403).json({ text: "Please provide a text for post." });
+    if (!text && !media) {
+      return res.status(403).json({ text: "Please provide a text or an image for post." });
     }
 
+    // Set a body for new post.
+    const postBody = {text, userId};
+
+    // Add photo/video url to post only if its provided.
+    if (media){
+      postBody.media = "/public/uploads/" + media.filename;
+    }
+
+    
     try {
-      const newPost = new Post({
-        text,
-        userId,
-        media,
-      });
+      const newPost = new Post(postBody);
       await newPost.save();
       const postId = newPost._doc._id;
 
+      //Also save post reference in user document.
       const user = await User.findById(userId);
       user.posts.push(postId);
+
+      //If media exists also save it in user document.
+      if (media){
+        user.photos.push({url: "/public/uploads/" + media.filename});
+      }
+      
       await user.save();
 
       return res.status(201).json(newPost._doc);

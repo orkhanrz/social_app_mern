@@ -13,15 +13,18 @@ import {
 } from "@mui/icons-material";
 import "./addPostCard.css";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
-export default function AddPostCard({ togglePostCard, inputRef }) {
+export default function AddPostCard({ togglePostCard, file }) {
   const { user } = useContext(AuthContext);
-  const [media, setMedia] = useState(null);
+  const [media, setMedia] = useState(file);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const text = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
     formData.append("text", text.current.value);
     formData.append("userId", user._id);
@@ -32,10 +35,12 @@ export default function AddPostCard({ togglePostCard, inputRef }) {
 
     try {
       const res = await axios.post("/posts", formData);
+      setLoading(false);
       if (res.status === 201) {
         window.location.reload();
       }
     } catch (err) {
+      setLoading(false);
       if (err.response.status === 403) {
         setError(err.response.data.text);
       }
@@ -88,6 +93,7 @@ export default function AddPostCard({ togglePostCard, inputRef }) {
             className="addPostCardInput"
             id="file"
             onChange={(e) => setMedia(e.target.files[0])}
+            accept=".png, .jpg, .jpeg"
           />
           <div className="addPostCardEmotionIcon">
             <SentimentVerySatisfied />
@@ -134,8 +140,8 @@ export default function AddPostCard({ togglePostCard, inputRef }) {
             </span>
           </div>
         </div>
-        <button className="addPostCardBtn" onClick={handleSubmit}>
-          Post
+        <button className="addPostCardBtn" onClick={handleSubmit} disabled={loading}>
+          {!loading ? 'Post' : <CircularProgress size='22px'/>}
         </button>
       </div>
     </div>

@@ -40,7 +40,7 @@ export default function Profile() {
       <ProfileTop />
       {user ? (
         <div className="profileFeed">
-          <div className="profileFeedContainer profileContainer">
+          <div className="profileFeedContainer">
             <div className="profileFeedLeft">
               <ProfileIntro user={user} />
               <ProfileCard
