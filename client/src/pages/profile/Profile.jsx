@@ -39,8 +39,8 @@ export default function Profile() {
       <Topbar />
       <ProfileTop />
       {user ? (
-        <div className="profileFeed">
-          <div className="profileFeedContainer">
+        <div className="profilePage">
+          <div className="profilePageContainer">
             <div className="profileFeedLeft">
               <ProfileIntro user={user} />
               <ProfileCard

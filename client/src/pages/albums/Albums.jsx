@@ -1,4 +1,4 @@
-import "./photos.css";
+import "./albums.css";
 
 import Topbar from "../../components/topbar/Topbar";
 import ProfileTop from "../../components/profileTop/ProfileTop";
@@ -8,14 +8,14 @@ import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
-import { MoreHoriz } from "@mui/icons-material";
+import { Add, MoreHoriz } from "@mui/icons-material";
 
-export default function Photos() {
+export default function Albums() {
   const { username } = useParams();
   const { pathname } = useLocation();
   const { user: me } = useContext(AuthContext);
   const { results: user } = useLoaderData();
-  const [photos, setPhotos] = useState([]);
+  const [albums, setAlbums] = useState([]);
   const [postCard, setPostCard] = useState(false);
   const [file, setFile] = useState(null);
 
@@ -28,17 +28,17 @@ export default function Photos() {
   };
 
   useEffect(() => {
-    async function fetchPhotos() {
+    async function fetchAlbums() {
       try {
-        const res = await axios.get(`/users/${user._id}/photos`);
+        const res = await axios.get(`/users/${user._id}/albums`);
         console.log(res.data);
-        setPhotos(res.data);
+        setAlbums(res.data);
       } catch (err) {
         console.log(err);
       }
     }
 
-    fetchPhotos();
+    fetchAlbums();
   }, [user]);
 
   return (
@@ -48,7 +48,7 @@ export default function Photos() {
       <div className="photosPage">
         <div className="photosPageContainer">
           <div className="photosPageTop">
-            <h3 className="photosPageTopText">Photos</h3>
+            <h3 className="photosPageTopText">Albums</h3>
             <div className="photosPageTopBtns">
               <label htmlFor="file" className="photosPageTopBtn">
                 Add photos/video
@@ -84,15 +84,27 @@ export default function Photos() {
                 Albums
               </Link>
             </div>
-            <div className="photosItems">
-              {photos.map((p) => {
+            <div className="albumItems">
+              <div className="albumItem">
+                <div className="albumItemImg">
+                  <Add />
+                </div>
+                <div className="albumItemInfo">
+                  <h4 className="albumItemInfoName">Create album</h4>
+                </div>
+              </div>
+              {albums.map((a) => {
                 return (
-                  <div key={p._id} className="photosItem">
-                    <div className="photosItemImg">
+                  <div key={a._id} className="albumItem">
+                    <div className="albumItemImg">
                       <img
-                        src={process.env.REACT_APP_BACKEND_URL + p.url}
+                        src={process.env.REACT_APP_BACKEND_URL + a.albumPicture}
                         alt=""
                       />
+                    </div>
+                    <div className="albumItemInfo">
+                      <h4 className="albumItemInfoName">{a.name}</h4>
+                      <p className="albumItemInfoLength">{a.items} Items</p>
                     </div>
                   </div>
                 );

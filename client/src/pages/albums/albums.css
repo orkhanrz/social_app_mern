@@ -1,0 +1,37 @@
+.albumItems {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+.albumItem {
+  cursor: pointer;
+}
+.albumItemImg:first-child {
+  background-color: var(--gray-clr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.albumItemImg:first-child > * {
+  font-size: var(--fs-700);
+}
+.albumItemImg {
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.albumItemImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.albumItemInfoName {
+    margin: 12px 0 4px 0;
+    font-size: var(--fs-200);
+    font-weight: 600;
+}
+.albumItemInfoLength {
+    margin: 0;
+    font-size: var(--fs-100);
+}

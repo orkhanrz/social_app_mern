@@ -6,50 +6,86 @@
   max-width: 1180px;
   width: 100%;
   margin: 0 auto;
-  border-radius: 8px;
+  padding: 16px;
   background-color: var(--white-clr);
-  padding: 0 16px 16px 16px;
+  border-radius: 8px;
 }
-.profilePhotosTop {
+.photosPageTop {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
-.profilePhotosTopText {
+.photosPageTopText {
   font-size: var(--fs-500);
   font-weight: 600;
 }
-.profilePhotosTopBtn {
-  border: none;
-  background-color: transparent;
-  color: var(--blue-clr);
-  font-weight: 500;
-  font-size: var(--fs-200);
-  cursor: pointer;
-}
-.profilePhotosTopBtn:hover {
-  color: var(--dark-blue-clr);
-}
-.profilePhotosTopBtns {
+.photosPageTopBtns {
   display: flex;
   align-items: center;
 }
+.photosPageTopBtn {
+  font-size: var(--fs-200);
+  font-weight: 500;
+  color: var(--blue-clr);
+  cursor: pointer;
+}
+.photosPageTopMoreBtn {
+  background-color: var(--dark-gray-clr);
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  margin-left: 8px;
+  display: grid;
+  place-items: center;
+  padding: 0 8px;
+  cursor: pointer;
+}
+/* .photosPageTopMoreBtn:hover {
+  
+} */
+.photosPageLinks {
+  margin-bottom: 16px;
+}
+.photosPageLink {
+  color: var(--gray-txt-clr);
+  font-size: var(--fs-200);
+  font-weight: 600;
+  padding: 16px;
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+.photosPageLink:hover {
+  background-color: var(--gray-clr);
+}
+.photosPageLink.active {
+  color: var(--blue-clr);
+}
+.photosPageLink.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--blue-clr);
+}
 .photosItems {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  grid-auto-rows: minmax(180px, 1fr);
-  gap: 8px;
-  margin: 16px 0;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Adjust minmax values as needed */
+  gap: 16px;
 }
 .photosItem {
+  aspect-ratio: 1/1;
   border-radius: 8px;
   overflow: hidden;
-  position: relative;
 }
-
 .photosItemImg {
-  position: absolute;
-  top: 0;
-  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.photosItemImg >img {
   width: 100%;
   height: 100%;
   object-fit: cover;

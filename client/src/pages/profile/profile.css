@@ -1,18 +1,11 @@
-.profile hr {
-  border: 1px solid var(--dark-gray-clr);
-  margin: 16px 0;
+.profilePage {
+  background-color: var(--gray-clr);
 }
-.profileFeedContainer {
+.profilePageContainer {
   max-width: 1180px;
   width: 100%;
   margin: 0 auto;
-  border-radius: 8px;
-}
-.profileFeed {
-  background-color: var(--gray-clr);
   padding: 16px 0;
-}
-.profileFeedContainer {
   display: flex;
   gap: 16px;
 }
