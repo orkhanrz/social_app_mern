@@ -1,27 +1,18 @@
 import "./profilePhotos.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-export default function ProfilePhotos() {
+export default function ProfilePhotos({ photos }) {
+  const {username} = useParams();
+
   return (
     <div className="profilePhotosBottom">
-      <Link to="/orkhanrz/photos/1" className="profilePhotosPhoto">
-        <img src="/assets/images/image1.jpg" alt="photos item" />
-      </Link>
-      <Link to="/orkhanrz/photos/1" className="profilePhotosPhoto">
-        <img src="/assets/images/image1.jpg" alt="photos item" />
-      </Link>
-      <Link to="/orkhanrz/photos/1" className="profilePhotosPhoto">
-        <img src="/assets/images/image2.jpg" alt="photos item" />
-      </Link>
-      <Link to="/orkhanrz/photos/1" className="profilePhotosPhoto">
-        <img src="/assets/images/image1.jpg" alt="photos item" />
-      </Link>
-      <Link to="/orkhanrz/photos/1" className="profilePhotosPhoto">
-        <img src="/assets/images/image1.jpg" alt="photos item" />
-      </Link>
-      <Link to="/orkhanrz/photos/1" className="profilePhotosPhoto">
-        <img src="/assets/images/image1.jpg" alt="photos item" />
-      </Link>
+      {photos.map((p) => {
+        return (
+          <Link to={`/${username}/photos/${p._id}`} className="profilePhotosPhoto" key={p._id}>
+            <img src={process.env.REACT_APP_BACKEND_URL + p.url} alt="photos item" />
+          </Link>
+        );
+      })}
     </div>
   );
 }

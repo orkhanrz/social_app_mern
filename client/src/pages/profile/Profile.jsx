@@ -18,6 +18,7 @@ import ProfileEvents from "../../components/profile/profileEvents/ProfileEvents"
 export default function Profile() {
   const { username } = useParams();
   const [posts, setPosts] = useState([]);
+  const [photos, setPhotos] = useState([]);
   const { user: me } = useContext(AuthContext);
   const { results: user } = useLoaderData();
 
@@ -31,7 +32,16 @@ export default function Profile() {
       }
     };
 
-    user && fetchPosts();
+    const fetchPhotos = async () => {
+      try {
+        const res = await axios.get(`/users/${user?._id}/photos`);
+        setPhotos(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    user && fetchPosts() && fetchPhotos();
   }, [user]);
 
   return (
@@ -48,7 +58,7 @@ export default function Profile() {
                 button="See all photos"
                 link={`/${username}/photos`}
               >
-                <ProfilePhotos />
+                <ProfilePhotos photos={photos}/>
               </ProfileCard>
               <ProfileCard
                 title="Friends"

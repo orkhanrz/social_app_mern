@@ -93,7 +93,7 @@ export default function AddPostCard({ togglePostCard, file }) {
             className="addPostCardInput"
             id="file"
             onChange={(e) => setMedia(e.target.files[0])}
-            accept=".png, .jpg, .jpeg"
+            accept=".png, .jpg, .jpeg, .mp4"
           />
           <div className="addPostCardEmotionIcon">
             <SentimentVerySatisfied />

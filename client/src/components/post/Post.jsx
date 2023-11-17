@@ -42,13 +42,13 @@ function PostModal({ post, user, closeModal, comments, setComments }) {
               })
             : ""}
         </div>
-        <CommentInput postId={post._id} setComments={setComments}/>
+        <CommentInput postId={post._id} setComments={setComments} />
       </div>
     </Modal>
   );
 }
 
-function Post({ post, user, hideInput, closeModal }) {
+function Post({ post, user, hideInput, closeModal }) {  
   const { user: me } = useContext(AuthContext);
   const [openPostModal, setOpenPostModal] = useState(false);
   const [likes, setLikes] = useState({
@@ -120,11 +120,16 @@ function Post({ post, user, hideInput, closeModal }) {
         </div>
         <div className="postCenter">
           <p className="postCenterText">{post.text}</p>
-          {post.media && (
-            <div className="postCenterMedia">
-              <img src={config.backend_url + post.media} alt="" />
-            </div>
-          )}
+          {post.media &&
+            (post.media.mediaType === "image" ? (
+              <div className="postCenterMedia">
+                <img src={config.backend_url + post.media.url} alt="" />
+              </div>
+            ) : (
+              <div className="postCenterMedia">
+                <video src={config.backend_url + post.media.url} alt="" controls/>
+              </div>
+            ))}
 
           <div className="postCenterDetails">
             <div className="postCenterLikes">
@@ -181,7 +186,7 @@ function Post({ post, user, hideInput, closeModal }) {
         {hideInput || comments.length ? (
           ""
         ) : (
-          <CommentInput postId={post._id} setComments={setComments}/>
+          <CommentInput postId={post._id} setComments={setComments} />
         )}
       </div>
       {openPostModal ? (

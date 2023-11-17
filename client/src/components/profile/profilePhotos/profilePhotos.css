@@ -1,15 +1,13 @@
 .profilePhotosBottom {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 1fr;
   gap: 4px;
   align-items: stretch;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .profilePhotosPhoto {
-    max-height: 148.3px;
+  aspect-ratio: 1;
 }
 
 .profilePhotosPhoto img {

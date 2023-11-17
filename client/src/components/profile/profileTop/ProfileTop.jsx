@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { Link, useParams, useLocation, useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
-import axios from "axios";
 import "./profileTop.css";
 
 import {
@@ -10,11 +9,11 @@ import {
   ExpandMoreOutlined,
   MessageOutlined,
   MoreHorizOutlined,
-  SubscriptionsOutlined,
 } from "@mui/icons-material";
 
 import EditProfile from "../editProfile/EditProfile";
 import Modal from "../../modal/Modal";
+import FollowBtn from '../followBtn/FollowBtn';
 
 export default function ProfileTop() {
   const { pathname } = useLocation();
@@ -22,36 +21,25 @@ export default function ProfileTop() {
   const { user: me } = useContext(AuthContext);
   const { results: user } = useLoaderData();
   const [editProfile, setEditProfile] = useState(false);
-  const [isFollowed, setIsFollowed] = useState(
-    user?.followers.includes(me._id)
-  );
 
   const toggleEditProfile = () => {
     setEditProfile(!editProfile);
-  };
-
-  const handleFollow = async () => {
-    try {
-      const res = await axios.post(`/users/${user._id}/follow`, {
-        userId: me._id,
-      });
-
-      if (res.status === 200) {
-        setIsFollowed((prevState) => !prevState);
-      }
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return user ? (
     <>
       <div className="profileImages">
         <div className="profileCoverImage">
-          <img src={process.env.REACT_APP_BACKEND_URL + user.coverPicture} alt="cover" />
+          <img
+            src={process.env.REACT_APP_BACKEND_URL + user.coverPicture}
+            alt="cover"
+          />
         </div>
         <div className="profileUserImage">
-          <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="user" />
+          <img
+            src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+            alt="user"
+          />
         </div>
       </div>
       <div className="profileInfo">
@@ -65,19 +53,8 @@ export default function ProfileTop() {
             </div>
             {me.username !== user.username ? (
               <div className="profileInfoTopRight">
-                <button
-                  className="profileInfoTopRightBtn blue"
-                  onClick={handleFollow}
-                >
-                  <>
-                    <span className="profileInfoTopRightBtnIcon">
-                      <SubscriptionsOutlined />
-                    </span>
-                    <span className="profileInfoTopRightBtnText">
-                      {isFollowed ? "Unfollow" : "Follow"}
-                    </span>
-                  </>
-                </button>
+                <FollowBtn user={user} me={me} />
+
                 <button className="profileInfoTopRightBtn">
                   <span className="profileInfoTopRightBtnIcon">
                     <MessageOutlined />
@@ -137,13 +114,14 @@ export default function ProfileTop() {
               >
                 About
               </span>
-              <span
+              <Link
+                to={`/${username}/friends`}
                 className={`profileLink ${
                   pathname === `/${username}/friends` ? "active" : ""
                 }`}
               >
                 Friends
-              </span>
+              </Link>
               <Link
                 to={`/${username}/photos`}
                 className={`profileLink ${
@@ -152,13 +130,14 @@ export default function ProfileTop() {
               >
                 Photos
               </Link>
-              <span
+              <Link
+                to={`/${username}/videos`}
                 className={`profileLink ${
                   pathname === `/${username}/videos` ? "active" : ""
                 }`}
               >
                 Videos
-              </span>
+              </Link>
             </div>
             <div className="profileInfoBottomRight">
               <button className="profileInfoBottomRightBtn">

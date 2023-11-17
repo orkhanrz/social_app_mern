@@ -15,6 +15,10 @@
   margin: 64px 0;
 }
 
+.modal .post {
+  box-shadow: none;
+}
+
 body:has(.modal){
   overflow: hidden;
 }

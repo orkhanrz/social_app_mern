@@ -86,7 +86,7 @@
 .postCenterMedia {
   margin: 0 -16px 8px -16px;
 }
-.postCenterMedia img {
+.postCenterMedia img, .postCenterMedia video {
   width: 100%;
   height: auto;
 }
