@@ -9,6 +9,8 @@ router.get("/:username", userController.getUser);
 
 router.get("/:userId/photos", userController.getPhotos);
 
+router.get("/:userId/videos", userController.getVideos);
+
 router.get("/:userId/albums", userController.getAlbums);
 
 router.get("/:userId/posts", userController.getUserPosts);

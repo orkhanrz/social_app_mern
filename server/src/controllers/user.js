@@ -105,8 +105,6 @@ module.exports = {
     // const {bio, from, lives, position, work, relationship, school, university} = req.body;
     const { coverPicture, profilePicture, ...reqBody } = req.body;
 
-    console.log(reqBody);
-
     if (req.files.coverPicture) {
       reqBody.coverPicture =
         process.env.BACKEND_UPLOADS + req.files.coverPicture[0].filename;
@@ -118,6 +116,7 @@ module.exports = {
     }
 
     try {
+
       const updatedUser = await User.findByIdAndUpdate(userId, reqBody, {
         new: true,
       });
@@ -163,6 +162,15 @@ module.exports = {
       const user = await User.findById(req.params.userId);
 
       return res.status(200).json(user.photos);
+    } catch (err) {
+      next(err);
+    }
+  },
+  getVideos: async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.userId);
+
+      return res.status(200).json(user.videos);
     } catch (err) {
       next(err);
     }

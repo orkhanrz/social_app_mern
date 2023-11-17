@@ -6,7 +6,8 @@ const PostSchema = Schema({
     type: String,
   },
   media: {
-    type: String,
+    url: String,
+    mediaType: String,
   },
   date: {
     type: Date,

@@ -8,18 +8,22 @@ module.exports = {
     const media = req.file;
 
     if (!text && !media) {
-      return res.status(403).json({ text: "Please provide a text or an image for post." });
+      return res
+        .status(403)
+        .json({ text: "Please provide a text or a media file for post." });
     }
 
     // Set a body for new post.
-    const postBody = {text, userId};
+    const postBody = { text, userId };
 
     // Add photo/video url to post only if its provided.
-    if (media){
-      postBody.media = process.env.BACKEND_UPLOADS + media.filename;
+    if (media) {
+      postBody.media = {
+        url: process.env.BACKEND_UPLOADS + media.filename,
+        mediaType: media.mimetype.split("/")[0],
+      };
     }
 
-    
     try {
       const newPost = new Post(postBody);
       await newPost.save();
@@ -27,13 +31,16 @@ module.exports = {
 
       //Also save post reference in user document.
       const user = await User.findById(userId);
-      user.posts.push(postId);
+      // user.posts.push(postId);
 
       //If media exists also save it in user document.
-      if (media){
-        user.photos.push({url: process.env.BACKEND_UPLOADS + media.filename});
+      if (media) {
+        const mediaUrl = process.env.BACKEND_UPLOADS + media.filename;
+        media.mimetype.split("/")[0] === "image"
+          ? user.photos.push({ url: mediaUrl })
+          : user.videos.push(mediaUrl);
       }
-      
+
       await user.save();
 
       return res.status(201).json(newPost._doc);

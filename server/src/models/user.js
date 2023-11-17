@@ -56,10 +56,13 @@ const UserSchema = Schema({
         url: String,
         albumId: String
     }],
+    videos: [
+        String,
+    ],
     followers: [],
     following: [],
     friends: [],
-    posts: [{type: mongoose.Types.ObjectId, ref: "Post"}],
+    // posts: [{type: mongoose.Types.ObjectId, ref: "Post"}],
     events: []
 })
 
