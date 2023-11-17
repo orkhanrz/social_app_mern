@@ -1,19 +1,19 @@
+import "./profile.css";
 import { useParams, useLoaderData } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
 import { Tune } from "@mui/icons-material";
-import "./profile.css";
 
 import Topbar from "../../components/topbar/Topbar";
 import Post from "../../components/post/Post";
 import AddPost from "../../components/addPost/AddPost";
-import ProfileTop from "../../components/profileTop/ProfileTop";
-import ProfileIntro from "../../components/profileIntro/ProfileIntro";
-import ProfilePhotos from "../../components/profilePhotos/ProfilePhotos";
-import ProfileCard from "../../components/profileCard/ProfileCard";
-import ProfileEvents from "../../components/profileEvents/ProfileEvents";
+import ProfileTop from "../../components/profile/profileTop/ProfileTop";
+import ProfileIntro from "../../components/profile/profileIntro/ProfileIntro";
+import ProfilePhotos from "../../components/profile/profilePhotos/ProfilePhotos";
+import ProfileCard from "../../components/profile/profileCard/ProfileCard";
+import ProfileEvents from "../../components/profile/profileEvents/ProfileEvents";
 
 export default function Profile() {
   const { username } = useParams();

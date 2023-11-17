@@ -1,7 +1,7 @@
 import "./albums.css";
 
 import Topbar from "../../components/topbar/Topbar";
-import ProfileTop from "../../components/profileTop/ProfileTop";
+import ProfileTop from "../../components/profile/profileTop/ProfileTop";
 import Modal from "../../components/modal/Modal";
 import AddPostCard from "../../components/addPostCard/AddPostCard";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";

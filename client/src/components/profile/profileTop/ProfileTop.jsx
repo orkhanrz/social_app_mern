@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { Link, useParams, useLocation, useLoaderData } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import { config } from "../../config";
+import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
 import "./profileTop.css";
 
@@ -14,8 +13,8 @@ import {
   SubscriptionsOutlined,
 } from "@mui/icons-material";
 
-import EditProfile from "../../components/editProfile/EditProfile";
-import Modal from "../../components/modal/Modal";
+import EditProfile from "../editProfile/EditProfile";
+import Modal from "../../modal/Modal";
 
 export default function ProfileTop() {
   const { pathname } = useLocation();
@@ -49,10 +48,10 @@ export default function ProfileTop() {
     <>
       <div className="profileImages">
         <div className="profileCoverImage">
-          <img src={config.backend_url + user.coverPicture} alt="cover" />
+          <img src={process.env.REACT_APP_BACKEND_URL + user.coverPicture} alt="cover" />
         </div>
         <div className="profileUserImage">
-          <img src={config.backend_url + user.profilePicture} alt="user" />
+          <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="user" />
         </div>
       </div>
       <div className="profileInfo">

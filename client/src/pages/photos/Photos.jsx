@@ -1,19 +1,18 @@
 import "./photos.css";
+import {  useEffect, useState } from "react";
+import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
+import axios from "axios";
 
 import Topbar from "../../components/topbar/Topbar";
-import ProfileTop from "../../components/profileTop/ProfileTop";
+import ProfileTop from "../../components/profile/profileTop/ProfileTop";
 import Modal from "../../components/modal/Modal";
 import AddPostCard from "../../components/addPostCard/AddPostCard";
-import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { AuthContext } from "../../context/AuthContext";
+
 import { MoreHoriz } from "@mui/icons-material";
 
 export default function Photos() {
   const { username } = useParams();
   const { pathname } = useLocation();
-  const { user: me } = useContext(AuthContext);
   const { results: user } = useLoaderData();
   const [photos, setPhotos] = useState([]);
   const [postCard, setPostCard] = useState(false);
