@@ -1,6 +1,6 @@
-const { default: mongoose } = require("mongoose");
 const Post = require("../models/post");
-const User = require("../models/user");
+const Photo = require('../models/photo');
+const Video = require('../models/video');
 
 module.exports = {
   createPost: async (req, res, next) => {
@@ -27,21 +27,21 @@ module.exports = {
     try {
       const newPost = new Post(postBody);
       await newPost.save();
-      const postId = newPost._doc._id;
 
-      //Also save post reference in user document.
-      const user = await User.findById(userId);
-      // user.posts.push(postId);
-
-      //If media exists also save it in user document.
+      //If media exists also save it in its collection.
       if (media) {
-        const mediaUrl = process.env.BACKEND_UPLOADS + media.filename;
-        media.mimetype.split("/")[0] === "image"
-          ? user.photos.push({ url: mediaUrl })
-          : user.videos.push(mediaUrl);
-      }
-
-      await user.save();
+        postBody.media.mediaType === "image"
+          ? await Photo.create({
+              url: postBody.media.url,
+              userId: userId,
+              postId: newPost._doc._id,
+            })
+          : await Video.create({
+              url: postBody.media.url,
+              userId: userId,
+              postId: newPost._doc._id,
+            });
+      };
 
       return res.status(201).json(newPost._doc);
     } catch (err) {

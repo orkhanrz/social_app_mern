@@ -89,11 +89,13 @@
   justify-content: center;
   padding: 0 8px;
   cursor: pointer;
+  position: relative;
 }
 .profileInfoTopRightBtn:first-child {
   background-color: var(--blue-clr);
 }
-.profileInfoTopRightBtn:hover:not(:first-child), .profileInfoBottomRightBtn:hover {
+.profileInfoTopRightBtn:hover:not(:first-child),
+.profileInfoBottomRightBtn:hover {
   background-color: #dadada;
 }
 .profileInfoTopRightBtn.blue {
@@ -113,6 +115,31 @@
   font-size: var(--fs-200);
   font-weight: 500;
 }
+.friendRequestRespondModal {
+  position: absolute;
+  bottom: -110px;
+  left: 0;
+  width: 300px;
+  z-index: 1000;
+  background-color: var(--white-clr);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px gray;
+}
+
+.friendRequestRespondModal button {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    padding: 12px 0;
+    font-weight: 500;
+    border-radius: 4px;
+}
+.friendRequestRespondModal button:hover {
+  background-color: var(--gray-clr);
+}
 .profileInfoBottom {
   display: flex;
   align-items: center;
@@ -128,4 +155,33 @@
   place-items: center;
   padding: 0 8px;
   cursor: pointer;
+}
+
+.profileInfoFriendRequest {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--gray-clr);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+}
+.profileInfoFriendRequestMessage {
+  margin: 0;
+  font-size: var(--fs-300);
+  font-weight: 500;
+}
+.profileInfoFriendRequestActions button {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.profileInfoFriendRequestAccept {
+  margin-right: 8px;
+  background-color: var(--blue-clr);
+  color: white;
+}
+.profileInfoFriendRequestDecline {
+  background-color: var(--dark-gray-clr);
 }

@@ -17,15 +17,19 @@ import {
   KeyboardBackspace,
 } from "@mui/icons-material";
 
-import TopbarAccount from "../topbarAccount/TopbarAccount";
+import TopbarAccount from "./topbarAccount/TopbarAccount";
+import TopbarNotifications from "./topbarNotifications/TopbarNotifications";
 
 export default function Topbar() {
   const [inputActive, setInputActive] = useState(false);
   const [inputLoading, setInputLoading] = useState(false);
   const [inputData, setInputData] = useState([]);
-  const accountMenuRef = useRef();
-  const inputRef = useRef();
   const [accountMenu, setAccountMenu] = useState(false);
+  const [notificationsMenu, setNotificationsMenu] = useState(false);
+  
+  const inputRef = useRef();
+  const accountMenuRef = useRef();
+  const notificationsMenuRef = useRef();
 
   const searchHandler = async (query) => {
     setInputLoading(true);
@@ -41,9 +45,13 @@ export default function Topbar() {
 
   useEffect(() => {
     document.addEventListener("click", (e) => {
-      if (e.target !== accountMenuRef.current) {
-        setAccountMenu(false);
-      }
+      // if (e.target !== accountMenuRef.current) {
+      //   setAccountMenu(false);
+      // }
+
+      // if (e.target !== notificationsMenuRef.current) {
+      //   setNotificationsMenu(false);
+      // }
 
       if (e.target !== inputRef.current) {
         setInputActive(false);
@@ -98,7 +106,9 @@ export default function Topbar() {
                     <Link to={`/${u.username}`} className="topbarSearchBoxItem">
                       <div className="topbarSearchBoxUserImage">
                         <img
-                          src={process.env.REACT_APP_BACKEND_URL + u.profilePicture}
+                          src={
+                            process.env.REACT_APP_BACKEND_URL + u.profilePicture
+                          }
                           alt="profile"
                         />
                       </div>
@@ -138,7 +148,11 @@ export default function Topbar() {
           <span className="topbarRightItem">
             <Message />
           </span>
-          <span className="topbarRightItem">
+          <span
+            className="topbarRightItem"
+            onClick={() => setNotificationsMenu(!notificationsMenu)}
+            ref={notificationsMenuRef}
+          >
             <Notifications />
           </span>
           <span
@@ -149,7 +163,8 @@ export default function Topbar() {
             <Person />
           </span>
         </div>
-        <TopbarAccount accountMenu={accountMenu}/>
+        <TopbarNotifications notificationsMenu={notificationsMenu} />
+        <TopbarAccount accountMenu={accountMenu} />
       </div>
     </div>
   );

@@ -51,7 +51,6 @@ export default function SignUpForm({ toggleModal }) {
       const res = await axios.post("/auth/signup", form);
 
       if (res.status === 201) {
-        console.log(res.data.user);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user });
         navigate('/');
       }

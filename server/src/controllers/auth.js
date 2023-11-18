@@ -19,17 +19,7 @@ module.exports = {
         return res.status(403).json({ password: "Password is not valid!" });
       }
 
-      const {
-        password,
-        events,
-        followers,
-        following,
-        friends,
-        photos,
-        posts,
-        private,
-        ...userDetails
-      } = user._doc;
+      const { password, private, ...userDetails } = user._doc;
 
       return res.status(200).json({ user: userDetails });
     } catch (err) {
@@ -67,20 +57,14 @@ module.exports = {
       await newUser.save();
       const newUserDoc = newUser._doc;
 
-      //Return only main details
-      const userDetails = {
-        _id: newUserDoc._id,
-        firstName: newUserDoc.firstName,
-        lastName: newUserDoc.lastName,
-        username: newUserDoc.username,
-        profilePicture: newUserDoc.profilePicture,
-      };
-
       //Create coverPictures and profilePictures albums for a newly created user.
       await Album.insertMany([
         { name: "Profile pictures", userId: newUserDoc._id },
         { name: "Cover pictures", userId: newUserDoc._id },
       ]);
+
+      //Return only main details
+      const { password, private, ...userDetails } = newUserDoc;
 
       return res.status(201).json({ user: userDetails });
     } catch (err) {

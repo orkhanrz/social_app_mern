@@ -1,0 +1,107 @@
+.notifications {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 360px;
+  display: none;
+}
+.notifications.active {
+    display: block;
+}
+.notificationTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.notificationTopBtn {
+  cursor: pointer;
+  border-radius: 50%;
+  width: 26px;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+}
+.notificationTopBtn:hover {
+  background-color: var(--gray-clr);
+}
+.notificationTopTitle {
+  font-size: var(--fs-500);
+  font-weight: 600;
+  margin: 0;
+}
+.notificationBtns {
+  margin-bottom: 16px;
+}
+.notificationBtn {
+  font-size: var(--fs-200);
+  font-weight: 600;
+  margin-right: 8px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+.notificationBtn:hover {
+  background-color: var(--gray-clr);
+}
+.notificationBtn.active {
+  color: var(--blue-clr);
+  background-color: #e0ecff;
+}
+.notificationItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 8px;
+}
+.notificationItem:hover {
+  background-color: var(--gray-clr);
+}
+.notificationItemImg {
+  width: 60px;
+  aspect-ratio: 1;
+  position: relative;
+  margin-right: 8px;
+}
+.notificationItemImg > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.notificationItemImgIcon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: #606770;
+  color: white;
+  padding: 2px;
+}
+.notificationItemImgIcon > * {
+  font-size: var(--fs-500) !important;
+}
+.notificationMessage {
+  font-size: var(--fs-200);
+  margin: 0;
+}
+.notificationFrom {
+  font-weight: 600;
+}
+.notificationDate {
+  font-size: var(--fs-100);
+  font-weight: 500;
+  color: var(--blue-clr);
+  margin: 0;
+}
+.notificationRight {
+  background-color: var(--blue-clr);
+  border-radius: 50%;
+  width: 14px;
+  aspect-ratio: 1;
+}

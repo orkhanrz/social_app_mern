@@ -1,6 +1,9 @@
 const User = require("../models/user");
 const Post = require("../models/post");
-const Album = require('../models/album');
+const Album = require("../models/album");
+const Photo = require("../models/photo");
+const Video = require("../models/video");
+const Notification = require("../models/notification");
 
 module.exports = {
   getUser: async (req, res, next) => {
@@ -76,25 +79,108 @@ module.exports = {
     }
   },
   followUser: async (req, res, next) => {
-    const currentUserId = req.body.userId;
+    const myUserId = req.body.userId;
     const followingUserId = req.params.userId;
 
-    if (currentUserId === followingUserId) {
+    if (myUserId === followingUserId)
       return res.status(403).json({ message: "You cannot follow yourself!" });
-    }
 
     try {
       const followingUser = await User.findById(followingUserId);
-      const me = await User.findById(currentUserId);
+      const me = await User.findById(myUserId);
 
-      if (followingUser.followers.includes(currentUserId)) {
+      // Check if user is private and if i already sent a friend request to that user;
+      if (
+        followingUser.private &&
+        !me.sentFriendRequests.includes(followingUserId)
+      ) {
+        // If the user is private create a notification for that user;
+        // The user will receive a friend request notification;
+        await Notification.create({
+          from: myUserId,
+          to: followingUserId,
+          message: "You have a friend request from: ",
+          kind: 1,
+        });
+
+        //Add following user to my sentFriendRequests array;
+        me.sentFriendRequests.push(followingUserId);
+        followingUser.receivedFriendRequests.push(myUserId);
+
+        await me.save();
+        await followingUser.save();
+
+        const { password, private, ...userDetails } = me;
+
+        return res.status(200).json({
+          message: "Friend request has been sent!",
+          friendRequest: true,
+          user: userDetails,
+        });
+      }
+
+      // Cancel friend request if user is private and i already sent a friend request;
+      if (
+        followingUser.private &&
+        me.sentFriendRequests.includes(followingUserId)
+      ) {
+        await me.updateOne({ $pull: { sentFriendRequests: followingUserId } });
+        await followingUser.updateOne({
+          $pull: { receivedFriendRequests: myUserId },
+        });
+
+        // Remove notification for the user, so he cannot see it;
+        await Notification.deleteOne({
+          from: myUserId,
+          to: followingUser,
+          kind: 1,
+        });
+
+        const { password, private, ...userDetails } = me;
+
+        return res.status(200).json({
+          message: "Friend request has been cancelled!",
+          friendRequest: true,
+          user: userDetails,
+        });
+      }
+
+      if (
+        !followingUser.private &&
+        followingUser.followers.includes(myUserId)
+      ) {
         await me.updateOne({ $pull: { following: followingUserId } });
-        await followingUser.updateOne({ $pull: { followers: currentUserId } });
-        return res.status(200).json({ message: "User has been unfollowed!" });
-      } else {
+        await followingUser.updateOne({
+          $pull: { followers: myUserId },
+        });
+
+        const { password, private, ...userDetails } = me;
+
+        return res.status(200).json({
+          message: "User has been unfollowed!",
+          followRequest: true,
+          user: userDetails,
+        });
+      }
+
+      if (
+        !followingUser.private &&
+        !followingUser.followers.includes(myUserId)
+      ) {
         await me.updateOne({ $push: { following: followingUserId } });
-        await followingUser.updateOne({ $push: { followers: currentUserId } });
-        return res.status(200).json({ message: "User has been followed!" });
+        await followingUser.updateOne({
+          $push: { followers: myUserId },
+        });
+
+        const { password, private, ...userDetails } = me;
+
+        return res
+          .status(200)
+          .json({
+            message: "User has been followed!",
+            followRequest: true,
+            user: userDetails,
+          });
       }
     } catch (err) {
       next(err);
@@ -105,32 +191,42 @@ module.exports = {
     // const {bio, from, lives, position, work, relationship, school, university} = req.body;
     const { coverPicture, profilePicture, ...reqBody } = req.body;
 
-    if (req.files.coverPicture) {
-      reqBody.coverPicture =
-        process.env.BACKEND_UPLOADS + req.files.coverPicture[0].filename;
-    }
-
-    if (req.files.profilePicture) {
-      reqBody.profilePicture =
-        process.env.BACKEND_UPLOADS + req.files.profilePicture[0].filename;
-    }
-
     try {
+      //Create url for coverPicture if it exists
+      if (req.files.coverPicture) {
+        reqBody.coverPicture =
+          process.env.BACKEND_UPLOADS + req.files.coverPicture[0].filename;
+        //Find corresponding album and save photo there
+        const coverPicturesAlbum = await Album.findOne({
+          userId,
+          name: "Cover pictures",
+        });
+        await Photo.create({
+          url: reqBody.coverPicture,
+          userId: userId,
+          albumId: coverPicturesAlbum._id,
+        });
+      }
+      //Create url for coverPicture if it exists
+      if (req.files.profilePicture) {
+        reqBody.profilePicture =
+          process.env.BACKEND_UPLOADS + req.files.profilePicture[0].filename;
+        //Find corresponding album and save photo there
+        const profilePicturesAlbum = await Album.findOne({
+          userId,
+          name: "Profile pictures",
+        });
+        await Photo.create({
+          url: reqBody.profilePicture,
+          userId: userId,
+          albumId: profilePicturesAlbum._id,
+        });
+      }
 
       const updatedUser = await User.findByIdAndUpdate(userId, reqBody, {
         new: true,
       });
-      const {
-        password,
-        events,
-        followers,
-        following,
-        friends,
-        photos,
-        posts,
-        private,
-        ...otherDetails
-      } = updatedUser._doc;
+      const { password, private, ...otherDetails } = updatedUser._doc;
 
       return res.status(200).json(otherDetails);
     } catch (err) {
@@ -159,27 +255,48 @@ module.exports = {
   },
   getPhotos: async (req, res, next) => {
     try {
-      const user = await User.findById(req.params.userId);
+      const photos = await Photo.find({ userId: req.params.userId });
 
-      return res.status(200).json(user.photos);
+      return res.status(200).json(photos);
     } catch (err) {
       next(err);
     }
   },
   getVideos: async (req, res, next) => {
     try {
-      const user = await User.findById(req.params.userId);
+      const videos = await Video.find({ userId: req.params.userId });
 
-      return res.status(200).json(user.videos);
+      return res.status(200).json(videos);
     } catch (err) {
       next(err);
     }
   },
   getAlbums: async (req, res, next) => {
     try {
-      const albums = await Album.find({userId: req.params.userId});
+      const albums = await Album.find({ userId: req.params.userId });
 
       return res.status(200).json(albums);
+    } catch (err) {
+      next(err);
+    }
+  },
+  getNotifications: async (req, res, next) => {
+    const { userId } = req.params;
+    const { read } = req.query;
+
+    try {
+      const mongoQuery = { to: userId };
+
+      if (read) {
+        mongoQuery.read = read;
+      }
+
+      const notifications = await Notification.find(mongoQuery).populate(
+        "from",
+        ["firstName", "lastName", "profilePicture", "_id", "username"]
+      );
+
+      return res.status(200).json(notifications);
     } catch (err) {
       next(err);
     }

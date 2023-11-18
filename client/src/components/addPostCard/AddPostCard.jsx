@@ -22,6 +22,8 @@ export default function AddPostCard({ togglePostCard, file }) {
   const [loading, setLoading] = useState(false);
   const text = useRef();
 
+  console.log(media);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -63,7 +65,10 @@ export default function AddPostCard({ togglePostCard, file }) {
       <div className="addPostCardCenter">
         <div className="addPostCardUser">
           <div className="addPostCardUserImage">
-            <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="profile" />
+            <img
+              src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+              alt="profile"
+            />
           </div>
           <div className="addPostCardUserDetails">
             <p className="addPostCardUsername">
@@ -102,7 +107,11 @@ export default function AddPostCard({ togglePostCard, file }) {
         {media ? (
           <div className="addPostCardImageWrapper">
             <div className="addPostCardImage">
-              <img src={URL.createObjectURL(media)} alt="post" />
+              {media.type.includes("image") ? (
+                <img src={URL.createObjectURL(media)} alt="post" />
+              ) : (
+                <video src={URL.createObjectURL(media)} alt="post" controls autoPlay/>
+              )}
             </div>
             <div
               className="addPostCardImageClose"
@@ -140,8 +149,12 @@ export default function AddPostCard({ togglePostCard, file }) {
             </span>
           </div>
         </div>
-        <button className="addPostCardBtn" onClick={handleSubmit} disabled={loading}>
-          {!loading ? 'Post' : <CircularProgress size='22px'/>}
+        <button
+          className="addPostCardBtn"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {!loading ? "Post" : <CircularProgress size="22px" />}
         </button>
       </div>
     </div>

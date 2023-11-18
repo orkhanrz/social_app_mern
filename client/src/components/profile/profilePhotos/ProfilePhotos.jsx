@@ -6,7 +6,7 @@ export default function ProfilePhotos({ photos }) {
 
   return (
     <div className="profilePhotosBottom">
-      {photos.map((p) => {
+      {photos?.map((p) => {
         return (
           <Link to={`/${username}/photos/${p._id}`} className="profilePhotosPhoto" key={p._id}>
             <img src={process.env.REACT_APP_BACKEND_URL + p.url} alt="photos item" />

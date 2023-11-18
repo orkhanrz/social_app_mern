@@ -13,7 +13,7 @@ import {
 
 import EditProfile from "../editProfile/EditProfile";
 import Modal from "../../modal/Modal";
-import FollowBtn from '../followBtn/FollowBtn';
+import FollowBtn from "../followBtn/FollowBtn";
 
 export default function ProfileTop() {
   const { pathname } = useLocation();
@@ -96,6 +96,23 @@ export default function ProfileTop() {
               </div>
             )}
           </div>
+          {user.sentFriendRequests.includes(me._id) ? (
+            <div className="profileInfoFriendRequest">
+              <h3 className="profileInfoFriendRequestMessage">
+                {user.firstName} sent you a friend request
+              </h3>
+              <div className="profileInfoFriendRequestActions">
+                <button className="profileInfoFriendRequestAccept">
+                  Confirm request
+                </button>
+                <button className="profileInfoFriendRequestDecline">
+                  Delete request
+                </button>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
           <hr />
           <div className="profileInfoBottom">
             <div className="profileLinks">
