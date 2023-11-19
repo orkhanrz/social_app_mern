@@ -174,13 +174,57 @@ module.exports = {
 
         const { password, private, ...userDetails } = me;
 
+        return res.status(200).json({
+          message: "User has been followed!",
+          followRequest: true,
+          user: userDetails,
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  },
+  removeFriend: async (req, res, next) => {
+    const { userId: friendId } = req.params;
+    const { userId: myId } = req.body;
+
+    try {
+      await User.findByIdAndUpdate(friendId, { $pull: { friends: myId } });
+      await User.findByIdAndUpdate(myId, { $pull: { friends: friendId } });
+
+      res.status(200).json({ message: "User has been removed from friends!" });
+    } catch (err) {
+      next(err);
+    }
+  },
+  respondRequest: async (req, res, next) => {
+    const { userId: senderId } = req.params;
+    const { userId: myId, accept } = req.body;
+
+    try {
+      if (accept) {
+        await User.findByIdAndUpdate(myId, {
+          $pull: { receivedFriendRequests: senderId },
+          $push: { friends: senderId },
+        });
+        await User.findByIdAndUpdate(senderId, {
+          $pull: { sentFriendRequests: myId },
+          $push: { friends: myId },
+        });
+
         return res
           .status(200)
-          .json({
-            message: "User has been followed!",
-            followRequest: true,
-            user: userDetails,
-          });
+          .json({ message: "User has been added to friends." });
+      } else {
+        await User.findByIdAndUpdate(myId, {
+          $pull: { receivedFriendRequests: senderId },
+        });
+        await User.findByIdAndUpdate(senderId, {
+          $pull: { sentFriendRequests: myId },
+        });
+        return res.status(200).json({
+          message: "User request has been rejected.",
+        });
       }
     } catch (err) {
       next(err);

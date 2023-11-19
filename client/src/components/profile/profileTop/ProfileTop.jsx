@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams, useLocation, useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
+import axios from "axios";
 import "./profileTop.css";
 
 import {
@@ -18,9 +19,69 @@ import FollowBtn from "../followBtn/FollowBtn";
 export default function ProfileTop() {
   const { pathname } = useLocation();
   const { username } = useParams();
-  const { user: me } = useContext(AuthContext);
   const { results: user } = useLoaderData();
+  const { user: me } = useContext(AuthContext);
   const [editProfile, setEditProfile] = useState(false);
+  const [isSentRequest, setIsSentRequest] = useState(
+    user.receivedFriendRequests.includes(me._id)
+  );
+  const [isReceivedRequest, setIsReceivedRequest] = useState(
+    user.sentFriendRequests.includes(me._id)
+  );
+  const [isFriend, setIsFriend] = useState(user.friends.includes(me._id));
+  const [isFollowed, setIsFollowed] = useState(user.followers.includes(me._id));
+
+  useEffect(() => {
+    setIsSentRequest(user.receivedFriendRequests.includes(me._id));
+    setIsReceivedRequest(user.sentFriendRequests.includes(me._id));
+    setIsFriend(user.friends.includes(me._id));
+    setIsFollowed(user.followers.includes(me._id));
+  }, [user, me]);
+
+  const respondRequest = async (accept) => {
+    try {
+      await axios.post(`/users/${user._id}/respond_request`, {
+        userId: me._id,
+        accept: accept,
+      });
+
+      setIsReceivedRequest(false);
+      setIsFriend(accept);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const removeFriend = async () => {
+    try {
+      await axios.post(`/users/${user._id}/remove_friend`, {
+        userId: me._id,
+      });
+
+      setIsReceivedRequest(false);
+      setIsFriend(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleFollow = async () => {
+    try {
+      const res = await axios.post(`/users/${user._id}/follow`, {
+        userId: me._id,
+      });
+
+      if (res.data.followRequest) {
+        setIsFollowed(!isFollowed);
+      }
+
+      if (res.data.friendRequest) {
+        setIsSentRequest(!isSentRequest);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const toggleEditProfile = () => {
     setEditProfile(!editProfile);
@@ -53,7 +114,16 @@ export default function ProfileTop() {
             </div>
             {me.username !== user.username ? (
               <div className="profileInfoTopRight">
-                <FollowBtn user={user} me={me} />
+                <FollowBtn
+                  user={user}
+                  isSentRequest={isSentRequest}
+                  isReceivedRequest={isReceivedRequest}
+                  isFriend={isFriend}
+                  isFollowed={isFollowed}
+                  respondRequest={respondRequest}
+                  removeFriend={removeFriend}
+                  handleFollow={handleFollow}
+                />
 
                 <button className="profileInfoTopRightBtn">
                   <span className="profileInfoTopRightBtnIcon">
@@ -96,7 +166,7 @@ export default function ProfileTop() {
               </div>
             )}
           </div>
-          {user.sentFriendRequests.includes(me._id) ? (
+          {isReceivedRequest ? (
             <div className="profileInfoFriendRequest">
               <h3 className="profileInfoFriendRequestMessage">
                 {user.firstName} sent you a friend request

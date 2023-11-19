@@ -79,7 +79,7 @@ export default function Videos() {
                   <div key={v._id} className="photosItem">
                     <div className="photosItemImg">
                       <video
-                        src={process.env.REACT_APP_BACKEND_URL + v}
+                        src={process.env.REACT_APP_BACKEND_URL + v.url}
                         alt=""
                       />
                     </div>

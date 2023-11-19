@@ -21,6 +21,10 @@ router.post('/search', userController.search);
 
 router.post("/:userId/follow", userController.followUser);
 
+router.post("/:userId/remove_friend", userController.removeFriend);
+
+router.post('/:userId/respond_request', userController.respondRequest);
+
 router.put(
   "/:userId/edit",
   upload.fields([{ name: "profilePicture" }, { name: "coverPicture" }]),

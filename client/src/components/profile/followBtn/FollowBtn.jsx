@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 import {
   PersonAdd,
@@ -7,34 +6,21 @@ import {
   SubscriptionsOutlined,
 } from "@mui/icons-material";
 
-export default function FollowBtn({ user, me }) {
+export default function FollowBtn({
+  user,
+  isSentRequest,
+  isReceivedRequest,
+  isFriend,
+  isFollowed,
+  respondRequest,
+  removeFriend,
+  handleFollow,
+}) {
   const [openActions, setOpenActions] = useState(false);
-  const [isSentRequest, setIsSentRequest] = useState(user.receivedFriendRequests.includes(me._id));
-  const [isReceivedRequest, setIsReceivedRequest] = useState(user.sentFriendRequests.includes(me._id));
-  const [isFriend, setIsFriend] = useState(user.friends.includes(me._id));
-  const [isFollowed, setIsFollowed] = useState(user.followers.includes(me._id));
-
-  const handleFollow = async () => {
-    try {
-      const res = await axios.post(`/users/${user._id}/follow`, {
-        userId: me._id,
-      });
-
-      if (res.data.followRequest) {
-        setIsFollowed(!isFollowed);
-      }
-
-      if (res.data.friendRequest) {
-        setIsSentRequest(!isSentRequest);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   if (isFriend) {
     return (
-      <button className="profileInfoTopRightBtn blue" onClick={handleFollow}>
+      <button className="profileInfoTopRightBtn blue" onClick={removeFriend}>
         <span className="profileInfoTopRightBtnIcon">
           <PersonRemove />
         </span>
@@ -56,17 +42,30 @@ export default function FollowBtn({ user, me }) {
 
   if (!isFriend && isReceivedRequest) {
     return (
-      <div className="profileInfoTopRightBtn blue" onClick={handleFollow}>
+      <div className="profileInfoTopRightBtn blue">
         <span className="profileInfoTopRightBtnIcon">
           <PersonAdd />
         </span>
-        <span className="profileInfoTopRightBtnText" onClick={() => setOpenActions(!openActions)}>Respond</span>
+        <span
+          className="profileInfoTopRightBtnText"
+          onClick={() => setOpenActions(!openActions)}
+        >
+          Respond
+        </span>
         {openActions ? (
           <div className="friendRequestRespondModal">
-            <button className="friendRequestModalConfirm">
+            <button
+              className="friendRequestModalConfirm"
+              onClick={() => respondRequest(true)}
+            >
               Confirm request
             </button>
-            <button className="friendRequestModalReject">Delete request</button>
+            <button
+              className="friendRequestModalReject"
+              onClick={() => respondRequest(false)}
+            >
+              Delete request
+            </button>
           </div>
         ) : (
           ""
