@@ -1,19 +1,19 @@
-import "./photos.css";
 import {  useEffect, useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
 import axios from "axios";
+import "./photos.css";
+
+import { MoreHoriz } from "@mui/icons-material";
 
 import Topbar from "../../components/topbar/Topbar";
 import ProfileTop from "../../components/profile/profileTop/ProfileTop";
 import Modal from "../../components/modal/Modal";
 import AddPostCard from "../../components/addPostCard/AddPostCard";
 
-import { MoreHoriz } from "@mui/icons-material";
-
 export default function Photos() {
+  const { results: user } = useLoaderData();
   const { username } = useParams();
   const { pathname } = useLocation();
-  const { results: user } = useLoaderData();
   const [photos, setPhotos] = useState([]);
   const [postCard, setPostCard] = useState(false);
   const [file, setFile] = useState(null);
@@ -66,20 +66,10 @@ export default function Photos() {
           </div>
           <div className="photosPageBottom">
             <div className="photosPageLinks">
-              <Link
-                to={`/${username}/photos`}
-                className={`photosPageLink ${
-                  pathname === `/${username}/photos` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/photos`} className={`photosPageLink ${ pathname === `/${username}/photos` ? "active" : "" }`} >
                 {user.firstName}'s photos
               </Link>
-              <Link
-                to={`/${username}/albums`}
-                className={`photosPageLink ${
-                  pathname === `/${username}/albums` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/albums`} className={`photosPageLink ${ pathname === `/${username}/albums` ? "active" : "" }`} >
                 Albums
               </Link>
             </div>
@@ -100,13 +90,7 @@ export default function Photos() {
           </div>
         </div>
       </div>
-      {postCard ? (
-        <Modal>
-          <AddPostCard file={file} togglePostCard={togglePostCard} />
-        </Modal>
-      ) : (
-        ""
-      )}
+      {postCard ? <Modal><AddPostCard file={file} togglePostCard={togglePostCard} /></Modal> : ""}
     </>
   );
 }

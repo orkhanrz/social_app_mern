@@ -1,12 +1,12 @@
-import "./friends.css";
 import {  useEffect } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
 import axios from "axios";
+import "./friends.css";
+
+import { MoreHoriz } from "@mui/icons-material";
 
 import Topbar from "../../components/topbar/Topbar";
 import ProfileTop from "../../components/profile/profileTop/ProfileTop";
-
-import { MoreHoriz } from "@mui/icons-material";
 
 export default function Photos() {
   const { username } = useParams();
@@ -45,26 +45,14 @@ export default function Photos() {
           </div>
           <div className="photosPageBottom">
             <div className="photosPageLinks">
-              <Link
-                to={`/${username}/friends`}
-                className={`photosPageLink ${
-                  pathname === `/${username}/friends` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/friends`} className={`photosPageLink ${pathname === `/${username}/friends` ? "active" : "" }`}>
                 Friends
               </Link>
-              <Link
-                to={`/${username}/followings`}
-                className={`photosPageLink ${
-                  pathname === `/${username}/followings` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/followings`} className={`photosPageLink ${ pathname === `/${username}/followings` ? "active" : "" }`}>
                 Following
               </Link>
             </div>
-            <div className="photosItems">
-              
-            </div>
+            <div className="photosItems"></div>
           </div>
         </div>
       </div>

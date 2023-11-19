@@ -1,8 +1,8 @@
-import "./profile.css";
-import { useParams, useLoaderData } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { useParams, useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
+import "./profile.css";
 
 import { Tune } from "@mui/icons-material";
 
@@ -53,24 +53,12 @@ export default function Profile() {
           <div className="profilePageContainer">
             <div className="profileFeedLeft">
               <ProfileIntro user={user} />
-              <ProfileCard
-                title="Photos"
-                button="See all photos"
-                link={`/${username}/photos`}
-              >
+              <ProfileCard title="Photos" button="See all photos" link={`/${username}/photos`}>
                 <ProfilePhotos photos={photos}/>
               </ProfileCard>
-              <ProfileCard
-                title="Friends"
-                button="See all friends"
-                link={`/${username}/friends`}
-              />
+              <ProfileCard title="Friends" button="See all friends" link={`/${username}/friends`}/>
               {user.events.length ? (
-                <ProfileCard
-                  title="Life events"
-                  button="See all"
-                  link={`/${username}/events`}
-                >
+                <ProfileCard title="Life events" button="See all" link={`/${username}/events`}>
                   <ProfileEvents />
                 </ProfileCard>
               ) : (
@@ -92,11 +80,7 @@ export default function Profile() {
                 </div>
               </div>
               <div className="profileFeedRightPosts">
-                {posts.length
-                  ? posts.map((post) => {
-                      return <Post user={user} post={post} key={post._id} />;
-                    })
-                  : ""}
+                {posts.length ? posts.map((post) => <Post user={user} post={post} key={post._id} />) : ""}
               </div>
             </div>
           </div>

@@ -1,20 +1,20 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import "./login.css";
 import { AuthContext } from "../../context/AuthContext";
-
-import SignUpForm from "../../components/signUpForm/SignUpForm";
-import Modal from "../../components/modal/Modal";
 import axios from "axios";
+import "./login.css";
 
 import { CircularProgress } from "@mui/material";
 
+import SignUpForm from "../../components/signUpForm/SignUpForm";
+import Modal from "../../components/modal/Modal";
+
 export default function Login() {
   const navigate = useNavigate();
+  const { dispatch, isLoading } = useContext(AuthContext);
+  const [modal, setModal] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
   const [formErrors, setFormErrors] = useState({ email: "", password: "" });
-  const [modal, setModal] = useState(false);
-  const { dispatch, isLoading } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormErrors(prevState => ({...prevState, [e.target.name]: ''}));
@@ -88,13 +88,7 @@ export default function Login() {
           </div>
         </div>
 
-        {modal ? (
-          <Modal>
-            <SignUpForm toggleModal={toggleModal} />
-          </Modal>
-        ) : (
-          ""
-        )}
+        {modal ? <Modal><SignUpForm toggleModal={toggleModal} /></Modal> : ""}
       </div>
     </div>
   );

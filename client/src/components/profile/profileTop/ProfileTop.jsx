@@ -22,12 +22,8 @@ export default function ProfileTop() {
   const { results: user } = useLoaderData();
   const { user: me } = useContext(AuthContext);
   const [editProfile, setEditProfile] = useState(false);
-  const [isSentRequest, setIsSentRequest] = useState(
-    user.receivedFriendRequests.includes(me._id)
-  );
-  const [isReceivedRequest, setIsReceivedRequest] = useState(
-    user.sentFriendRequests.includes(me._id)
-  );
+  const [isSentRequest, setIsSentRequest] = useState(user.receivedFriendRequests.includes(me._id));
+  const [isReceivedRequest, setIsReceivedRequest] = useState(user.sentFriendRequests.includes(me._id));
   const [isFriend, setIsFriend] = useState(user.friends.includes(me._id));
   const [isFollowed, setIsFollowed] = useState(user.followers.includes(me._id));
 
@@ -40,11 +36,7 @@ export default function ProfileTop() {
 
   const respondRequest = async (accept) => {
     try {
-      await axios.post(`/users/${user._id}/respond_request`, {
-        userId: me._id,
-        accept: accept,
-      });
-
+      await axios.post(`/users/${user._id}/respond_request`, { userId: me._id, accept: accept });
       setIsReceivedRequest(false);
       setIsFriend(accept);
     } catch (err) {
@@ -54,10 +46,7 @@ export default function ProfileTop() {
 
   const removeFriend = async () => {
     try {
-      await axios.post(`/users/${user._id}/remove_friend`, {
-        userId: me._id,
-      });
-
+      await axios.post(`/users/${user._id}/remove_friend`, { userId: me._id })
       setIsReceivedRequest(false);
       setIsFriend(false);
     } catch (err) {
@@ -67,9 +56,7 @@ export default function ProfileTop() {
 
   const handleFollow = async () => {
     try {
-      const res = await axios.post(`/users/${user._id}/follow`, {
-        userId: me._id,
-      });
+      const res = await axios.post(`/users/${user._id}/follow`, { userId: me._id });
 
       if (res.data.followRequest) {
         setIsFollowed(!isFollowed);
@@ -91,16 +78,10 @@ export default function ProfileTop() {
     <>
       <div className="profileImages">
         <div className="profileCoverImage">
-          <img
-            src={process.env.REACT_APP_BACKEND_URL + user.coverPicture}
-            alt="cover"
-          />
+          <img src={process.env.REACT_APP_BACKEND_URL + user.coverPicture} alt="cover" />
         </div>
         <div className="profileUserImage">
-          <img
-            src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
-            alt="user"
-          />
+          <img src={process.env.REACT_APP_BACKEND_URL + user.profilePicture} alt="user" />
         </div>
       </div>
       <div className="profileInfo">
@@ -147,10 +128,7 @@ export default function ProfileTop() {
                     Add to story
                   </span>
                 </button>
-                <button
-                  className="profileInfoTopRightBtn"
-                  onClick={toggleEditProfile}
-                >
+                <button className="profileInfoTopRightBtn" onClick={toggleEditProfile}>
                   <span className="profileInfoTopRightBtnIcon">
                     <Edit />
                   </span>
@@ -172,10 +150,10 @@ export default function ProfileTop() {
                 {user.firstName} sent you a friend request
               </h3>
               <div className="profileInfoFriendRequestActions">
-                <button className="profileInfoFriendRequestAccept">
+                <button className="profileInfoFriendRequestAccept" onClick={() => respondRequest(true)}>
                   Confirm request
                 </button>
-                <button className="profileInfoFriendRequestDecline">
+                <button className="profileInfoFriendRequestDecline" onClick={() => respondRequest(false)}>
                   Delete request
                 </button>
               </div>
@@ -186,43 +164,19 @@ export default function ProfileTop() {
           <hr />
           <div className="profileInfoBottom">
             <div className="profileLinks">
-              <Link
-                to={`/${username}`}
-                className={`profileLink ${
-                  pathname === `/${username}` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}`} className={`profileLink ${ pathname === `/${username}` ? "active" : "" }`}>
                 Posts
               </Link>
-              <span
-                className={`profileLink ${
-                  pathname === `/${username}/about` ? "active" : ""
-                }`}
-              >
+              <span className={`profileLink ${ pathname === `/${username}/about` ? "active" : "" }`}>
                 About
               </span>
-              <Link
-                to={`/${username}/friends`}
-                className={`profileLink ${
-                  pathname === `/${username}/friends` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/friends`} className={`profileLink ${ pathname === `/${username}/friends` ? "active" : "" }`}>
                 Friends
               </Link>
-              <Link
-                to={`/${username}/photos`}
-                className={`profileLink ${
-                  pathname === `/${username}/photos` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/photos`} className={`profileLink ${ pathname === `/${username}/photos` ? "active" : "" }`}>
                 Photos
               </Link>
-              <Link
-                to={`/${username}/videos`}
-                className={`profileLink ${
-                  pathname === `/${username}/videos` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/videos`} className={`profileLink ${ pathname === `/${username}/videos` ? "active" : "" }`}>
                 Videos
               </Link>
             </div>
@@ -234,13 +188,7 @@ export default function ProfileTop() {
           </div>
         </div>
       </div>
-      {editProfile ? (
-        <Modal>
-          <EditProfile toggleEditProfile={toggleEditProfile} />
-        </Modal>
-      ) : (
-        ""
-      )}
+      {editProfile ? <Modal><EditProfile toggleEditProfile={toggleEditProfile} /></Modal> : ""}
     </>
   ) : (
     ""

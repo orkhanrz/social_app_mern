@@ -2,12 +2,12 @@ import {  useEffect, useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
 import axios from "axios";
 
+import { MoreHoriz } from "@mui/icons-material";
+
 import Topbar from "../../components/topbar/Topbar";
 import ProfileTop from "../../components/profile/profileTop/ProfileTop";
-import Modal from "../../components/modal/Modal";
-import AddPostCard from "../../components/addPostCard/AddPostCard";
-
-import { MoreHoriz } from "@mui/icons-material";
+import AddPostCard from '../../components/addPostCard/AddPostCard';
+import Modal from "../../components/modal/Modal"; 
 
 export default function Videos() {
   const { username } = useParams();
@@ -64,12 +64,7 @@ export default function Videos() {
           </div>
           <div className="photosPageBottom">
             <div className="photosPageLinks">
-              <Link
-                to={`/${username}/videos`}
-                className={`photosPageLink ${
-                  pathname === `/${username}/videos` ? "active" : ""
-                }`}
-              >
+              <Link to={`/${username}/videos`} className={`photosPageLink ${ pathname === `/${username}/videos` ? "active" : "" }`} >
                 {user.firstName}'s videos
               </Link>
             </div>
@@ -90,13 +85,7 @@ export default function Videos() {
           </div>
         </div>
       </div>
-      {postCard ? (
-        <Modal>
-          <AddPostCard file={file} togglePostCard={togglePostCard} />
-        </Modal>
-      ) : (
-        ""
-      )}
+      {postCard ? (<Modal><AddPostCard file={file} togglePostCard={togglePostCard} /></Modal>) : ""}
     </>
   );
 }
