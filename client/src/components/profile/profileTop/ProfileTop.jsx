@@ -23,12 +23,8 @@ export default function ProfileTop() {
   const { results: user } = useLoaderData();
   const { user: me } = useContext(AuthContext);
   const [editProfile, setEditProfile] = useState(false);
-  const [isSentRequest, setIsSentRequest] = useState(
-    user.receivedFriendRequests.includes(me._id)
-  );
-  const [isReceivedRequest, setIsReceivedRequest] = useState(
-    user.sentFriendRequests.includes(me._id)
-  );
+  const [isSentRequest, setIsSentRequest] = useState(user.receivedFriendRequests.includes(me._id));
+  const [isReceivedRequest, setIsReceivedRequest] = useState(user.sentFriendRequests.includes(me._id));
   const [isFriend, setIsFriend] = useState(user.friends.includes(me._id));
   const [isFollowed, setIsFollowed] = useState(user.followers.includes(me._id));
   const [messenger, setMessenger] = useState({ state: false, user: user });

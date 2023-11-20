@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./topbarNotifications.css";
 
 import axios from "axios";
@@ -8,20 +8,20 @@ import { MoreHoriz, Notifications } from "@mui/icons-material";
 import TimeAgo from "react-timeago";
 
 export default function TopbarNotifications({ notificationsMenu, user }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { user: me } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [fetchUrl, setFetchUrl] = useState(`/users/${me._id}/notifications`);
 
-  const readNotification = async (notificationId) => {
-    try {
-      const res = await axios.put(`/users/notifications/${notificationId}`);
-      setNotifications(res.data);
-      navigate(`/${res.data.from.username}`);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const readNotification = async (notificationId) => {
+  //   try {
+  //     const res = await axios.put(`/users/notifications/${notificationId}`);
+  //     setNotifications(res.data);
+  //     navigate(`/${res.data.from.username}`);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const fetchNotifications = async (url = `/users/${me._id}/notifications`) => {
     setFetchUrl(url);
@@ -36,7 +36,7 @@ export default function TopbarNotifications({ notificationsMenu, user }) {
 
   useEffect(() => {
     fetchNotifications();
-  }, [me._id]);
+  });
 
   return (
     <div className={`notifications card ${notificationsMenu ? "active" : ""}`}>

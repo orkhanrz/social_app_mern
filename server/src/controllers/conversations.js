@@ -26,10 +26,10 @@ module.exports = {
     }
   },
   createConversation: async (req, res, next) => {
-    try {
-      let conversation = await Conversation.findOne({ users: { $all: [req.params.userId, req.body.userId] } });
+    const users = [req.params.userId, req.body.userId];
 
-      console.log(conversation);
+    try {
+      let conversation = await Conversation.findOne({ users: { $all: users } });
 
       if (!conversation) {
         const newConversation = new Conversation({ users });

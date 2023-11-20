@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import TimeAgo from "react-timeago";
 import axios from "axios";
 import "./messengerBottom.css";
+import { io } from 'socket.io-client';
 
 import {
   AddCircle,
@@ -19,7 +20,32 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
   const { user: me } = useContext(AuthContext);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-  const messageRef = useRef(null);
+  const scrollRef = useRef();
+  let socket = useRef(io(process.env.REACT_APP_BACKEND_URL));
+
+  useEffect(() => {
+
+    const handleMessage = (message) => {
+      console.log(messenger);
+      console.log(message);
+
+      message.from === messenger.user._id && setMessages(prevState => [...prevState, message]);
+    } 
+
+    socket.current.on('message', handleMessage);
+
+    // return () => {
+    //   socket.current.off('message', handleMessage);
+
+    //   socket.current.disconnect();
+    // }
+  }, []);
+
+  useEffect(() => {
+    socket.current.on('connect', () => {
+      socket.current.emit('registerUser', {socketId: socket.current.id, userId: me._id});
+    })
+  }, [me]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -27,7 +53,6 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
         const res = await axios.get("/messages/" + messenger.conversationId);
 
         setMessages(res.data);
-        messageRef.current?.scrollIntoView({ behavior: "smooth" });
       } catch (err) {
         console.log(err);
       }
@@ -36,6 +61,11 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
     fetchMessages();
   }, [messenger]);
 
+  //Scroll to bottom when new message appears
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({behavior: 'smooth'});
+  }, [messages]);
+
   const sendMessage = async (e) => {
     e.preventDefault();
     const message = {
@@ -43,10 +73,14 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
       to: messenger.user._id,
       message: input,
       conversationId: messenger.conversationId,
+      date: Date.now()
     };
 
     try {
-      await axios.post("/messages", message);
+      const res = await axios.post("/messages", message);
+      setMessages(prevState => [...prevState, res.data]);
+      setInput('');
+      socket.current.emit('message', res.data);
     } catch (err) {
       console.log(err);
     }
@@ -110,11 +144,11 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
           </div>
           {messages.map((m) => {
             return (
-              <div className="messengerBottomMessagesItem">
+              <div key={m._id} className="messengerBottomMessagesItem">
                 <p className="messengerBottomMessagesItemDate">
                   <TimeAgo date={m.date} />
                 </p>
-                <div className="messengerBottomMessagesItemWrapper" ref={messageRef}>
+                <div className="messengerBottomMessagesItemWrapper" ref={scrollRef}>
                   {m.from === messenger.user._id ? (
                     <div className="messengerBottomMessagesItemSender">
                       <img

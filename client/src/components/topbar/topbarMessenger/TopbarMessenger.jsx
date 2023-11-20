@@ -53,9 +53,16 @@ export default function TopbarMessenger({ messengerMenu, toggleMessenger }) {
       </div>
       <div className="topbarMessengerConversations">
         {conversations.map((conversation) => {
-          const user = conversation.users.filter(u => u._id !== me._id)[0];
+          const user = conversation.users.filter((u) => u._id !== me._id)[0];
 
-          return <Conversation conversation={conversation} toggleMessenger={toggleMessenger} user={user} />
+          return (
+            <Conversation
+              conversation={conversation}
+              toggleMessenger={toggleMessenger}
+              user={user}
+              key={conversation._id}
+            />
+          );
         })}
       </div>
       <hr />

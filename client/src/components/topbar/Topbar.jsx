@@ -93,7 +93,7 @@ export default function Topbar() {
                 inputData.map((u) => {
                   return (
                     <Link to={`/${u.username}`} className="topbarSearchBoxItem">
-                      <div className="topbarSearchBoxUserImage">
+                      <div className="topbarSearchBoxUserImage" key={u._id}>
                         <img
                           src={
                             process.env.REACT_APP_BACKEND_URL + u.profilePicture
