@@ -11,7 +11,6 @@ import {
   ThumbUp,
 } from "@mui/icons-material";
 import axios from "axios";
-import { config } from "../../config";
 
 import TimeAgo from "react-timeago";
 import Modal from "../modal/Modal";
@@ -123,11 +122,11 @@ function Post({ post, user, hideInput, closeModal }) {
           {post.media &&
             (post.media.mediaType === "image" ? (
               <div className="postCenterMedia">
-                <img src={config.backend_url + post.media.url} alt="" />
+                <img src={process.env.REACT_APP_BACKEND_URL + post.media.url} alt="" />
               </div>
             ) : (
               <div className="postCenterMedia">
-                <video src={config.backend_url + post.media.url} alt="" controls/>
+                <video src={process.env.REACT_APP_BACKEND_URL + post.media.url} alt="" controls/>
               </div>
             ))}
 

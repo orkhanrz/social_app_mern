@@ -119,6 +119,9 @@
   place-items: center;
   cursor: pointer;
 }
+.topbarRightItem.active {
+  color: var(--blue-clr);
+}
 .topbarRightItem > * {
   font-size: var(--fs-600) !important;
   pointer-events: none;

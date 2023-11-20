@@ -1,5 +1,5 @@
 import "./topbar.css";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
@@ -19,6 +19,8 @@ import {
 
 import TopbarAccount from "./topbarAccount/TopbarAccount";
 import TopbarNotifications from "./topbarNotifications/TopbarNotifications";
+import TopbarMessenger from "./topbarMessenger/TopbarMessenger";
+import MessengerBottom from "../messengerBottom/MessengerBottom";
 
 export default function Topbar() {
   const [inputActive, setInputActive] = useState(false);
@@ -26,10 +28,13 @@ export default function Topbar() {
   const [inputData, setInputData] = useState([]);
   const [accountMenu, setAccountMenu] = useState(false);
   const [notificationsMenu, setNotificationsMenu] = useState(false);
-  
-  const inputRef = useRef();
-  const accountMenuRef = useRef();
-  const notificationsMenuRef = useRef();
+  const [messengerMenu, setMessengerMenu] = useState(false);
+  const [messenger, setMessenger] = useState({state: false, user: null, conversationId: ''});
+
+  const toggleMessenger = (state, user, conversationId) => {
+    setMessengerMenu(false);
+    setMessenger({state, user, conversationId});
+  };
 
   const searchHandler = async (query) => {
     setInputLoading(true);
@@ -42,22 +47,6 @@ export default function Topbar() {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    document.addEventListener("click", (e) => {
-      // if (e.target !== accountMenuRef.current) {
-      //   setAccountMenu(false);
-      // }
-
-      // if (e.target !== notificationsMenuRef.current) {
-      //   setNotificationsMenu(false);
-      // }
-
-      if (e.target !== inputRef.current) {
-        setInputActive(false);
-      }
-    });
-  });
 
   return (
     <div className="topbar bs">
@@ -72,6 +61,7 @@ export default function Topbar() {
               className={`topbarInputWrapperBack ${
                 inputActive ? "active" : ""
               }`}
+              onClick={() => setInputActive(false)}
             >
               <KeyboardBackspace />
             </span>
@@ -89,7 +79,6 @@ export default function Topbar() {
               name="search"
               id="search"
               placeholder="Search Social"
-              ref={inputRef}
               onChange={(e) => searchHandler(e.target.value)}
             />
           </div>
@@ -145,26 +134,32 @@ export default function Topbar() {
           <span className="topbarRightItem">
             <List />
           </span>
-          <span className="topbarRightItem">
+          <span
+            className={`topbarRightItem ${messengerMenu ? "active" : ""}`}
+            onClick={() => setMessengerMenu(!messengerMenu)}
+          >
             <Message />
           </span>
           <span
-            className="topbarRightItem"
+            className={`topbarRightItem ${notificationsMenu ? "active" : ""}`}
             onClick={() => setNotificationsMenu(!notificationsMenu)}
-            ref={notificationsMenuRef}
           >
             <Notifications />
           </span>
           <span
-            className="topbarRightItem"
+            className={`topbarRightItem ${accountMenu ? "active" : ""}`}
             onClick={() => setAccountMenu(!accountMenu)}
-            ref={accountMenuRef}
           >
             <Person />
           </span>
         </div>
-        <TopbarNotifications notificationsMenu={notificationsMenu} />
-        <TopbarAccount accountMenu={accountMenu} />
+        <TopbarMessenger
+          messengerMenu={messengerMenu}
+          toggleMessenger={toggleMessenger}
+        />
+        {accountMenu ? <TopbarAccount accountMenu={accountMenu} /> : ""}
+        {notificationsMenu ? <TopbarNotifications notificationsMenu={notificationsMenu} /> : ''}
+        {messenger.state ? <MessengerBottom messenger={messenger} toggleMessenger={toggleMessenger} /> : ""}
       </div>
     </div>
   );

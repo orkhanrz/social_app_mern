@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import "./leftbar.css";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import {config} from '../../config';
 
 export default function Leftbar() {
   const { user } = useContext(AuthContext);
@@ -12,7 +11,7 @@ export default function Leftbar() {
       <Link to={`/${user.username}`} className="leftbarItem">
         <span className="leftbarItemIcon uncoloured">
           <img
-            src={config.backend_url + user.profilePicture}
+            src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
             alt="profile"
           />
         </span>
