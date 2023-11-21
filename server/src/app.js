@@ -38,22 +38,21 @@ app.use(errorMiddleware);
 let users = [];
 
 io.on("connection", (socket) => {
-  console.log('connection:',users);
-  //Add connected user to connected users array;
-  socket.on('registerUser', (user) => {
-    !users.find(u => user.userId === u.userId) && users.push(user);
+  //Save user in users array
+  socket.on('join', ({userId, socketId}) => {
+    const user = users.find(u => u.userId === userId);
+    !user && users.push({userId, socketId});
   });
 
+  //Emit message
   socket.on('message', message => {
-    const user = users.find(u => u.userId === message.to);
-
+    const user = users.find(u => message.to === u.userId);
     user && io.to(user.socketId).emit('message', message);
   });
 
-  //Remove user from connected users array;
+  //Remove user from users array
   socket.on('disconnect', () => {
-    users = users.filter(u => u.socketId === socket.id);
-    console.log('disconnection:', users);
+    users = users.filter(u => u.socketId !== socket.id);
   });
 });
 

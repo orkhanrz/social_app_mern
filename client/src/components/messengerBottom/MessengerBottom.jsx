@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import TimeAgo from "react-timeago";
 import axios from "axios";
 import "./messengerBottom.css";
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
 import {
   AddCircle,
@@ -17,35 +17,46 @@ import {
 } from "@mui/icons-material";
 
 export default function MessengerBottom({ messenger, toggleMessenger }) {
-  const { user: me } = useContext(AuthContext);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const { user: me } = useContext(AuthContext);
+  const [socket, setSocket] = useState();
   const scrollRef = useRef();
-  let socket = useRef(io(process.env.REACT_APP_BACKEND_URL));
 
   useEffect(() => {
-
-    const handleMessage = (message) => {
-      console.log(messenger);
-      console.log(message);
-
-      message.from === messenger.user._id && setMessages(prevState => [...prevState, message]);
-    } 
-
-    socket.current.on('message', handleMessage);
-
-    // return () => {
-    //   socket.current.off('message', handleMessage);
-
-    //   socket.current.disconnect();
-    // }
+    setSocket(io(process.env.REACT_APP_BACKEND_URL, {autoConnect: true}));
   }, []);
 
   useEffect(() => {
-    socket.current.on('connect', () => {
-      socket.current.emit('registerUser', {socketId: socket.current.id, userId: me._id});
-    })
-  }, [me]);
+    const joinUser = () => {
+      socket.emit('join', ({userId: me._id, socketId: socket.id}));
+    }
+
+    socket?.on('connect', joinUser);
+
+    return () => {
+      socket?.disconnect();
+    };
+  }, [socket, me]);
+
+  useEffect(() => {
+    const receiveMessage = (message) => {
+      if (message.from === messenger.user._id){
+        setMessages(prevState => [...prevState, message]);
+      }
+    }
+
+    socket?.on('message', receiveMessage);
+
+    return () => {
+      socket?.disconnect('message', receiveMessage);
+    }
+  }, [messenger, socket]);
+
+  //Scroll to bottom when new message appears
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -61,11 +72,6 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
     fetchMessages();
   }, [messenger]);
 
-  //Scroll to bottom when new message appears
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({behavior: 'smooth'});
-  }, [messages]);
-
   const sendMessage = async (e) => {
     e.preventDefault();
     const message = {
@@ -73,14 +79,14 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
       to: messenger.user._id,
       message: input,
       conversationId: messenger.conversationId,
-      date: Date.now()
+      date: Date.now(),
     };
 
     try {
       const res = await axios.post("/messages", message);
-      setMessages(prevState => [...prevState, res.data]);
-      setInput('');
-      socket.current.emit('message', res.data);
+      setMessages((prevState) => [...prevState, res.data]);
+      setInput("");
+      socket?.emit('message', res.data);
     } catch (err) {
       console.log(err);
     }
@@ -148,7 +154,10 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
                 <p className="messengerBottomMessagesItemDate">
                   <TimeAgo date={m.date} />
                 </p>
-                <div className="messengerBottomMessagesItemWrapper" ref={scrollRef}>
+                <div
+                  className="messengerBottomMessagesItemWrapper"
+                  ref={scrollRef}
+                >
                   {m.from === messenger.user._id ? (
                     <div className="messengerBottomMessagesItemSender">
                       <img
@@ -186,10 +195,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
             );
           })}
         </div>
-        <form
-          className="messengerBottomActions"
-          onSubmit={sendMessage}
-        >
+        <form className="messengerBottomActions" onSubmit={sendMessage}>
           <span className="messengerBottomActionsBtn">
             <AddCircle />
           </span>
