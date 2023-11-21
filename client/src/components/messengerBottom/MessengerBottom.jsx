@@ -29,6 +29,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
 
   useEffect(() => {
     const joinUser = () => {
+      console.log(socket);
       socket.emit('join', ({userId: me._id, socketId: socket.id}));
     }
 

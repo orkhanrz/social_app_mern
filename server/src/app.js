@@ -1,12 +1,13 @@
 require("dotenv/config");
 const http = require("http");
+const path = require("path");
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const server = http.createServer(app);
 const db = require("./db/db");
-const path = require("path");
 const { Server } = require("socket.io");
-const io = new Server(server, { cors: { origin: process.env.FRONTEND_URL } });
+const io = new Server(server, { cors: { origin: '*' } });
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
@@ -19,6 +20,7 @@ const errorMiddleware = require("./middlewares/error");
 const PORT = process.env.PORT || 8000;
 
 //Middlewares
+app.use(cors());
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
@@ -40,8 +42,11 @@ let users = [];
 io.on("connection", (socket) => {
   //Save user in users array
   socket.on('join', ({userId, socketId}) => {
+    console.log(userId, socketId);
     const user = users.find(u => u.userId === userId);
     !user && users.push({userId, socketId});
+
+    console.log(users);
   });
 
   //Emit message
@@ -53,6 +58,7 @@ io.on("connection", (socket) => {
   //Remove user from users array
   socket.on('disconnect', () => {
     users = users.filter(u => u.socketId !== socket.id);
+    console.log('disconnected:', users);
   });
 });
 
