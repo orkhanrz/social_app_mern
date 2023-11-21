@@ -9,7 +9,7 @@ export default function Conversation({conversation, toggleMessenger, user}) {
     >
       <div className="topbarMessengerConversationImage">
         <img
-          src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+          src={process.env.REACT_APP_BACKEND_PUBLIC_URL + user.profilePicture}
           alt="profile"
         />
       </div>

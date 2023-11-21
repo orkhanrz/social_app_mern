@@ -1,5 +1,6 @@
 .profilePage {
   background-color: var(--gray-clr);
+  padding: 0 16px;
 }
 .profilePageContainer {
   max-width: 1180px;
@@ -35,4 +36,10 @@
 }
 .profileFeedRightPosts::-webkit-scrollbar {
   display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .profileFeedLeft {
+    display: none;
+  }
 }

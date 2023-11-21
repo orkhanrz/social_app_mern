@@ -24,7 +24,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
   const scrollRef = useRef();
 
   useEffect(() => {
-    setSocket(io(process.env.REACT_APP_BACKEND_URL, {autoConnect: true}));
+    setSocket(io(process.env.REACT_APP_SOCKET_URL, {autoConnect: true}));
   }, []);
 
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
             <div className="messengerBottomTopLeftImg">
               <img
                 src={
-                  process.env.REACT_APP_BACKEND_URL +
+                  process.env.REACT_APP_BACKEND_PUBLIC_URL +
                   messenger.user.profilePicture
                 }
                 alt="profile"
@@ -163,7 +163,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
                       <img
                         className="messengerBottomMessagesItemSenderImg"
                         src={
-                          process.env.REACT_APP_BACKEND_URL +
+                          process.env.REACT_APP_BACKEND_PUBLIC_URL +
                           messenger.user.profilePicture
                         }
                         alt="profile"
@@ -184,7 +184,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
                       <img
                         className="messengerBottomMessagesItemReceiverImg"
                         src={
-                          process.env.REACT_APP_BACKEND_URL + me.profilePicture
+                          process.env.REACT_APP_BACKEND_PUBLIC_URL + me.profilePicture
                         }
                         alt="profile"
                       />

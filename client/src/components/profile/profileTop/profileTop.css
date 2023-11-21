@@ -185,3 +185,9 @@
 .profileInfoFriendRequestDecline {
   background-color: var(--dark-gray-clr);
 }
+
+@media screen and (max-width: 768px) {
+  .profileInfoTopRight {
+    display: none;
+  }
+}
