@@ -38,7 +38,7 @@ export default function ProfileTop() {
 
   const respondRequest = async (accept) => {
     try {
-      await axios.post(`/users/${user._id}/respond_request`, {
+      await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/respond_request`, {
         userId: me._id,
         accept: accept,
       });
@@ -51,7 +51,7 @@ export default function ProfileTop() {
 
   const removeFriend = async () => {
     try {
-      await axios.post(`/users/${user._id}/remove_friend`, { userId: me._id });
+      await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/remove_friend`, { userId: me._id });
       setIsReceivedRequest(false);
       setIsFriend(false);
     } catch (err) {
@@ -61,7 +61,7 @@ export default function ProfileTop() {
 
   const handleFollow = async () => {
     try {
-      const res = await axios.post(`/users/${user._id}/follow`, {
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/follow`, {
         userId: me._id,
       });
 
@@ -88,7 +88,7 @@ export default function ProfileTop() {
     }
 
     try {
-      const res = await axios.post(`/conversations/users/${me._id}`, {
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `/conversations/users/${me._id}`, {
         userId: user._id,
       });
 
@@ -104,13 +104,13 @@ export default function ProfileTop() {
       <div className="profileImages">
         <div className="profileCoverImage">
           <img
-            src={process.env.REACT_APP_BACKEND_URL + user.coverPicture}
+            src={process.env.REACT_APP_BACKEND_PUBLIC_URL + user.coverPicture}
             alt="cover"
           />
         </div>
         <div className="profileUserImage">
           <img
-            src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+            src={process.env.REACT_APP_BACKEND_PUBLIC_URL + user.profilePicture}
             alt="user"
           />
         </div>

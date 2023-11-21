@@ -22,8 +22,6 @@ export default function AddPostCard({ togglePostCard, file }) {
   const [loading, setLoading] = useState(false);
   const text = useRef();
 
-  console.log(media);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,7 +34,7 @@ export default function AddPostCard({ togglePostCard, file }) {
     }
 
     try {
-      const res = await axios.post("/posts", formData);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/posts", formData);
       setLoading(false);
       if (res.status === 201) {
         window.location.reload();
@@ -66,7 +64,7 @@ export default function AddPostCard({ togglePostCard, file }) {
         <div className="addPostCardUser">
           <div className="addPostCardUserImage">
             <img
-              src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+              src={process.env.REACT_APP_BACKEND_PUBLIC_URL + user.profilePicture}
               alt="profile"
             />
           </div>

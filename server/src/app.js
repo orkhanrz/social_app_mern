@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const db = require("./db/db");
 const { Server } = require("socket.io");
-const io = new Server(server, { cors: { origin: '*' } });
+const io = new Server(server, { cors: { origin: "*" } });
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
@@ -32,6 +32,9 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/conversations", conversationRoutes);
 
 app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', '..', 'client', 'build', 'index.html'));
+});
 
 app.use(errorMiddleware);
 
@@ -41,24 +44,20 @@ let users = [];
 
 io.on("connection", (socket) => {
   //Save user in users array
-  socket.on('join', ({userId, socketId}) => {
-    console.log(userId, socketId);
-    const user = users.find(u => u.userId === userId);
-    !user && users.push({userId, socketId});
-
-    console.log(users);
+  socket.on("join", ({ userId, socketId }) => {
+    const user = users.find((u) => u.userId === userId);
+    !user && users.push({ userId, socketId });
   });
 
   //Emit message
-  socket.on('message', message => {
-    const user = users.find(u => message.to === u.userId);
-    user && io.to(user.socketId).emit('message', message);
+  socket.on("message", (message) => {
+    const user = users.find((u) => message.to === u.userId);
+    user && io.to(user.socketId).emit("message", message);
   });
 
   //Remove user from users array
-  socket.on('disconnect', () => {
-    users = users.filter(u => u.socketId !== socket.id);
-    console.log('disconnected:', users);
+  socket.on("disconnect", () => {
+    users = users.filter((u) => u.socketId !== socket.id);
   });
 });
 

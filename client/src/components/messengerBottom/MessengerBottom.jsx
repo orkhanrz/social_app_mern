@@ -29,7 +29,6 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
 
   useEffect(() => {
     const joinUser = () => {
-      console.log(socket);
       socket.emit('join', ({userId: me._id, socketId: socket.id}));
     }
 
@@ -62,7 +61,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get("/messages/" + messenger.conversationId);
+        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + "/messages/" + messenger.conversationId);
 
         setMessages(res.data);
       } catch (err) {
@@ -84,7 +83,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
     };
 
     try {
-      const res = await axios.post("/messages", message);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/messages", message);
       setMessages((prevState) => [...prevState, res.data]);
       setInput("");
       socket?.emit('message', res.data);

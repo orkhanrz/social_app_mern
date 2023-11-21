@@ -24,7 +24,7 @@ export default function TopbarAccount({accountMenu}) {
       <div className="topbarAccountProfile card">
         <Link to={`/${me.username}`} className="topbarAccountProfileUser">
           <div className="topbarAccountProfileUserImage">
-            <img src={process.env.REACT_APP_BACKEND_URL + me.profilePicture} alt="user" />
+            <img src={process.env.REACT_APP_BACKEND_PUBLIC_URL + me.profilePicture} alt="user" />
           </div>
           <h3 className="topbarAccountProfileUsername">
             {me.firstName + " " + me.lastName}

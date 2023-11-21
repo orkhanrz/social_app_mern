@@ -16,7 +16,7 @@ export default function Photos() {
   useEffect(() => {
     async function fetchPhotos() {
       try {
-        const res = await axios.get(`/users/${user._id}/photos`);
+        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/photos`);
         console.log(res.data);
       } catch (err) {
         console.log(err);

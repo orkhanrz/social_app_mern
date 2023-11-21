@@ -28,7 +28,7 @@ export default function Videos() {
   useEffect(() => {
     async function fetchVideos() {
       try {
-        const res = await axios.get(`/users/${user._id}/videos`);
+        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/videos`);
         setVideos(res.data);
       } catch (err) {
         console.log(err);

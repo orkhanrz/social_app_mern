@@ -48,7 +48,7 @@ export default function SignUpForm({ toggleModal }) {
     dispatch({ type: "LOGIN_START" });
 
     try {
-      const res = await axios.post("/auth/signup", form);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/auth/signup", form);
 
       if (res.status === 201) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user });

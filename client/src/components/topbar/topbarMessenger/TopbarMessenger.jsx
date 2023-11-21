@@ -19,7 +19,7 @@ export default function TopbarMessenger({ messengerMenu, toggleMessenger }) {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const res = await axios.get(`/conversations/users/${me._id}`);
+        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/conversations/users/${me._id}`);
         setConversations(res.data);
       } catch (err) {
         console.log(err);

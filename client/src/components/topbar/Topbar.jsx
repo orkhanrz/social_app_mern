@@ -40,7 +40,7 @@ export default function Topbar() {
     setInputLoading(true);
 
     try {
-      const res = await axios.post(`/users/search`, { query });
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/search`, { query });
       setInputData(res.data);
       setInputLoading(false);
     } catch (err) {

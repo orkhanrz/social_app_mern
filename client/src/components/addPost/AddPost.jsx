@@ -20,7 +20,7 @@ export default function AddPost() {
       <div className="addPostContainer">
         <div className="addPostTop pd-8">
           <Link to={`/${me.username}`} className="addPostTopIcon">
-            <img src={process.env.REACT_APP_BACKEND_URL + me.profilePicture} alt="profile" />
+            <img src={process.env.REACT_APP_BACKEND_PUBLIC_URL + me.profilePicture} alt="profile" />
           </Link>
           <input type="text" placeholder={`What's on your mind, ${me.username.charAt(0).toUpperCase() + me.username.slice(1)}?`}  onClick={togglePostCard} disabled={postCard}/>
         </div>

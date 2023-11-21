@@ -15,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     const getFeed = async () => {
       try {
-        const res = await axios.get(`/users/${me._id}/feed`);
+        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/feed`);
         
         setPosts(res.data);
       } catch (err){

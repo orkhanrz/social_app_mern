@@ -30,7 +30,7 @@ export default function Albums() {
   useEffect(() => {
     async function fetchAlbums() {
       try {
-        const res = await axios.get(`/users/${user._id}/albums`);
+        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/albums`);
         setAlbums(res.data);
       } catch (err) {
         console.log(err);

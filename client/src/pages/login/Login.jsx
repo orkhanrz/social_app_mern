@@ -26,7 +26,7 @@ export default function Login() {
     dispatch({ type: "LOGIN_START" });
 
     try {
-      const res = await axios.post("/auth/login", form);
+      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/auth/login", form);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user });
       navigate('/');
     } catch (err) {

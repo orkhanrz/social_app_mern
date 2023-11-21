@@ -45,7 +45,7 @@ export default function Comment({ comment, postId, setComments }) {
   const deleteComment = async () => {
     try {
       const res = await axios.delete(
-        `/posts/${postId}/comments/${commentData._id}?userId=${me._id}`
+        process.env.REACT_APP_BACKEND_URL + `/posts/${postId}/comments/${commentData._id}?userId=${me._id}`
       );
       setComments(res.data);
       setDeleteModal(false);
@@ -56,7 +56,7 @@ export default function Comment({ comment, postId, setComments }) {
 
   const likeComment = async () => {
     try {
-      await axios.post(`/posts/${postId}/comments/${commentData._id}/like`, {
+      await axios.post(process.env.REACT_APP_BACKEND_URL + `/posts/${postId}/comments/${commentData._id}/like`, {
         userId: me._id,
       });
       setLikes((prevState) => ({

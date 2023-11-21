@@ -23,7 +23,7 @@ export default function TopbarNotifications({ notificationsMenu, user }) {
   //   }
   // };
 
-  const fetchNotifications = async (url = `/users/${me._id}/notifications`) => {
+  const fetchNotifications = async (url = process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/notifications`) => {
     setFetchUrl(url);
 
     try {
@@ -58,12 +58,12 @@ export default function TopbarNotifications({ notificationsMenu, user }) {
           </span>
           <span
             className={`notificationBtn ${
-              fetchUrl === `/users/${me._id}/notifications?read=false`
+              fetchUrl === process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/notifications?read=false`
                 ? "active"
                 : ""
             }`}
             onClick={() =>
-              fetchNotifications(`/users/${me._id}/notifications?read=false`)
+              fetchNotifications(process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/notifications?read=false`)
             }
           >
             Unread

@@ -14,7 +14,7 @@ export default function NotificationItem({ item }) {
 
   const readNotification = async (item) => {
     try {
-      await axios.put(`/users/${me._id}/notifications/${item._id}`);
+      await axios.put(process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/notifications/${item._id}`);
       setIsRead(true);
       navigate(`/${item.from.username}`, {replace: true});
     } catch (err) {
