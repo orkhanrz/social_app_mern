@@ -222,7 +222,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
               <SentimentSatisfied />
             </span>
           </div>
-          <button type="submit" className="messengerBottomActionsBtn">
+          <button type="submit" className="messengerBottomActionsBtn" disabled={!input}>
             <Send />
           </button>
         </form>

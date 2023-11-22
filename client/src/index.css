@@ -37,6 +37,14 @@ hr {
   border: none;
   border-top: 1px solid var(--dark-gray-clr);
 }
+input {
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+}
+input:focus {
+  outline: none;
+}
 button, input[type="checkbox"], select {
   cursor: pointer;
 }
@@ -103,9 +111,6 @@ button:disabled {
   display: block;
   font-size: var(--fs-100);
   margin-bottom: 4px;
-}
-input:focus {
-  outline: none;
 }
 
 .card {

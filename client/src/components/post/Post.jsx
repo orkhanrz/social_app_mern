@@ -90,7 +90,7 @@ function Post({ post, user, hideInput, closeModal }) {
           <div className="postTopLeft">
             <Link to={`/${user.username}`} className="postTopImg">
               <img
-                src={process.env.REACT_APP_BACKEND_URL + user.profilePicture}
+                src={process.env.REACT_APP_BACKEND_PUBLIC_URL + user.profilePicture}
                 alt="profile"
               />
             </Link>
@@ -122,11 +122,11 @@ function Post({ post, user, hideInput, closeModal }) {
           {post.media &&
             (post.media.mediaType === "image" ? (
               <div className="postCenterMedia">
-                <img src={process.env.REACT_APP_BACKEND_URL + post.media.url} alt="" />
+                <img src={process.env.REACT_APP_BACKEND_PUBLIC_URL + post.media.url} alt="" />
               </div>
             ) : (
               <div className="postCenterMedia">
-                <video src={process.env.REACT_APP_BACKEND_URL + post.media.url} alt="" controls/>
+                <video src={process.env.REACT_APP_BACKEND_PUBLIC_URL + post.media.url} alt="" controls/>
               </div>
             ))}
 

@@ -42,7 +42,7 @@ export default function CommentInput({postId, comment, editMode, setComments, se
     <div className="postComment" onClick={() => setInput((prevState) => ({ ...prevState, isActive: true })) } >
       <div className="postCommentUserImg">
         <img
-          src={process.env.REACT_APP_BACKEND_URL + me.profilePicture}
+          src={process.env.REACT_APP_BACKEND_PUBLIC_URL + me.profilePicture}
           alt="profile"
         />
       </div>

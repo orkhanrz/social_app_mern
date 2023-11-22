@@ -23,7 +23,10 @@ const PORT = process.env.PORT || 8000;
 //Middlewares
 app.use(
   cors({
-    origin: [`http://localhost:${PORT}`, process.env.FRONTEND_URL],
+    origin: [
+      process.env.BACKEND_URL,
+      process.env.FRONTEND_URL,
+    ],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
@@ -34,7 +37,7 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 //Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users" ,userRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/conversations", conversationRoutes);
