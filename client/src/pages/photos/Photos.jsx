@@ -1,5 +1,6 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 import "./photos.css";
 
@@ -12,6 +13,7 @@ import AddPostCard from "../../components/addPostCard/AddPostCard";
 
 export default function Photos() {
   const { results: user } = useLoaderData();
+  const [cookies] = useCookies();
   const { username } = useParams();
   const { pathname } = useLocation();
   const [photos, setPhotos] = useState([]);
@@ -29,7 +31,10 @@ export default function Photos() {
   useEffect(() => {
     async function fetchPhotos() {
       try {
-        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/photos`);
+        const res = await axios.get(
+          process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/photos`,
+          { headers: { Authorization: "Bearer " + cookies.token } }
+        );
         console.log(res.data);
         setPhotos(res.data);
       } catch (err) {
@@ -38,7 +43,7 @@ export default function Photos() {
     }
 
     fetchPhotos();
-  }, [user]);
+  }, [user, cookies]);
 
   return (
     <>
@@ -66,10 +71,20 @@ export default function Photos() {
           </div>
           <div className="photosPageBottom">
             <div className="photosPageLinks">
-              <Link to={`/${username}/photos`} className={`photosPageLink ${ pathname === `/${username}/photos` ? "active" : "" }`} >
+              <Link
+                to={`/${username}/photos`}
+                className={`photosPageLink ${
+                  pathname === `/${username}/photos` ? "active" : ""
+                }`}
+              >
                 {user.firstName}'s photos
               </Link>
-              <Link to={`/${username}/albums`} className={`photosPageLink ${ pathname === `/${username}/albums` ? "active" : "" }`} >
+              <Link
+                to={`/${username}/albums`}
+                className={`photosPageLink ${
+                  pathname === `/${username}/albums` ? "active" : ""
+                }`}
+              >
                 Albums
               </Link>
             </div>
@@ -90,7 +105,13 @@ export default function Photos() {
           </div>
         </div>
       </div>
-      {postCard ? <Modal><AddPostCard file={file} togglePostCard={togglePostCard} /></Modal> : ""}
+      {postCard ? (
+        <Modal>
+          <AddPostCard file={file} togglePostCard={togglePostCard} />
+        </Modal>
+      ) : (
+        ""
+      )}
     </>
   );
 }

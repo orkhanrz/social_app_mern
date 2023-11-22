@@ -1,32 +1,48 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/user");
 const upload = require("../utils/multer");
+
+const userController = require("../controllers/user");
+const authMiddleware = require("../middlewares/auth");
 
 router.get("/:username", userController.getUser);
 
-router.get("/:userId/photos", userController.getPhotos);
+router.get("/:userId/photos", authMiddleware, userController.getPhotos);
 
-router.get("/:userId/videos", userController.getVideos);
+router.get("/:userId/videos", authMiddleware, userController.getVideos);
 
-router.get("/:userId/albums", userController.getAlbums);
+router.get("/:userId/albums", authMiddleware, userController.getAlbums);
 
-router.get("/:userId/posts", userController.getUserPosts);
+router.get("/:userId/posts", authMiddleware, userController.getUserPosts);
 
-router.get("/:userId/feed", userController.getFeed);
+//Update [friends and followings] posts
+router.get("/:userId/feed", authMiddleware, userController.getFeed);
 
-router.get("/:userId/notifications", userController.getNotifications);
+router.get(
+  "/:userId/notifications",
+  authMiddleware,
+  userController.getNotifications
+);
 
-router.post('/search', userController.search);
+router.post("/search", authMiddleware, userController.search);
 
-router.post("/:userId/follow", userController.followUser);
+router.post("/:userId/follow", authMiddleware, userController.followUser);
 
-router.post("/:userId/remove_friend", userController.removeFriend);
+router.post(
+  "/:userId/remove_friend",
+  authMiddleware,
+  userController.removeFriend
+);
 
-router.post('/:userId/respond_request', userController.respondRequest);
+router.post(
+  "/:userId/respond_request",
+  authMiddleware,
+  userController.respondRequest
+);
 
 router.put(
   "/:userId/edit",
+  authMiddleware,
   upload.fields([{ name: "profilePicture" }, { name: "coverPicture" }]),
   userController.editUser
 );

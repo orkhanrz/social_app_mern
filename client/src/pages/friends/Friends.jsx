@@ -1,5 +1,6 @@
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
+import {useCookies} from 'react-cookie';
 import axios from "axios";
 import "./friends.css";
 
@@ -11,12 +12,16 @@ import ProfileTop from "../../components/profile/profileTop/ProfileTop";
 export default function Photos() {
   const { username } = useParams();
   const { pathname } = useLocation();
+  const [cookies] = useCookies();
   const { results: user } = useLoaderData();
 
   useEffect(() => {
     async function fetchPhotos() {
       try {
-        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/photos`);
+        const res = await axios.get(
+          process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/photos`,
+          { headers: { Authorization: "Bearer " + cookies.token } }
+        );
         console.log(res.data);
       } catch (err) {
         console.log(err);
@@ -24,7 +29,7 @@ export default function Photos() {
     }
 
     fetchPhotos();
-  }, [user]);
+  }, [user, cookies]);
 
   return (
     <>
@@ -45,10 +50,20 @@ export default function Photos() {
           </div>
           <div className="photosPageBottom">
             <div className="photosPageLinks">
-              <Link to={`/${username}/friends`} className={`photosPageLink ${pathname === `/${username}/friends` ? "active" : "" }`}>
+              <Link
+                to={`/${username}/friends`}
+                className={`photosPageLink ${
+                  pathname === `/${username}/friends` ? "active" : ""
+                }`}
+              >
                 Friends
               </Link>
-              <Link to={`/${username}/followings`} className={`photosPageLink ${ pathname === `/${username}/followings` ? "active" : "" }`}>
+              <Link
+                to={`/${username}/followings`}
+                className={`photosPageLink ${
+                  pathname === `/${username}/followings` ? "active" : ""
+                }`}
+              >
                 Following
               </Link>
             </div>

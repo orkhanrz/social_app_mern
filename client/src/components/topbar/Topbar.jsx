@@ -1,5 +1,6 @@
 import "./topbar.css";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
@@ -23,24 +24,33 @@ import TopbarMessenger from "./topbarMessenger/TopbarMessenger";
 import MessengerBottom from "../messengerBottom/MessengerBottom";
 
 export default function Topbar() {
+  const [cookies] = useCookies();
   const [inputActive, setInputActive] = useState(false);
   const [inputLoading, setInputLoading] = useState(false);
   const [inputData, setInputData] = useState([]);
   const [accountMenu, setAccountMenu] = useState(false);
   const [notificationsMenu, setNotificationsMenu] = useState(false);
   const [messengerMenu, setMessengerMenu] = useState(false);
-  const [messenger, setMessenger] = useState({state: false, user: null, conversationId: ''});
+  const [messenger, setMessenger] = useState({
+    state: false,
+    user: null,
+    conversationId: "",
+  });
 
   const toggleMessenger = (state, user, conversationId) => {
     setMessengerMenu(false);
-    setMessenger({state, user, conversationId});
+    setMessenger({ state, user, conversationId });
   };
 
   const searchHandler = async (query) => {
     setInputLoading(true);
 
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/search`, { query });
+      const res = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + `/users/search`,
+        { query },
+        { headers: { Authorization: "Bearer " + cookies.token } }
+      );
       setInputData(res.data);
       setInputLoading(false);
     } catch (err) {
@@ -92,11 +102,16 @@ export default function Topbar() {
               ) : (
                 inputData.map((u) => {
                   return (
-                    <Link to={`/${u.username}`} className="topbarSearchBoxItem" key={u._id}>
+                    <Link
+                      to={`/${u.username}`}
+                      className="topbarSearchBoxItem"
+                      key={u._id}
+                    >
                       <div className="topbarSearchBoxUserImage">
                         <img
                           src={
-                            process.env.REACT_APP_BACKEND_PUBLIC_URL + u.profilePicture
+                            process.env.REACT_APP_BACKEND_PUBLIC_URL +
+                            u.profilePicture
                           }
                           alt="profile"
                         />
@@ -158,8 +173,19 @@ export default function Topbar() {
           toggleMessenger={toggleMessenger}
         />
         {accountMenu ? <TopbarAccount accountMenu={accountMenu} /> : ""}
-        {notificationsMenu ? <TopbarNotifications notificationsMenu={notificationsMenu} /> : ''}
-        {messenger.state ? <MessengerBottom messenger={messenger} toggleMessenger={toggleMessenger} /> : ""}
+        {notificationsMenu ? (
+          <TopbarNotifications notificationsMenu={notificationsMenu} />
+        ) : (
+          ""
+        )}
+        {messenger.state ? (
+          <MessengerBottom
+            messenger={messenger}
+            toggleMessenger={toggleMessenger}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

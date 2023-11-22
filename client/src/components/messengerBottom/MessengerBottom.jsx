@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useCookies } from "react-cookie";
 import TimeAgo from "react-timeago";
 import axios from "axios";
 import "./messengerBottom.css";
@@ -17,6 +18,7 @@ import {
 } from "@mui/icons-material";
 
 export default function MessengerBottom({ messenger, toggleMessenger }) {
+  const [cookies] = useCookies();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const { user: me } = useContext(AuthContext);
@@ -24,15 +26,15 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
   const scrollRef = useRef();
 
   useEffect(() => {
-    setSocket(io(process.env.REACT_APP_SOCKET_URL, {autoConnect: true}));
+    setSocket(io(process.env.REACT_APP_SOCKET_URL, { autoConnect: true }));
   }, []);
 
   useEffect(() => {
     const joinUser = () => {
-      socket.emit('join', ({userId: me._id, socketId: socket.id}));
-    }
+      socket.emit("join", { userId: me._id, socketId: socket.id });
+    };
 
-    socket?.on('connect', joinUser);
+    socket?.on("connect", joinUser);
 
     return () => {
       socket?.disconnect();
@@ -41,16 +43,16 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
 
   useEffect(() => {
     const receiveMessage = (message) => {
-      if (message.from === messenger.user._id){
-        setMessages(prevState => [...prevState, message]);
+      if (message.from === messenger.user._id) {
+        setMessages((prevState) => [...prevState, message]);
       }
-    }
+    };
 
-    socket?.on('message', receiveMessage);
+    socket?.on("message", receiveMessage);
 
     return () => {
-      socket?.disconnect('message', receiveMessage);
-    }
+      socket?.disconnect("message", receiveMessage);
+    };
   }, [messenger, socket]);
 
   //Scroll to bottom when new message appears
@@ -61,7 +63,12 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + "/messages/" + messenger.conversationId);
+        const res = await axios.get(
+          process.env.REACT_APP_BACKEND_URL +
+            "/messages/" +
+            messenger.conversationId,
+          { headers: { Authorization: "Bearer " + cookies.token } }
+        );
 
         setMessages(res.data);
       } catch (err) {
@@ -70,7 +77,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
     };
 
     fetchMessages();
-  }, [messenger]);
+  }, [messenger, cookies]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -83,10 +90,14 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
     };
 
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/messages", message);
+      const res = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + "/messages",
+        message,
+        { headers: { Authorization: "Bearer " + cookies.token } }
+      );
       setMessages((prevState) => [...prevState, res.data]);
       setInput("");
-      socket?.emit('message', res.data);
+      socket?.emit("message", res.data);
     } catch (err) {
       console.log(err);
     }
@@ -135,7 +146,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
           <div className="messengerBottomMessagesTop">
             <img
               src={
-                process.env.REACT_APP_BACKEND_URL +
+                process.env.REACT_APP_BACKEND_PUBLIC_URL +
                 messenger.user.profilePicture
               }
               alt="profile"
@@ -184,7 +195,8 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
                       <img
                         className="messengerBottomMessagesItemReceiverImg"
                         src={
-                          process.env.REACT_APP_BACKEND_PUBLIC_URL + me.profilePicture
+                          process.env.REACT_APP_BACKEND_PUBLIC_URL +
+                          me.profilePicture
                         }
                         alt="profile"
                       />

@@ -200,3 +200,10 @@
 .messengerBottomActionsBtn:hover {
     background-color: var(--gray-clr);
 }
+
+@media screen and (max-width: 480px) {
+    .messengerBottom {
+        right: 16px;
+        width: calc(100vw - 32px);
+    }
+}

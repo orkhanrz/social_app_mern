@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./signUpForm.css";
 
 import { Close } from "@mui/icons-material";
@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { days, months, years } from "../../utils/formDates";
 import axios from "axios";
 
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function SignUpForm({ toggleModal }) {
   const navigate = useNavigate();
@@ -48,16 +48,19 @@ export default function SignUpForm({ toggleModal }) {
     dispatch({ type: "LOGIN_START" });
 
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/auth/signup", form);
+      const res = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + "/auth/signup",
+        form,
+      );
 
       if (res.status === 201) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user });
-        navigate('/');
+        navigate("/");
       }
     } catch (err) {
       if (err.response.status === 403) {
         setFormErrors(err.response.data);
-      };
+      }
       dispatch({ type: "LOGIN_FAIL", error: err });
     }
   };
@@ -188,7 +191,7 @@ export default function SignUpForm({ toggleModal }) {
             receive SMS Notifications from us and can opt out any time.
           </p>
           <button className="signUpFormBtn" type="submit" disabled={isLoading}>
-            {isLoading ? <CircularProgress size='22px'/> : 'Sign Up'}
+            {isLoading ? <CircularProgress size="22px" /> : "Sign Up"}
           </button>
         </form>
       </div>

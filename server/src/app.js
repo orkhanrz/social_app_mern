@@ -2,6 +2,7 @@ require("dotenv/config");
 const http = require("http");
 const path = require("path");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
 const server = http.createServer(app);
@@ -20,20 +21,29 @@ const errorMiddleware = require("./middlewares/error");
 const PORT = process.env.PORT || 8000;
 
 //Middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: [`http://localhost:${PORT}`, process.env.FRONTEND_URL],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 //Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/users" ,userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/conversations", conversationRoutes);
 
 app.use(express.static(path.join(__dirname, "..", "..", "client", "build")));
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', '..', 'client', 'build', 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(
+    path.resolve(__dirname, "..", "..", "client", "build", "index.html")
+  );
 });
 
 app.use(errorMiddleware);

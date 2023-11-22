@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Album = require("../models/album");
 
@@ -19,9 +20,15 @@ module.exports = {
         return res.status(403).json({ password: "Password is not valid!" });
       }
 
-      const { password, private, ...userDetails } = user._doc;
+      const { password, ...userDetails } = user._doc;
+      const token = jwt.sign(userDetails, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRES,
+      });
 
-      return res.status(200).json({ user: userDetails });
+      return res
+        .cookie("token", token, { maxAge: 10 * 60 * 1000 })
+        .status(200)
+        .json({ user: userDetails });
     } catch (err) {
       next(err);
     }
@@ -64,9 +71,15 @@ module.exports = {
       ]);
 
       //Return only main details
-      const { password, private, ...userDetails } = newUserDoc;
+      const { password, ...userDetails } = newUserDoc;
+      const token = jwt.sign(userDetails, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRES,
+      });
 
-      return res.status(201).json({ user: userDetails });
+      return res
+        .cookie("token", token, { maxAge: 10 * 60 * 1000 })
+        .status(201)
+        .json({ user: userDetails });
     } catch (err) {
       next(err);
     }

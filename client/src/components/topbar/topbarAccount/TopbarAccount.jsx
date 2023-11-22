@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import "./topbarAccount.css";
 import { AuthContext } from "../../../context/AuthContext";
@@ -11,12 +12,14 @@ import {
   ArrowForwardIos,
 } from "@mui/icons-material";
 
-export default function TopbarAccount({accountMenu}) {
+export default function TopbarAccount({ accountMenu }) {
   const { user: me } = useContext(AuthContext);
+  const [,, removeCookies] = useCookies();
 
   const logoutHandler = () => {
     sessionStorage.removeItem("user");
     window.location.reload();
+    removeCookies("token", { path: "/" });
   };
 
   return (
@@ -24,7 +27,10 @@ export default function TopbarAccount({accountMenu}) {
       <div className="topbarAccountProfile card">
         <Link to={`/${me.username}`} className="topbarAccountProfileUser">
           <div className="topbarAccountProfileUserImage">
-            <img src={process.env.REACT_APP_BACKEND_PUBLIC_URL + me.profilePicture} alt="user" />
+            <img
+              src={process.env.REACT_APP_BACKEND_PUBLIC_URL + me.profilePicture}
+              alt="user"
+            />
           </div>
           <h3 className="topbarAccountProfileUsername">
             {me.firstName + " " + me.lastName}

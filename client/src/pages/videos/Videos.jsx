@@ -1,13 +1,14 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 
 import { MoreHoriz } from "@mui/icons-material";
 
 import Topbar from "../../components/topbar/Topbar";
 import ProfileTop from "../../components/profile/profileTop/ProfileTop";
-import AddPostCard from '../../components/addPostCard/AddPostCard';
-import Modal from "../../components/modal/Modal"; 
+import AddPostCard from "../../components/addPostCard/AddPostCard";
+import Modal from "../../components/modal/Modal";
 
 export default function Videos() {
   const { username } = useParams();
@@ -16,6 +17,7 @@ export default function Videos() {
   const [videos, setVideos] = useState([]);
   const [postCard, setPostCard] = useState(false);
   const [file, setFile] = useState(null);
+  const [cookies] = useCookies();
 
   const togglePostCard = (e) => {
     if (!postCard) {
@@ -28,7 +30,10 @@ export default function Videos() {
   useEffect(() => {
     async function fetchVideos() {
       try {
-        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/videos`);
+        const res = await axios.get(
+          process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/videos`,
+          { headers: { Authorization: "Bearer " + cookies.token } }
+        );
         setVideos(res.data);
       } catch (err) {
         console.log(err);
@@ -36,7 +41,7 @@ export default function Videos() {
     }
 
     fetchVideos();
-  }, [user]);
+  }, [user, cookies]);
 
   return (
     <>
@@ -64,7 +69,12 @@ export default function Videos() {
           </div>
           <div className="photosPageBottom">
             <div className="photosPageLinks">
-              <Link to={`/${username}/videos`} className={`photosPageLink ${ pathname === `/${username}/videos` ? "active" : "" }`} >
+              <Link
+                to={`/${username}/videos`}
+                className={`photosPageLink ${
+                  pathname === `/${username}/videos` ? "active" : ""
+                }`}
+              >
                 {user.firstName}'s videos
               </Link>
             </div>
@@ -85,7 +95,13 @@ export default function Videos() {
           </div>
         </div>
       </div>
-      {postCard ? (<Modal><AddPostCard file={file} togglePostCard={togglePostCard} /></Modal>) : ""}
+      {postCard ? (
+        <Modal>
+          <AddPostCard file={file} togglePostCard={togglePostCard} />
+        </Modal>
+      ) : (
+        ""
+      )}
     </>
   );
 }

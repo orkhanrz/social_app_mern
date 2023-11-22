@@ -17,7 +17,7 @@ export default function Login() {
   const [formErrors, setFormErrors] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
-    setFormErrors(prevState => ({...prevState, [e.target.name]: ''}));
+    setFormErrors((prevState) => ({ ...prevState, [e.target.name]: "" }));
     setForm((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
   };
 
@@ -26,9 +26,13 @@ export default function Login() {
     dispatch({ type: "LOGIN_START" });
 
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/auth/login", form);
+      const res = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + "/auth/login",
+        form,
+        {withCredentials: true}
+      );
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user });
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.log(err);
       if (err.response.status === 403) {
@@ -63,7 +67,7 @@ export default function Login() {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  className={`${formErrors.email ? 'formError': ''}`}
+                  className={`${formErrors.email ? "formError" : ""}`}
                 />
               </div>
               <div className="formControl">
@@ -73,11 +77,11 @@ export default function Login() {
                   name="password"
                   value={form.password}
                   onChange={handleChange}
-                  className={`${formErrors.password ? 'formError': ''}`}
+                  className={`${formErrors.password ? "formError" : ""}`}
                 />
               </div>
               <button className="loginBtn" type="submit" disabled={isLoading}>
-                {isLoading ? <CircularProgress size='22px'/> : 'Log In'}
+                {isLoading ? <CircularProgress size="22px" /> : "Log In"}
               </button>
               <p className="forgotPassword">Forgot password?</p>
               <hr />
@@ -88,7 +92,13 @@ export default function Login() {
           </div>
         </div>
 
-        {modal ? <Modal><SignUpForm toggleModal={toggleModal} /></Modal> : ""}
+        {modal ? (
+          <Modal>
+            <SignUpForm toggleModal={toggleModal} />
+          </Modal>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
