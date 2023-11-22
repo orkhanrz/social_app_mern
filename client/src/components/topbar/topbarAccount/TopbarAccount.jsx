@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import "./topbarAccount.css";
 import { AuthContext } from "../../../context/AuthContext";
@@ -14,12 +13,10 @@ import {
 
 export default function TopbarAccount({ accountMenu }) {
   const { user: me } = useContext(AuthContext);
-  const [,, removeCookies] = useCookies();
 
   const logoutHandler = () => {
     sessionStorage.removeItem("user");
     window.location.reload();
-    removeCookies("token", { path: "/" });
   };
 
   return (

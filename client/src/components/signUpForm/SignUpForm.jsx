@@ -5,7 +5,7 @@ import "./signUpForm.css";
 import { Close } from "@mui/icons-material";
 import { CircularProgress } from "@mui/material";
 import { days, months, years } from "../../utils/formDates";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 import { AuthContext } from "../../context/AuthContext";
 
@@ -19,9 +19,9 @@ export default function SignUpForm({ toggleModal }) {
     password: "",
     email: "",
     dob: {
-      month: "1",
-      day: "1",
-      year: "1905",
+      month: "",
+      day: "",
+      year: "",
     },
     gender: "",
   });
@@ -48,10 +48,7 @@ export default function SignUpForm({ toggleModal }) {
     dispatch({ type: "LOGIN_START" });
 
     try {
-      const res = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "/auth/signup",
-        form,
-      );
+      const res = await axios.post("/auth/signup", form);
 
       if (res.status === 201) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user });

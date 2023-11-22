@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import axios from "../../utils/axios";
 import "./post.css";
 import {
   Public,
@@ -10,7 +11,7 @@ import {
   CloseOutlined,
   ThumbUp,
 } from "@mui/icons-material";
-import axios from "axios";
+
 
 import TimeAgo from "react-timeago";
 import Modal from "../modal/Modal";
@@ -59,7 +60,7 @@ function Post({ post, user, hideInput, closeModal }) {
   useEffect(() => {
     const getCommentItems = async () => {
       try {
-        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/posts/${post._id}/comments`);
+        const res = await axios.get(`/posts/${post._id}/comments`);
         setComments(res.data);
       } catch (err) {
         console.log(err);
@@ -71,7 +72,7 @@ function Post({ post, user, hideInput, closeModal }) {
 
   const likePost = async () => {
     try {
-      await axios.post(process.env.REACT_APP_BACKEND_URL + `/posts/${post._id}/like`, { userId: me._id });
+      await axios.post(`/posts/${post._id}/like`, { userId: me._id });
       setLikes((prevState) => ({
         isLiked: !prevState.isLiked,
         length: prevState.isLiked

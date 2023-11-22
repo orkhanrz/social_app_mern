@@ -1,7 +1,7 @@
 import "./notificationItem.css";
 import { useNavigate } from "react-router-dom";
 import TimeAgo from "react-timeago";
-import axios from "axios";
+import axios from "../../../utils/axios";
 
 import { Notifications } from "@mui/icons-material";
 import { useContext, useState } from "react";
@@ -14,7 +14,7 @@ export default function NotificationItem({ item }) {
 
   const readNotification = async (item) => {
     try {
-      await axios.put(process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/notifications/${item._id}`);
+      await axios.put(`/users/${me._id}/notifications/${item._id}`);
       setIsRead(true);
       navigate(`/${item.from.username}`, {replace: true});
     } catch (err) {

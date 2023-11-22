@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import {useCookies} from 'react-cookie';
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
-
+import axios from "../../utils/axios";
 import "./home.css";
+
 import Topbar from "../../components/topbar/Topbar";
 import Leftbar from "../../components/leftbar/Leftbar";
 import Feed from "../../components/feed/Feed";
@@ -12,15 +11,11 @@ import Rightbar from "../../components/rightbar/Rightbar";
 export default function Home() {
   const { user: me } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
-  const [cookies] = useCookies([]);
 
   useEffect(() => {
     const getFeed = async () => {
       try {
-        const res = await axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/feed`,
-          { headers: { Authorization: "Bearer " + cookies.token }}
-        );
+        const res = await axios.get(`/users/${me._id}/feed`);
 
         setPosts(res.data);
       } catch (err) {
@@ -29,7 +24,7 @@ export default function Home() {
     };
 
     getFeed();
-  }, [me, cookies]);
+  }, [me]);
 
   return (
     <>

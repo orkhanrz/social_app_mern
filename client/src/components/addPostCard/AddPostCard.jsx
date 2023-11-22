@@ -12,7 +12,7 @@ import {
   SentimentVerySatisfied,
 } from "@mui/icons-material";
 import "./addPostCard.css";
-import axios from "axios";
+import axios from "../../utils/axios";
 import { CircularProgress } from "@mui/material";
 
 export default function AddPostCard({ togglePostCard, file }) {
@@ -34,7 +34,7 @@ export default function AddPostCard({ togglePostCard, file }) {
     }
 
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + "/posts", formData);
+      const res = await axios.post("/posts", formData);
       setLoading(false);
       if (res.status === 201) {
         window.location.reload();

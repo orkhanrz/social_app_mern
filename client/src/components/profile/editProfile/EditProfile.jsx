@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import "./editProfile.css";
 import { AuthContext } from "../../../context/AuthContext";
-import axios from "axios";
+import axios from "../../../utils/axios";
 
 import {
   Close,
@@ -45,7 +45,7 @@ export default function EditProfile({ toggleEditProfile }) {
     });
 
     try {
-      const res = await axios.put(process.env.REACT_APP_BACKEND_URL + `/users/${me._id}/edit`, formData);
+      const res = await axios.put(`/users/${me._id}/edit`, formData);
       setLoading(false);
       
       if (res.status === 200) {

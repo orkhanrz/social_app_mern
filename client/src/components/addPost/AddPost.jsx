@@ -1,11 +1,11 @@
-import "./addPost.css";
 import {useContext, useState} from 'react';
-
-import {VideoCameraFront, PermMedia, SentimentVerySatisfied} from '@mui/icons-material';
-import Modal from '../modal/Modal';
-import AddPostCard from '../addPostCard/AddPostCard';
+import {Link} from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "@mui/material";
+import {VideoCameraFront, PermMedia, SentimentVerySatisfied} from '@mui/icons-material';
+import "./addPost.css";
+
+import AddPostCard from '../addPostCard/AddPostCard';
+import Modal from '../modal/Modal';
 
 export default function AddPost() {
   const {user: me} = useContext(AuthContext)

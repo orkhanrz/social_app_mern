@@ -1,8 +1,7 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useCookies } from "react-cookie";
 import TimeAgo from "react-timeago";
-import axios from "axios";
+import axios from "../../utils/axios";
 import "./messengerBottom.css";
 import { io } from "socket.io-client";
 
@@ -18,7 +17,6 @@ import {
 } from "@mui/icons-material";
 
 export default function MessengerBottom({ messenger, toggleMessenger }) {
-  const [cookies] = useCookies();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const { user: me } = useContext(AuthContext);
@@ -63,12 +61,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(
-          process.env.REACT_APP_BACKEND_URL +
-            "/messages/" +
-            messenger.conversationId,
-          { headers: { Authorization: "Bearer " + cookies.token } }
-        );
+        const res = await axios.get("/messages/" + messenger.conversationId);
 
         setMessages(res.data);
       } catch (err) {
@@ -77,7 +70,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
     };
 
     fetchMessages();
-  }, [messenger, cookies]);
+  }, [messenger]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -90,11 +83,7 @@ export default function MessengerBottom({ messenger, toggleMessenger }) {
     };
 
     try {
-      const res = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "/messages",
-        message,
-        { headers: { Authorization: "Bearer " + cookies.token } }
-      );
+      const res = await axios.post("/messages", message);
       setMessages((prevState) => [...prevState, res.data]);
       setInput("");
       socket?.emit("message", res.data);

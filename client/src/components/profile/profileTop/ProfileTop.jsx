@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams, useLocation, useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
-import axios from "axios";
+import axios from "../../../utils/axios";
 import "./profileTop.css";
 
 import {
@@ -38,10 +38,7 @@ export default function ProfileTop() {
 
   const respondRequest = async (accept) => {
     try {
-      await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/respond_request`, {
-        userId: me._id,
-        accept: accept,
-      });
+      await axios.post(`/users/${user._id}/respond_request`, { userId: me._id, accept: accept });
       setIsReceivedRequest(false);
       setIsFriend(accept);
     } catch (err) {
@@ -51,7 +48,7 @@ export default function ProfileTop() {
 
   const removeFriend = async () => {
     try {
-      await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/remove_friend`, { userId: me._id });
+      await axios.post(`/users/${user._id}/remove_friend`, { userId: me._id });
       setIsReceivedRequest(false);
       setIsFriend(false);
     } catch (err) {
@@ -61,9 +58,7 @@ export default function ProfileTop() {
 
   const handleFollow = async () => {
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/follow`, {
-        userId: me._id,
-      });
+      const res = await axios.post(`/users/${user._id}/follow`, { userId: me._id });
 
       if (res.data.followRequest) {
         setIsFollowed(!isFollowed);
@@ -88,9 +83,7 @@ export default function ProfileTop() {
     }
 
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `/conversations/users/${me._id}`, {
-        userId: user._id,
-      });
+      const res = await axios.post(`/conversations/users/${me._id}`, { userId: user._id });
 
       // Fetch messages afterwards
       setMessenger({state: true, user, conversationId: res.data._id});

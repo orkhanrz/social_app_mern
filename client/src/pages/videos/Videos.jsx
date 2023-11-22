@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 import { MoreHoriz } from "@mui/icons-material";
 
@@ -30,10 +30,7 @@ export default function Videos() {
   useEffect(() => {
     async function fetchVideos() {
       try {
-        const res = await axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/videos`,
-          { headers: { Authorization: "Bearer " + cookies.token } }
-        );
+        const res = await axios.get(`/users/${user._id}/videos`);
         setVideos(res.data);
       } catch (err) {
         console.log(err);

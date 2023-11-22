@@ -3,7 +3,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { Link } from "react-router-dom";
 import "./topbarNotifications.css";
 
-import axios from "axios";
+import axios from "../../../utils/axios";
 import { MoreHoriz, Notifications } from "@mui/icons-material";
 import TimeAgo from "react-timeago";
 

@@ -23,10 +23,7 @@ const PORT = process.env.PORT || 8000;
 //Middlewares
 app.use(
   cors({
-    origin: [
-      process.env.BACKEND_URL,
-      process.env.FRONTEND_URL,
-    ],
+    origin: [process.env.FRONTEND_URL],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })

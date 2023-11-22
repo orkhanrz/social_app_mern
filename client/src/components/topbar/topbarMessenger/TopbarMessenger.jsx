@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
-import { useCookies } from "react-cookie";
-import axios from "axios";
+import axios from "../../../utils/axios";
 import "./topbarMessenger.css";
 
 import {
@@ -14,17 +13,13 @@ import {
 import Conversation from "../../conversation/Conversation";
 
 export default function TopbarMessenger({ messengerMenu, toggleMessenger }) {
-  const [cookies] = useCookies();
   const [conversations, setConversations] = useState([]);
   const { user: me } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const res = await axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/conversations/users/${me._id}`,
-          { headers: { Authorization: "Bearer " + cookies.token } }
-        );
+        const res = await axios.get(`/conversations/users/${me._id}`);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
@@ -32,7 +27,7 @@ export default function TopbarMessenger({ messengerMenu, toggleMessenger }) {
     };
 
     fetchConversations();
-  }, [me, cookies]);
+  }, [me]);
 
   return (
     <div className={`topbarMessenger card ${messengerMenu ? "active" : ""}`}>

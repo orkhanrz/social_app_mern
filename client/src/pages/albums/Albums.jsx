@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../../utils/axios";
 import "./albums.css";
 
 import { Add, MoreHoriz } from "@mui/icons-material";
@@ -30,7 +30,7 @@ export default function Albums() {
   useEffect(() => {
     async function fetchAlbums() {
       try {
-        const res = await axios.get(process.env.REACT_APP_BACKEND_URL + `/users/${user._id}/albums`);
+        const res = await axios.get(`/users/${user._id}/albums`);
         setAlbums(res.data);
       } catch (err) {
         console.log(err);

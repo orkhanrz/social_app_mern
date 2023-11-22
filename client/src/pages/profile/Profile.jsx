@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams, useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useCookies } from "react-cookie";
-import axios from "axios";
+import axios from "../../utils/axios";
 import "./profile.css";
 
 import { Tune } from "@mui/icons-material";
@@ -27,10 +27,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/${user?._id}/posts`,
-          { headers: { Authorization: "Bearer " + cookies.token } }
-        );
+        const res = await axios.get(`/users/${user?._id}/posts`);
         setPosts(res.data);
       } catch (err) {
         console.log(err);
@@ -39,10 +36,7 @@ export default function Profile() {
 
     const fetchPhotos = async () => {
       try {
-        const res = await axios.get(
-          process.env.REACT_APP_BACKEND_URL + `/users/${user?._id}/photos`,
-          { headers: { Authorization: "Bearer " + cookies.token } }
-        );
+        const res = await axios.get(`/users/${user?._id}/photos`);
         setPhotos(res.data);
       } catch (err) {
         console.log(err);

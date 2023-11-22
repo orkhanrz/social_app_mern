@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import "./commentInput.css";
-import axios from "axios";
+import axios from "../../utils/axios";
 
 import {
   Mood,
@@ -18,7 +18,7 @@ export default function CommentInput({postId, comment, editMode, setComments, se
 
   const editComment = async () => {
     try {
-      const res = await axios.put(process.env.REACT_APP_BACKEND_URL + `/posts/${postId}/comments/${comment._id}`, {text: input.text, userId: me._id});
+      const res = await axios.put(`/posts/${postId}/comments/${comment._id}`, {text: input.text, userId: me._id});
       setInput({isActive: false, text: ''});
       setCommentData(prevState => ({...prevState, text: res.data.text, date: res.data.date}));
     } catch (err) {
@@ -28,8 +28,7 @@ export default function CommentInput({postId, comment, editMode, setComments, se
 
   const addComment = async () => {
     try {
-      const res = await axios.post(process.env.REACT_APP_BACKEND_URL + `/posts/${postId}/comments/`, {text: input.text, userId: me._id});
-      console.log(res.data);
+      const res = await axios.post(`/posts/${postId}/comments/`, {text: input.text, userId: me._id});
       setInput({isActive: false, text: ''});
       setComments(prevState => ([...prevState, {...res.data, userId: me}]));
     } catch (err) {

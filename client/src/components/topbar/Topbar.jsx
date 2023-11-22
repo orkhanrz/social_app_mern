@@ -1,9 +1,8 @@
 import "./topbar.css";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
-import axios from "axios";
+import axios from "../../utils/axios";
 import {
   Search,
   Home,
@@ -24,18 +23,13 @@ import TopbarMessenger from "./topbarMessenger/TopbarMessenger";
 import MessengerBottom from "../messengerBottom/MessengerBottom";
 
 export default function Topbar() {
-  const [cookies] = useCookies();
   const [inputActive, setInputActive] = useState(false);
   const [inputLoading, setInputLoading] = useState(false);
   const [inputData, setInputData] = useState([]);
   const [accountMenu, setAccountMenu] = useState(false);
   const [notificationsMenu, setNotificationsMenu] = useState(false);
   const [messengerMenu, setMessengerMenu] = useState(false);
-  const [messenger, setMessenger] = useState({
-    state: false,
-    user: null,
-    conversationId: "",
-  });
+  const [messenger, setMessenger] = useState({ state: false, user: null, conversationId: "" });
 
   const toggleMessenger = (state, user, conversationId) => {
     setMessengerMenu(false);
@@ -46,11 +40,7 @@ export default function Topbar() {
     setInputLoading(true);
 
     try {
-      const res = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + `/users/search`,
-        { query },
-        { headers: { Authorization: "Bearer " + cookies.token } }
-      );
+      const res = await axios.post(`/users/search`, { query });
       setInputData(res.data);
       setInputLoading(false);
     } catch (err) {

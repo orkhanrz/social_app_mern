@@ -26,7 +26,12 @@ module.exports = {
       });
 
       return res
-        .cookie("token", token, { maxAge: 10 * 60 * 1000 })
+        .cookie("token", token, {
+          maxAge: 60 * 1000,
+          httpOnly: true,
+          secure: true,
+          sameSite: true,
+        })
         .status(200)
         .json({ user: userDetails });
     } catch (err) {
@@ -77,7 +82,12 @@ module.exports = {
       });
 
       return res
-        .cookie("token", token, { maxAge: 10 * 60 * 1000 })
+        .cookie("token", token, {
+          maxAge: 60 * 1000,
+          httpOnly: true,
+          secure: true,
+          sameSite: true,
+        })
         .status(201)
         .json({ user: userDetails });
     } catch (err) {

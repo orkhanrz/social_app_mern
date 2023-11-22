@@ -1,20 +1,17 @@
 import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import ReactTimeago from "react-timeago";
+import axios from "../../utils/axios";
 import "./comment.css";
 
-import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
 import { Close, MoreHoriz, ThumbUp } from "@mui/icons-material";
-import ReactTimeago from "react-timeago";
 import CommentInput from "../commentInput/CommentInput";
 import Modal from "../modal/Modal";
 
 
 export default function Comment({ comment, postId, setComments }) {
   const { user: me } = useContext(AuthContext);
-  const [likes, setLikes] = useState({
-    length: comment.likes.length,
-    isLiked: comment.likes.includes(me._id),
-  });
+  const [likes, setLikes] = useState({length: comment.likes.length,isLiked: comment.likes.includes(me._id)});
   const [commentData, setCommentData] = useState(comment);
   const [commentOptions, setCommentOptions] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -44,9 +41,7 @@ export default function Comment({ comment, postId, setComments }) {
 
   const deleteComment = async () => {
     try {
-      const res = await axios.delete(
-        process.env.REACT_APP_BACKEND_URL + `/posts/${postId}/comments/${commentData._id}?userId=${me._id}`
-      );
+      const res = await axios.delete(`/posts/${postId}/comments/${commentData._id}?userId=${me._id}`);
       setComments(res.data);
       setDeleteModal(false);
     } catch (err) {
@@ -56,9 +51,7 @@ export default function Comment({ comment, postId, setComments }) {
 
   const likeComment = async () => {
     try {
-      await axios.post(process.env.REACT_APP_BACKEND_URL + `/posts/${postId}/comments/${commentData._id}/like`, {
-        userId: me._id,
-      });
+      await axios.post(`/posts/${postId}/comments/${commentData._id}/like`, {userId: me._id});
       setLikes((prevState) => ({
         isLiked: !prevState.isLiked,
         length: prevState.isLiked ? prevState.length - 1 : prevState.length + 1,
