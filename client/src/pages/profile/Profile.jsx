@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { useCookies } from "react-cookie";
-import axios from "../../utils/axios";
+import useFetch from "../../hooks/useFetch";
 import "./profile.css";
 
 import { Tune } from "@mui/icons-material";
@@ -18,33 +17,10 @@ import ProfileEvents from "../../components/profile/profileEvents/ProfileEvents"
 
 export default function Profile() {
   const { username } = useParams();
-  const [cookies] = useCookies();
-  const [posts, setPosts] = useState([]);
-  const [photos, setPhotos] = useState([]);
   const { user: me } = useContext(AuthContext);
   const { results: user } = useLoaderData();
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await axios.get(`/users/${user?._id}/posts`);
-        setPosts(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    const fetchPhotos = async () => {
-      try {
-        const res = await axios.get(`/users/${user?._id}/photos`);
-        setPhotos(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    user && fetchPosts() && fetchPhotos();
-  }, [user, cookies]);
+  const {data: posts} = useFetch(`/users/${user._id}/posts`);
+  const {data: photos} = useFetch(`/users/${user._id}/photos`);
 
   return (
     <>
@@ -94,11 +70,7 @@ export default function Profile() {
                 </div>
               </div>
               <div className="profileFeedRightPosts">
-                {posts.length
-                  ? posts.map((post) => (
-                      <Post user={user} post={post} key={post._id} />
-                    ))
-                  : ""}
+                {posts?.map((post) => <Post user={user} post={post} key={post._id} />)}
               </div>
             </div>
           </div>

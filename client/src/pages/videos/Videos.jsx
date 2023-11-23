@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import useFetch from '../../hooks/useFetch';
 import axios from "../../utils/axios";
 
 import { MoreHoriz } from "@mui/icons-material";
@@ -14,10 +15,9 @@ export default function Videos() {
   const { username } = useParams();
   const { pathname } = useLocation();
   const { results: user } = useLoaderData();
-  const [videos, setVideos] = useState([]);
+  const {data: videos} = useFetch(`/users/${user._id}/videos`);
   const [postCard, setPostCard] = useState(false);
   const [file, setFile] = useState(null);
-  const [cookies] = useCookies();
 
   const togglePostCard = (e) => {
     if (!postCard) {
@@ -26,19 +26,6 @@ export default function Videos() {
 
     setPostCard(!postCard);
   };
-
-  useEffect(() => {
-    async function fetchVideos() {
-      try {
-        const res = await axios.get(`/users/${user._id}/videos`);
-        setVideos(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    fetchVideos();
-  }, [user, cookies]);
 
   return (
     <>
@@ -81,7 +68,7 @@ export default function Videos() {
                   <div key={v._id} className="photosItem">
                     <div className="photosItemImg">
                       <video
-                        src={process.env.REACT_APP_BACKEND_URL + v.url}
+                        src={process.env.REACT_APP_BACKEND_PUBLIC_URL + v.url}
                         alt=""
                       />
                     </div>

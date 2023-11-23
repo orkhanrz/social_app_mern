@@ -1,3 +1,4 @@
+// axiosInstance.js
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -6,19 +7,12 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    // Log successful responses
-    console.log("Response status:", response.status);
-    return response;
-  },
+  (response) => response,
   (error) => {
-    console.log("error from axios");
-    if (error.response && error.response.status === 403) {
-      // Redirect to your desired page
-      // Using react-router for navigation in a React application
-      sessionStorage.removeItem("user");
-      window.location.href = "/login";
-    }
+    if (error.response.status === 403){
+      sessionStorage.removeItem('user');
+      window.location.replace('/login');
+    };
     return Promise.reject(error);
   }
 );

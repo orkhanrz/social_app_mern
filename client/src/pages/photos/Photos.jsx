@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLoaderData, useLocation, useParams, Link } from "react-router-dom";
-import axios from "../../utils/axios";
+import useFetch from '../../hooks/useFetch';
 import "./photos.css";
 
 import { MoreHoriz } from "@mui/icons-material";
@@ -14,9 +14,9 @@ export default function Photos() {
   const { results: user } = useLoaderData();
   const { username } = useParams();
   const { pathname } = useLocation();
-  const [photos, setPhotos] = useState([]);
   const [postCard, setPostCard] = useState(false);
   const [file, setFile] = useState(null);
+  const {data: photos} = useFetch(`/users/${user._id}/photos`);
 
   const togglePostCard = (e) => {
     if (!postCard) {
@@ -25,19 +25,6 @@ export default function Photos() {
 
     setPostCard(!postCard);
   };
-
-  useEffect(() => {
-    async function fetchPhotos() {
-      try {
-        const res = await axios.get(`/users/${user._id}/photos`);
-        setPhotos(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    fetchPhotos();
-  }, [user]);
 
   return (
     <>
@@ -83,7 +70,7 @@ export default function Photos() {
               </Link>
             </div>
             <div className="photosItems">
-              {photos.map((p) => {
+              {photos?.map((p) => {
                 return (
                   <div key={p._id} className="photosItem">
                     <div className="photosItemImg">

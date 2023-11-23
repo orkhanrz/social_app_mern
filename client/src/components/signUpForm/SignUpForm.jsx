@@ -19,9 +19,9 @@ export default function SignUpForm({ toggleModal }) {
     password: "",
     email: "",
     dob: {
-      month: "",
-      day: "",
-      year: "",
+      month: "1",
+      day: "1",
+      year: "1905",
     },
     gender: "",
   });
@@ -125,17 +125,17 @@ export default function SignUpForm({ toggleModal }) {
                 onChange={handleChange}
               >
                 {months.map((month) => {
-                  return <option value={month.value}>{month.text}</option>;
+                  return <option key={`m_${month.value}`} value={month.value}>{month.text}</option>;
                 })}
               </select>
               <select name="day" value={form.dob.day} onChange={handleChange}>
                 {days(6).map((day) => {
-                  return <option value={day}>{day}</option>;
+                  return <option key={`d_${day}`} value={day}>{day}</option>;
                 })}
               </select>
               <select name="year" value={form.dob.year} onChange={handleChange}>
                 {years().map((year) => {
-                  return <option value={year}>{year}</option>;
+                  return <option key={`y_${year}`} value={year}>{year}</option>;
                 })}
               </select>
             </div>

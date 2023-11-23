@@ -56,6 +56,7 @@ module.exports = {
           "username",
         ]);
 
+      // Get all posts of followed users
       const userFollowingsPosts = await Promise.all(
         user.following?.map((userId) => {
           return Post.find({ userId: userId }).populate("userId", [
@@ -67,11 +68,27 @@ module.exports = {
         })
       );
 
-      feedPosts = userFollowingsPosts.length
-        ? userFollowingsPosts[0]
-            .concat(userPosts)
-            .sort((p1, p2) => p2.date - p1.date)
-        : userPosts;
+      // Get all posts of friends users
+      const friendsPosts = await Promise.all(
+        user.friends?.map((userId) => {
+          return Post.find({ userId: userId }).populate("userId", [
+            "firstName",
+            "lastName",
+            "profilePicture",
+            "username",
+          ]);
+        })
+      );
+
+      feedPosts = userPosts;
+      if (userFollowingsPosts.length){
+        feedPosts = feedPosts.concat(userFollowingsPosts[0]);
+      };
+
+      if (friendsPosts.length){
+        feedPosts = feedPosts.concat(friendsPosts[0]);
+      }
+      feedPosts = feedPosts.sort((p1, p2) => p2.date - p1.date);
 
       res.status(200).json(feedPosts);
     } catch (err) {

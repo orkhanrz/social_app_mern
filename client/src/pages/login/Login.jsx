@@ -65,6 +65,7 @@ export default function Login() {
                   type="email"
                   placeholder="Email"
                   name="email"
+                  autoComplete="off"
                   value={form.email}
                   onChange={handleChange}
                   className={`${formErrors.email ? "formError" : ""}`}
@@ -75,6 +76,7 @@ export default function Login() {
                   type="password"
                   placeholder="Password"
                   name="password"
+                  autoComplete="off"
                   value={form.password}
                   onChange={handleChange}
                   className={`${formErrors.password ? "formError" : ""}`}

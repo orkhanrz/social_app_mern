@@ -67,7 +67,7 @@ export default function Comment({ comment, postId, setComments }) {
         <img
           className="postCommentsItemUserImage"
           src={
-            process.env.REACT_APP_BACKEND_URL +
+            process.env.REACT_APP_BACKEND_PUBLIC_URL +
             commentData.userId.profilePicture
           }
           alt="profile"

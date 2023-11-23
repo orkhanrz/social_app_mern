@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "../../utils/axios";
+import "./addPostCard.css";
+
+import { CircularProgress } from "@mui/material";
 import {
   Close,
   Collections,
@@ -11,9 +15,6 @@ import {
   Person,
   SentimentVerySatisfied,
 } from "@mui/icons-material";
-import "./addPostCard.css";
-import axios from "../../utils/axios";
-import { CircularProgress } from "@mui/material";
 
 export default function AddPostCard({ togglePostCard, file }) {
   const { user } = useContext(AuthContext);
@@ -130,21 +131,11 @@ export default function AddPostCard({ togglePostCard, file }) {
                 <Collections />
               </label>
             </span>
-            <span className="addPostCardBottomIcon blue">
-              <Person />
-            </span>
-            <span className="addPostCardBottomIcon yellow">
-              <SentimentVerySatisfied />
-            </span>
-            <span className="addPostCardBottomIcon red">
-              <LocationOn />
-            </span>
-            <span className="addPostCardBottomIcon gray">
-              <GifBox />
-            </span>
-            <span className="addPostCardBottomIcon">
-              <MoreHoriz />
-            </span>
+            <span className="addPostCardBottomIcon blue"><Person /></span>
+            <span className="addPostCardBottomIcon yellow"><SentimentVerySatisfied /></span>
+            <span className="addPostCardBottomIcon red"><LocationOn /></span>
+            <span className="addPostCardBottomIcon gray"><GifBox /></span>
+            <span className="addPostCardBottomIcon"><MoreHoriz /></span>
           </div>
         </div>
         <button

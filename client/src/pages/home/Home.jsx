@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "../../utils/axios";
+import useFetch from "../../hooks/useFetch";
 import "./home.css";
 
 import Topbar from "../../components/topbar/Topbar";
@@ -10,21 +10,7 @@ import Rightbar from "../../components/rightbar/Rightbar";
 
 export default function Home() {
   const { user: me } = useContext(AuthContext);
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    const getFeed = async () => {
-      try {
-        const res = await axios.get(`/users/${me._id}/feed`);
-
-        setPosts(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getFeed();
-  }, [me]);
+  const { data: posts } = useFetch(`/users/${me._id}/feed`);
 
   return (
     <>

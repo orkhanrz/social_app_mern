@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Post = require("../models/post");
 const Photo = require('../models/photo');
 const Video = require('../models/video');

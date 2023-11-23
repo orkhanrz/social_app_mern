@@ -10,11 +10,7 @@ export default function Feed({ posts }) {
         <AddStory />
         <AddPost />
         <div className="posts">
-          {posts?.length
-            ? posts.map((post) => {
-                return <Post post={post} user={post.userId} key={post._id} />;
-              })
-            : ""}
+          {posts?.map((post) => <Post post={post} user={post.userId} key={post._id} />)}
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ export default function ProfilePhotos({ photos }) {
       {photos?.map((p) => {
         return (
           <Link to={`/${username}/photos/${p._id}`} className="profilePhotosPhoto" key={p._id}>
-            <img src={process.env.REACT_APP_BACKEND_URL + p.url} alt="photos item" />
+            <img src={process.env.REACT_APP_BACKEND_PUBLIC_URL + p.url} alt="photos item" />
           </Link>
         );
       })}

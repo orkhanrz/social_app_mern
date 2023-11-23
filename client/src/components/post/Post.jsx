@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import axios from "../../utils/axios";
 import "./post.css";
+
 import {
   Public,
   CommentOutlined,
@@ -11,7 +12,6 @@ import {
   CloseOutlined,
   ThumbUp,
 } from "@mui/icons-material";
-
 
 import TimeAgo from "react-timeago";
 import Modal from "../modal/Modal";
@@ -29,18 +29,16 @@ function PostModal({ post, user, closeModal, comments, setComments }) {
           closeModal={closeModal}
         />
         <div className="postComments">
-          {comments.length
-            ? comments.map((comment) => {
-                return (
-                  <Comment
-                    key={comment._id}
-                    postId={post._id}
-                    comment={comment}
-                    setComments={setComments}
-                  />
-                );
-              })
-            : ""}
+          {comments?.map((comment) => {
+            return (
+              <Comment
+                key={comment._id}
+                postId={post._id}
+                comment={comment}
+                setComments={setComments}
+              />
+            );
+          })}
         </div>
         <CommentInput postId={post._id} setComments={setComments} />
       </div>
@@ -48,7 +46,7 @@ function PostModal({ post, user, closeModal, comments, setComments }) {
   );
 }
 
-function Post({ post, user, hideInput, closeModal }) {  
+function Post({ post, user, hideInput, closeModal }) {
   const { user: me } = useContext(AuthContext);
   const [openPostModal, setOpenPostModal] = useState(false);
   const [likes, setLikes] = useState({
@@ -91,7 +89,9 @@ function Post({ post, user, hideInput, closeModal }) {
           <div className="postTopLeft">
             <Link to={`/${user.username}`} className="postTopImg">
               <img
-                src={process.env.REACT_APP_BACKEND_PUBLIC_URL + user.profilePicture}
+                src={
+                  process.env.REACT_APP_BACKEND_PUBLIC_URL + user.profilePicture
+                }
                 alt="profile"
               />
             </Link>
@@ -123,11 +123,22 @@ function Post({ post, user, hideInput, closeModal }) {
           {post.media &&
             (post.media.mediaType === "image" ? (
               <div className="postCenterMedia">
-                <img src={process.env.REACT_APP_BACKEND_PUBLIC_URL + post.media.url} alt="" />
+                <img
+                  src={
+                    process.env.REACT_APP_BACKEND_PUBLIC_URL + post.media.url
+                  }
+                  alt=""
+                />
               </div>
             ) : (
               <div className="postCenterMedia">
-                <video src={process.env.REACT_APP_BACKEND_PUBLIC_URL + post.media.url} alt="" controls/>
+                <video
+                  src={
+                    process.env.REACT_APP_BACKEND_PUBLIC_URL + post.media.url
+                  }
+                  alt=""
+                  controls
+                />
               </div>
             ))}
 
