@@ -3,7 +3,7 @@ errorMiddleware = (err, req, res, next) => {
   const status = err.status || 500;
   const stack = err.stack || {};
 
-  console.log(err);
+  console.log('err:', err);
 
   res.status(status).json({ message, stack });
 };

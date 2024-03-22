@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
   const {cookie} = req.headers;
-  const token = cookie?.split("=")[1];
+  const token = cookie?.split(";")[1]?.split('=')[1];
+
+  console.log('token:', token);
+  console.log('cookie:', cookie);
 
   if (!token) {
     return res.status(403).json({ message: "You are not authorized!" });

@@ -27,7 +27,7 @@ module.exports = {
 
       return res
         .cookie("token", token, {
-          maxAge: 5 * 60 * 1000,
+          maxAge: 20 * 1000,
           httpOnly: true,
           secure: true,
           sameSite: true,
@@ -45,6 +45,8 @@ module.exports = {
     const dob = new Date(`${month}/${Number(day) + 1}/${year}`);
     //Create username
     const username = email.split("@")[0];
+
+    console.log(res);
 
     try {
       //Check if user with same email exists
